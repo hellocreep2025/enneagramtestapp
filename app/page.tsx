@@ -13,6 +13,10 @@ import {
   ExternalLink,
   Heart,
   Brain,
+  BookOpen,
+  Shield,
+  Mail,
+  Info,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -30,6 +34,7 @@ export default function EnneagramTestApp() {
   const [aiInsight, setAiInsight] = useState("")
   const [loadingAI, setLoadingAI] = useState(false)
   const [loadingError, setLoadingError] = useState(null)
+  const [testStarted, setTestStarted] = useState(false)
 
   // Your specific Google Sheet ID
   const SHEET_ID = "12tgm-6KM1w5kUK_stJbLJCnwskiHZQIQTeYvPbmWtgQ"
@@ -40,7 +45,7 @@ export default function EnneagramTestApp() {
     B: { type: "Type 6", name: "The Loyalist", myanmar: "သစ္စာရှိသူ" },
     C: { type: "Type 3", name: "The Achiever", myanmar: "ဖြစ်မြောက်အောင် လုပ်နိုင်သူ" },
     D: { type: "Type 1", name: "The Perfectionist", myanmar: "ကောင်းတဲ့ဘက်ကို ပြောင်းလဲဖို့ စိတ်အားထက်သန်သူ" },
-    E: { type: "Type 4", name: "The Individualist", myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာ နေချင်သူ" },
+    E: { type: "Type 4", name: "The Individualist", myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာ နေချင်သူ" },
     F: { type: "Type 2", name: "The Helper", myanmar: "ကူညီဖေးမသူ" },
     G: { type: "Type 8", name: "The Challenger", myanmar: "အခက်အခဲကို ရင်ဆိုင်ကျော်လွှားသူ" },
     H: { type: "Type 5", name: "The Investigator", myanmar: "စူးစမ်းလေ့လာသူ" },
@@ -216,6 +221,11 @@ export default function EnneagramTestApp() {
     setShowResults(false)
     setScores({})
     setAiInsight("")
+    setTestStarted(false)
+  }
+
+  const startTest = () => {
+    setTestStarted(true)
   }
 
   const getProgress = () => {
@@ -294,9 +304,160 @@ export default function EnneagramTestApp() {
     )
   }
 
+  // Welcome screen with disclaimer (before test starts)
+  if (!testStarted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Main Title */}
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="text-4xl mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                🌟 Enneagram Personality Test 🌟
+              </CardTitle>
+              <p className="text-xl text-muted-foreground">ထူးခြားသော စိတ်ခံစားမှု နယ်မြေ စစ်ဆေးမှု</p>
+              <Badge variant="secondary" className="mt-2">
+                {dataSource}
+              </Badge>
+            </CardHeader>
+          </Card>
+
+          {/* Disclaimer */}
+          <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-blue-800">
+                <Info size={24} />
+                အရေးကြီးသော သတင်းအချက်အလက်များ
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Book Attribution */}
+              <div className="bg-white p-4 rounded-lg border border-blue-200">
+                <div className="flex items-start gap-3">
+                  <BookOpen className="text-blue-600 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-semibold text-blue-800 mb-2">📚 မေးခွန်းများ၏ ရင်းမြစ်</h4>
+                    <p className="text-blue-700 mb-2">
+                      ဒီ application မှာ ပါဝင်တဲ့ မေးခွန်း ၁၄၄ ခုကို <strong>ဆရာတော်ဦးဇောတိက</strong> နှင့်{" "}
+                      <strong>ဆရာမ ထက်ထက်ထွန်း (Waterfall)</strong> တို့ရေးသားတဲ့ <strong>"ငါ ဘာသူလဲ"</strong> ဆိုတဲ့ စာအုပ်ကနေ
+                      ရယူထားပါတယ်။
+                    </p>
+                    <p className="text-blue-600 text-sm">
+                      💡 Enneagram အကြောင်း အသေးစိတ်သိချင်ရင် ဒီစာအုပ်ကို ဝယ်ဖတ်ကြည့်ဖို့ အထူးတိုက်တွန်းပါတယ်။
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Purpose */}
+              <div className="bg-white p-4 rounded-lg border border-green-200">
+                <div className="flex items-start gap-3">
+                  <Heart className="text-green-600 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-semibold text-green-800 mb-2">🎯 ရည်ရွယ်ချက်</h4>
+                    <p className="text-green-700">
+                      ဒီ application က <strong>စီးပွားဖြစ် ရည်ရွယ်ချက်မရှိပါ</strong>။ Enneagram Test လုပ်ချင်တဲ့သူတွေအတွက် အကူအညီ အထောက်အပံ့
+                      ရစေလိုတဲ့ ရည်ရွယ်ချက်နဲ့သာ ဖန်တီးထားတာဖြစ်ပါတယ်။
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Privacy */}
+              <div className="bg-white p-4 rounded-lg border border-purple-200">
+                <div className="flex items-start gap-3">
+                  <Shield className="text-purple-600 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-semibold text-purple-800 mb-2">🔒 ကိုယ်ရေးကိုယ်တာ လုံခြုံမှု</h4>
+                    <p className="text-purple-700">
+                      သင့်ရဲ့ <strong>မည်သည့် ဒေတာမှ မှတ်ထား သိမ်းထားခြင်း မရှိပါ</strong>။ Test ရလဒ်တွေ၊ အဖြေတွေ၊ ကိုယ်ရေးကိုယ်တာ အချက်အလက်တွေ ဘာမှ
+                      server မှာ သိမ်းမထားပါဘူး။ အားလုံး သင့် browser ထဲမှာပဲ ယာယီ သိမ်းထားပါတယ်။
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact */}
+              <div className="bg-white p-4 rounded-lg border border-orange-200">
+                <div className="flex items-start gap-3">
+                  <Mail className="text-orange-600 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-semibold text-orange-800 mb-2">📧 အကြံပြုချက်များ</h4>
+                    <p className="text-orange-700 mb-2">
+                      Application ကို ပိုကောင်းအောင် လုပ်ဖို့ အကြံပြုချက်တွေ ရှိရင် ကျေးဇူးပြု၍ အီးမေးပေးပို့ပါ:
+                    </p>
+                    <a
+                      href="mailto:hello@radiances.net"
+                      className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 font-medium"
+                    >
+                      <Mail size={16} />
+                      hello@radiances.net
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Test Info */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">🧭 Test အကြောင်း</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">{questions.length}</div>
+                  <div className="text-sm text-purple-700">မေးခွန်းများ</div>
+                </div>
+                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">15-20</div>
+                  <div className="text-sm text-blue-700">မိနစ်ခန့် ကြာမည်</div>
+                </div>
+                <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">9</div>
+                  <div className="text-sm text-green-700">Personality Types</div>
+                </div>
+              </div>
+
+              <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                <h4 className="font-medium text-yellow-800 mb-2">💡 Test လုပ်ရာတွင် သတိပြုရန်:</h4>
+                <ul className="text-sm text-yellow-700 space-y-1">
+                  <li>• နှလုံးသားနဲ့ ရိုးရိုးသားသား ဖြေကြည့်ပါ</li>
+                  <li>• "ရှိသင့် ဖြစ်သင့်တဲ့" အဖြေမဟုတ်ပဲ "ကိုယ်နဲ့အကိုက်ညီဆုံး" ကို ရွေးပါ</li>
+                  <li>• အချိန်ယူပြီး စဉ်းစားကြည့်ပါ</li>
+                  <li>• ရှေ့က ဖြေခဲ့တဲ့ အဖြေတွေကို ပြန်ပြင်လို့ ရပါတယ်</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Start Button */}
+          <div className="text-center">
+            <Button
+              onClick={startTest}
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg"
+            >
+              🚀 Test စတင်မယ်
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   // Results screen
   if (showResults) {
-    const topThree = getTopThreeTypes()
+    const allTypes = Object.entries(typeMapping)
+      .map(([letter, info]) => ({
+        letter,
+        count: scores[letter] || 0,
+        ...info,
+      }))
+      .sort((a, b) => b.count - a.count)
+
+    const topThree = allTypes.slice(0, 3)
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
@@ -311,40 +472,144 @@ export default function EnneagramTestApp() {
             </CardHeader>
           </Card>
 
-          <div className="space-y-4">
-            {topThree.map((result, index) => (
-              <Card
-                key={result.letter}
-                className={`
-                border-2 ${
-                  index === 0
-                    ? "border-yellow-400 bg-yellow-50"
-                    : index === 1
-                      ? "border-gray-400 bg-gray-50"
-                      : "border-orange-400 bg-orange-50"
-                }
-              `}
-              >
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                        {index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}
-                        {result.type} - {result.name}
-                      </h3>
-                      <p className="text-muted-foreground mb-1">{result.myanmar}</p>
-                      <p className="text-muted-foreground">အမှတ်: {result.count} မှတ်</p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold">
-                        {Math.round((result.count / Object.keys(answers).length) * 100)}%
+          {/* All 9 Types Results */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">📊 သင့်ရဲ့ Enneagram Profile အပြည့်အစုံ</CardTitle>
+              <p className="text-muted-foreground">Type 9 ခုလုံးရဲ့ ရမှတ်များ (ကြီးစဥ်ငယ်လိုက်)</p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {allTypes.map((result, index) => (
+                  <div
+                    key={result.letter}
+                    className={`
+                    p-4 rounded-lg border-2 transition-all duration-200 ${
+                      index === 0
+                        ? "border-yellow-400 bg-gradient-to-r from-yellow-50 to-yellow-100 shadow-lg"
+                        : index === 1
+                          ? "border-gray-400 bg-gradient-to-r from-gray-50 to-gray-100 shadow-md"
+                          : index === 2
+                            ? "border-orange-400 bg-gradient-to-r from-orange-50 to-orange-100 shadow-md"
+                            : "border-gray-200 bg-white hover:bg-gray-50"
+                    }
+                  `}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="text-2xl">
+                          {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}.`}
+                        </div>
+                        <div>
+                          <h3 className={`text-lg font-semibold ${index < 3 ? "text-gray-800" : "text-gray-600"}`}>
+                            {result.type} - {result.name}
+                          </h3>
+                          <p className={`text-sm ${index < 3 ? "text-gray-600" : "text-gray-500"}`}>{result.myanmar}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className={`text-xl font-bold ${index < 3 ? "text-gray-800" : "text-gray-600"}`}>
+                          {result.count} မှတ်
+                        </div>
+                        <div className={`text-sm ${index < 3 ? "text-gray-600" : "text-gray-500"}`}>
+                          {Math.round((result.count / Object.keys(answers).length) * 100)}%
+                        </div>
                       </div>
                     </div>
+
+                    {/* Progress bar for each type */}
+                    <div className="mt-3">
+                      <Progress
+                        value={(result.count / Math.max(...allTypes.map((t) => t.count))) * 100}
+                        className={`h-2 ${
+                          index === 0
+                            ? "bg-yellow-200"
+                            : index === 1
+                              ? "bg-gray-200"
+                              : index === 2
+                                ? "bg-orange-200"
+                                : "bg-gray-100"
+                        }`}
+                      />
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Top 3 Summary */}
+          <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+            <CardHeader>
+              <CardTitle className="text-xl">🏆 သင့်ရဲ့ အဓိက Personality Types</CardTitle>
+              <p className="text-muted-foreground">အမှတ်အများဆုံး ၃ ခု - ဒါတွေက သင့်ရဲ့ core personality ကို ဖော်ပြပါတယ်</p>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {topThree.map((result, index) => (
+                  <div
+                    key={result.letter}
+                    className={`
+                    p-4 rounded-lg text-center border-2 ${
+                      index === 0
+                        ? "border-yellow-400 bg-yellow-50"
+                        : index === 1
+                          ? "border-gray-400 bg-gray-50"
+                          : "border-orange-400 bg-orange-50"
+                    }
+                  `}
+                  >
+                    <div className="text-3xl mb-2">{index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}</div>
+                    <h4 className="font-semibold text-gray-800 mb-1">{result.type}</h4>
+                    <p className="text-sm text-gray-600 mb-2">{result.name}</p>
+                    <p className="text-xs text-gray-500 mb-2">{result.myanmar}</p>
+                    <div className="text-lg font-bold text-gray-800">{result.count} မှတ်</div>
+                    <div className="text-sm text-gray-600">
+                      {Math.round((result.count / Object.keys(answers).length) * 100)}%
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Interpretation Guide */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">📖 ရလဒ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-start gap-2">
+                  <span className="text-yellow-500">🥇</span>
+                  <div>
+                    <strong>Primary Type (အဓိက အမျိုးအစား):</strong> သင့်ရဲ့ core personality type ဖြစ်ပါတယ်။ ဒါက သင့်ရဲ့ အဓိက
+                    motivations, fears, နှင့် behavioral patterns တွေကို ညွှန်ပြပါတယ်။
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-gray-500">🥈</span>
+                  <div>
+                    <strong>Secondary Type (ဒုတိယ အမျိုးအစား):</strong> သင့်ရဲ့ "wing" သို့မဟုတ် secondary influence ဖြစ်နိုင်ပါတယ်။
+                    Primary type နဲ့ ရောနှောပြီး သင့်ရဲ့ personality ကို ပိုမို ရှုပ်ထွေးစေပါတယ်။
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-orange-500">🥉</span>
+                  <div>
+                    <strong>Third Type (တတိယ အမျိုးအစား):</strong> stress သို့မဟုတ် growth direction မှာ ပေါ်လာနိုင်တဲ့ characteristics
+                    တွေကို ညွှန်ပြနိုင်ပါတယ်။
+                  </div>
+                </div>
+                <div className="bg-blue-50 p-3 rounded-lg mt-4">
+                  <p className="text-blue-800">
+                    <strong>💡 သတိပြုရန်:</strong> Enneagram က dynamic system တစ်ခုဖြစ်ပါတယ်။ သင့်ရဲ့ primary type က အဓိကဖြစ်ပေမယ့်၊
+                    အခြား types တွေရဲ့ characteristics တွေလည်း အချိန်အခါ အလိုက် ပေါ်လာနိုင်ပါတယ်။
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* AI Insights Section */}
           <Card>
@@ -362,7 +627,7 @@ export default function EnneagramTestApp() {
                 <div className="text-center space-y-4">
                   <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-lg">
                     <h4 className="font-semibold mb-2">🤖 ကိုယ်ပိုင် AI ခွဲခြမ်းစိတ်ဖြာမှု ရယူမယ်</h4>
-                    <p className="text-muted-foreground mb-4">သင့်ရဲ့ စိတ်ခံစားမှု အမျိုးအစား အကြောင်း နက်နဲတဲ့ အသိပညာများ ရယူပါ:</p>
+                    <p className="text-muted-foreground mb-4">သင့်ရဲ့ top 3 types အပေါ်အခြေခံပြီး နက်နဲတဲ့ အသိပညာများ ရယူပါ:</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-left mb-4">
                       <div>• အဓိက လှုံ့ဆော်မှုများနှင့် ကြောက်ရွံ့မှုများ</div>
                       <div>• ဆက်ဆံရေး ပုံစံများ</div>
@@ -427,8 +692,8 @@ export default function EnneagramTestApp() {
             <Card>
               <CardContent className="p-4">
                 <p className="text-sm text-muted-foreground text-center">
-                  ဒီ test က သင့်ရဲ့ အဓိက Enneagram စိတ်ခံစားမှု အမျိုးအစားကို ဖော်ထုတ်ပေးပါတယ်။ အမြင့်ဆုံး အမှတ်က သင့်ရဲ့ အဓိက အမျိုးအစားကို ညွှန်ပြပြီး၊ ဒုတိယ
-                  အမှတ်တွေက သင့်ရဲ့ wings တွေကို ပြပါတယ်။
+                  ဒီ test က သင့်ရဲ့ Enneagram personality profile အပြည့်အစုံကို ပြပေးပါတယ်။ Primary type က သင့်ရဲ့ အဓိက အမျိုးအစားဖြစ်ပြီး၊
+                  secondary နှင့် third types တွေက သင့်ရဲ့ wings နှင့် growth/stress directions တွေကို ညွှန်ပြပါတယ်။
                 </p>
               </CardContent>
             </Card>
@@ -491,7 +756,7 @@ export default function EnneagramTestApp() {
                   <h2 className="text-xl font-semibold text-gray-800">သင့်ကို အကောင်းဆုံး ဖော်ပြတဲ့ စာကြောင်းကို ရွေးပါ</h2>
                   <Heart className="text-pink-500" size={20} />
                 </div>
-                <p className="text-sm text-muted-foreground">နှလုံးသားနဲ့ ဖြေကြည့်ပါ - မှန်သမျှကို ရွေးပါ</p>
+                <p className="text-sm text-muted-foreground">နှလုံးသားနဲ့ ဖြေကြည့်ပါ - မှန်သမျှကို ရွေးပါ</p>
               </div>
 
               <div className="space-y-6">
@@ -597,9 +862,9 @@ export default function EnneagramTestApp() {
           <CardContent className="p-6">
             <h3 className="font-semibold mb-3 text-amber-800">💡 လမ်းညွှန်ချက်များ</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-amber-700">
-              <div>• ဖော်ပြချက်နှစ်ခုလုံးကို အေးအေးဆေးဆေး ဖတ်ကြည့်ပါ</div>
+              <div>• ဖော်ပြချက်နှစ်ခုလုံးကို အေးအေးဆေးဆေး ဖတ်ကြည့်ပါ</div>
               <div>• မိတ်ဆွေရဲ့ နှလုံးသားက ဘယ်ဟာကို ရွေးချင်နေသလဲဆိုတာကို နားထောင်ပါ</div>
-              <div>• "ရှိသင့် ဖြစ်သင့်တဲ့" အဖြေမဟုတ်ပဲ "ကိုယ်နဲ့အကိုက်ညီဆုံး" ကိုရွေးကြည့်ပါ</div>
+              <div>• "ရှိသင့် ဖြစ်သင့်တဲ့" အဖြေမဟုတ်ပဲ "ကိုယ်နဲ့အကိုက်ညီဆုံး" ကိုရွေးကြည့်ပါ</div>
               <div>• ရှေ့က ဖြေခဲ့တဲ့ အဖြေတွေကို ပြန်ပြင်လို့ ရပါတယ်</div>
               <div>• အချိန်ယူပြီး သေချာ စဉ်းစားကြည့်ပါ</div>
               <div>• စိတ်မှာ ပထမဆုံး ဖြစ်ပေါ်လာတဲ့ ခံစားချက်ကို ယုံကြည်ပါ</div>
