@@ -36,23 +36,23 @@ export default function EnneagramTestApp() {
 
   // Type mapping with Myanmar translations
   const typeMapping = {
-    A: { type: "Type 9", name: "The Peacemaker", myanmar: "ငြိမ်းချမ်းရေး ဖန်တီးသူ" },
+    A: { type: "Type 9", name: "The Peacemaker", myanmar: "ငြိမ်းချမ်းမှုကို ဖန်တီးသူ" },
     B: { type: "Type 6", name: "The Loyalist", myanmar: "သစ္စာရှိသူ" },
-    C: { type: "Type 3", name: "The Achiever", myanmar: "အောင်မြင်သူ" },
-    D: { type: "Type 1", name: "The Perfectionist", myanmar: "စံပြသူ" },
-    E: { type: "Type 4", name: "The Individualist", myanmar: "ကိုယ်ပိုင်လမ်းသွားသူ" },
-    F: { type: "Type 2", name: "The Helper", myanmar: "ကူညီသူ" },
-    G: { type: "Type 8", name: "The Challenger", myanmar: "စိန်ခေါ်သူ" },
-    H: { type: "Type 5", name: "The Investigator", myanmar: "လေ့လာသူ" },
-    I: { type: "Type 7", name: "The Enthusiast", myanmar: "စိတ်အားထက်သန်သူ" },
+    C: { type: "Type 3", name: "The Achiever", myanmar: "ဖြစ်မြောက်အောင် လုပ်နိုင်သူ" },
+    D: { type: "Type 1", name: "The Perfectionist", myanmar: "ကောင်းတဲ့ဘက်ကို ပြောင်းလဲဖို့ စိတ်အားထက်သန်သူ" },
+    E: { type: "Type 4", name: "The Individualist", myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာ နေချင်သူ" },
+    F: { type: "Type 2", name: "The Helper", myanmar: "ကူညီဖေးမသူ" },
+    G: { type: "Type 8", name: "The Challenger", myanmar: "အခက်အခဲကို ရင်ဆိုင်ကျော်လွှားသူ" },
+    H: { type: "Type 5", name: "The Investigator", myanmar: "စူးစမ်းလေ့လာသူ" },
+    I: { type: "Type 7", name: "The Enthusiast", myanmar: "စိတ်ဝင်စားမှုများသူ တက်ကြွသူ" },
   }
 
   // Thought-provoking questions to help users reflect
   const reflectionPrompts = [
-    "ဘယ်စာကြောင်းက သင့်ရဲ့ နှလုံးသားထဲမှာ ပိုပြီး ပဲ့တင်ထပ်နေသလဲ?",
+    "ဘယ်စာကြောင်းက မိတ်ဆွေရဲ့ နှလုံးသားထဲမှာ ပိုပြီး ပဲ့တင်ထပ်နေသလဲ?",
     "သင့်ရဲ့ အနီးဆုံး မိတ်ဆွေတွေက သင့်ကို ဘယ်လို မြင်မလဲ?",
     "စိတ်ဖိစီးမှု ရှိတဲ့အခါ သင် ဘယ်လို ပြုမူလေ့ရှိသလဲ?",
-    "သင့်ရဲ့ အကောင်းဆုံး အချိန်တွေမှာ ဘယ်စာကြောင်းက ပိုမှန်သလဲ?",
+    "သင့်ရဲ့ အကောင်းဆုံး အချိန်တွေမှာ ဘယ် စာကြောင်းက ပိုမှန်သလဲ?",
     "ဘယ်စာကြောင်းက သင့်ရဲ့ အစစ်အမှန် ကိုယ်ရည်ကိုယ်သွေးကို ပိုဖော်ပြသလဲ?",
     "လူတွေနဲ့ ဆက်ဆံတဲ့အခါ ဘယ်စာကြောင်းက ပိုမှန်သလဲ?",
     "သင့်ရဲ့ အတွင်းစိတ်က ဘယ်စာကြောင်းကို ပိုရွေးချင်နေသလဲ?",
@@ -597,12 +597,12 @@ export default function EnneagramTestApp() {
           <CardContent className="p-6">
             <h3 className="font-semibold mb-3 text-amber-800">💡 လမ်းညွှန်ချက်များ</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-amber-700">
-              <div>• ဖော်ပြချက် နှစ်ခုလုံးကို အေးအေးဆေးဆေး ဖတ်ကြည့်ပါ</div>
+              <div>• ဖော်ပြချက်နှစ်ခုလုံးကို အေးအေးဆေးဆေး ဖတ်ကြည့်ပါ</div>
               <div>• မိတ်ဆွေရဲ့ နှလုံးသားက ဘယ်ဟာကို ရွေးချင်နေသလဲဆိုတာကို နားထောင်ပါ</div>
-              <div>• "ရှိသင့်တဲ့ ဖြစ်သင့်တဲ့" အဖြေမဟုတ်ပဲ "ကိုယ်နဲ့အကိုက်ညီဆုံး" ကိုရွေးပြီး ဖြေကြည့်ပါ</div>
+              <div>• "ရှိသင့် ဖြစ်သင့်တဲ့" အဖြေမဟုတ်ပဲ "ကိုယ်နဲ့အကိုက်ညီဆုံး" ကိုရွေးကြည့်ပါ</div>
               <div>• ရှေ့က ဖြေခဲ့တဲ့ အဖြေတွေကို ပြန်ပြင်လို့ ရပါတယ်</div>
-              <div>• အချိန်ယူပြီး စဉ်းစားကြည့်ပါ</div>
-              <div>• ပထမဆုံး စိတ်မှာ ဖြစ်ပေါ်လာတဲ့ ခံစားချက်ကို ယုံကြည်ပါ</div>
+              <div>• အချိန်ယူပြီး သေချာ စဉ်းစားကြည့်ပါ</div>
+              <div>• စိတ်မှာ ပထမဆုံး ဖြစ်ပေါ်လာတဲ့ ခံစားချက်ကို ယုံကြည်ပါ</div>
             </div>
           </CardContent>
         </Card>
