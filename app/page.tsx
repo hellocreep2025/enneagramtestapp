@@ -1,877 +1,615 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import {
-  ChevronLeft,
-  ChevronRight,
-  RotateCcw,
-  Cloud,
-  MessageCircle,
-  Sparkles,
-  AlertTriangle,
-  RefreshCw,
-  ExternalLink,
-  Heart,
-  Brain,
-  BookOpen,
-  Shield,
-  Mail,
-  Info,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react"
 
-export default function EnneagramTestApp() {
-  const [questions, setQuestions] = useState([])
+const ChildEnneagramAssessment = () => {
+  const [currentStep, setCurrentStep] = useState("setup")
+  const [childProfile, setChildProfile] = useState({
+    age: "",
+    observerRole: "",
+    observationPeriod: "",
+  })
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [showResults, setShowResults] = useState(false)
-  const [scores, setScores] = useState({})
-  const [loading, setLoading] = useState(true)
-  const [dataSource, setDataSource] = useState("")
-  const [aiInsight, setAiInsight] = useState("")
-  const [loadingAI, setLoadingAI] = useState(false)
-  const [loadingError, setLoadingError] = useState(null)
-  const [testStarted, setTestStarted] = useState(false)
 
-  // Your specific Google Sheet ID
-  const SHEET_ID = "12tgm-6KM1w5kUK_stJbLJCnwskiHZQIQTeYvPbmWtgQ"
-
-  // Type mapping with Myanmar translations
-  const typeMapping = {
-    A: { type: "Type 9", name: "The Peacemaker", myanmar: "ငြိမ်းချမ်းမှုကို ဖန်တီးသူ" },
-    B: { type: "Type 6", name: "The Loyalist", myanmar: "သစ္စာရှိသူ" },
-    C: { type: "Type 3", name: "The Achiever", myanmar: "ဖြစ်မြောက်အောင် လုပ်နိုင်သူ" },
-    D: { type: "Type 1", name: "The Perfectionist", myanmar: "ကောင်းတဲ့ဘက်ကို ပြောင်းလဲဖို့ စိတ်အားထက်သန်သူ" },
-    E: { type: "Type 4", name: "The Individualist", myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာ နေချင်သူ" },
-    F: { type: "Type 2", name: "The Helper", myanmar: "ကူညီဖေးမသူ" },
-    G: { type: "Type 8", name: "The Challenger", myanmar: "အခက်အခဲကို ရင်ဆိုင်ကျော်လွှားသူ" },
-    H: { type: "Type 5", name: "The Investigator", myanmar: "စူးစမ်းလေ့လာသူ" },
-    I: { type: "Type 7", name: "The Enthusiast", myanmar: "စိတ်ဝင်စားမှုများသူ တက်ကြွသူ" },
-  }
-
-  // Thought-provoking questions to help users reflect
-  const reflectionPrompts = [
-    "ဘယ်စာကြောင်းက မိတ်ဆွေရဲ့ နှလုံးသားထဲမှာ ပိုပြီး ပဲ့တင်ထပ်နေသလဲ?",
-    "သင့်ရဲ့ အနီးဆုံး မိတ်ဆွေတွေက သင့်ကို ဘယ်လို မြင်မလဲ?",
-    "စိတ်ဖိစီးမှု ရှိတဲ့အခါ သင် ဘယ်လို ပြုမူလေ့ရှိသလဲ?",
-    "သင့်ရဲ့ အကောင်းဆုံး အချိန်တွေမှာ ဘယ် စာကြောင်းက ပိုမှန်သလဲ?",
-    "ဘယ်စာကြောင်းက သင့်ရဲ့ အစစ်အမှန် ကိုယ်ရည်ကိုယ်သွေးကို ပိုဖော်ပြသလဲ?",
-    "လူတွေနဲ့ ဆက်ဆံတဲ့အခါ ဘယ်စာကြောင်းက ပိုမှန်သလဲ?",
-    "သင့်ရဲ့ အတွင်းစိတ်က ဘယ်စာကြောင်းကို ပိုရွေးချင်နေသလဲ?",
-    "ဘယ်စာကြောင်းက သင့်ကို ပိုပြီး သက်တောင့်သက်သာ ခံစားစေသလဲ?",
+  // Complete 25-question assessment
+  const questions = [
+    // Social Behavior (5 questions)
+    {
+      id: 1,
+      category: "Social Behavior",
+      question: "သူငယ်ချင်းအသစ်နှင့် တွေ့သည့်အခါ ကလေးက ဘယ်လိုပြုမူလေ့ရှိလဲ?",
+      statementA: "အမြန်စကားပြောပြီး ပေါင်းသင်းတယ်၊ ဂိမ်းတွေ ခေါ်ကစားတယ်",
+      statementB: "ဂရုတစိုက်စောင့်ကြည့်ပြီး သူများပြောတာကို နားထောင်ရင်း တဖြည်းဖြည်းပေါင်းသင်းတယ်",
+      scoresA: { 7: 3, 2: 2, 3: 1 },
+      scoresB: { 9: 3, 5: 2, 4: 1 },
+    },
+    {
+      id: 2,
+      category: "Social Behavior",
+      question: "အုပ်စုလုပ်ဆောင်ချက်များတွင် ကလေးက ဘယ်လို role ယူလေ့ရှိလဲ?",
+      statementA: "Leader အဖြစ် ကစားနည်းများ စီစဥ်ပေးတာ နှစ်သက်တယ်",
+      statementB: "အများနှင့် ပူးပေါင်းလုပ်ဆောင်ရတာ ပိုကြိုက်တယ်၊ လူတိုင်း ပျော်ရွှင်အောင် လုပ်တယ်",
+      scoresA: { 8: 3, 3: 2, 1: 1 },
+      scoresB: { 9: 3, 2: 2, 6: 1 },
+    },
+    {
+      id: 3,
+      category: "Social Behavior",
+      question: "သူငယ်ချင်းများနှင့် အငြင်းပွားသည့်အခါ ကလေးက ဘယ်လိုတုံ့ပြန်လေ့ရှိလဲ?",
+      statementA: "ကိုယ့်အမြင်ကို ရှင်းပြပြီး ပြဿနာကို ဖြေရှင်းချင်တယ်",
+      statementB: "အငြင်းပွားမှု ရပ်စေချင်ပြီး အများ စိတ်ပျက်မှာ စိုးရိမ်တယ်",
+      scoresA: { 8: 3, 1: 2, 3: 1 },
+      scoresB: { 9: 3, 2: 2, 6: 1 },
+    },
+    {
+      id: 4,
+      category: "Social Behavior",
+      question: "လူအများရဲ့ အာရုံစိုက်မှုကို ရချင်သည့်အခါ ကလေးက ဘယ်လိုလုပ်လေ့ရှိလဲ?",
+      statementA: "စကားများများ ပြောပြီး ရွှင်လန်းတဲ့ လှုပ်ရှားမှုများ လုပ်တယ်",
+      statementB: "ထူးခြားသော အပြုအမူများ သို့မဟုတ် တိတ်ဆိတ်စွာ စောင့်ကြည့်တယ်",
+      scoresA: { 7: 3, 3: 2, 2: 1 },
+      scoresB: { 4: 3, 5: 2, 1: 1 },
+    },
+    {
+      id: 5,
+      category: "Social Behavior",
+      question: "အသစ်သော ပတ်ဝန်းကျင်တွင် ကလေးက ဘယ်လိုအပြုမူ ပြလေ့ရှိလဲ?",
+      statementA: "တုံ့ပြန်မှုမရှိ၊ စောင့်ကြည့်ပြီး လုံခြုံမှန်း သေချာအောင် ကြိုးစားတယ်",
+      statementB: "ရဲရဲတင်းတင်း လှုပ်လှုပ်ရှားရှား စူးစမ်းလေ့လာတယ်",
+      scoresA: { 6: 3, 5: 2, 9: 1 },
+      scoresB: { 7: 3, 8: 2, 3: 1 },
+    },
+    // Emotional Responses (5 questions)
+    {
+      id: 6,
+      category: "Emotional Responses",
+      question: "စိတ်မကောင်းဖြစ်သည့်အခါ ကလေးက ဘယ်လိုတုံ့ပြန်လေ့ရှိလဲ?",
+      statementA: "တိတ်တဆိတ်နေပြီး တစ်ယောက်တည်းကို အချိန်ပေးချင်တယ်",
+      statementB: "သူများကို လာကူညီစေချင်တယ်၊ နှစ်သိမ့်ခံချင်တယ်",
+      scoresA: { 4: 3, 5: 2, 9: 1 },
+      scoresB: { 2: 3, 6: 2, 7: 1 },
+    },
+    {
+      id: 7,
+      category: "Emotional Responses",
+      question: "ရှုံးနိမ့်သည့်အခါ ကလေးက ဘယ်လိုတုံ့ပြန်လေ့ရှိလဲ?",
+      statementA: "ဒေါသထွက်ပြီး ထပ်မံကြိုးစားချင်တယ်",
+      statementB: "ဝမ်းနည်းပြီး တိတ်ဆိတ်နေတယ်၊ နှစ်သိမ့်ခံချင်တယ်",
+      scoresA: { 8: 3, 3: 2, 1: 1 },
+      scoresB: { 4: 3, 9: 2, 2: 1 },
+    },
+    {
+      id: 8,
+      category: "Emotional Responses",
+      question: "စိတ်လှုပ်ရှားဖွယ် သတင်းကောင်းကြားရင် ကလေးက ဘယ်လိုတုံ့ပြန်လေ့ရှိလဲ?",
+      statementA: "အားလုံးကို ပြောပြချင်တယ်၊ ချက်ချင်း plan များ ချမှတ်ချင်တယ်",
+      statementB: "အတွင်းပိုင်းမှာ ပျော်ရွှင်သော်လည်း တည်ငြိမ်စွာ လက်ခံတယ်",
+      scoresA: { 7: 3, 3: 2, 2: 1 },
+      scoresB: { 5: 3, 1: 2, 9: 1 },
+    },
+    {
+      id: 9,
+      category: "Emotional Responses",
+      question: "အမှားလုပ်မိသည့်အခါ ကလေးက ဘယ်လိုပြုမူလေ့ရှိလဲ?",
+      statementA: "နောင်တရပြီး ချက်ချင်း ပြန်လည်ပြုပြင်ချင်တယ်",
+      statementB: "ကိုယ့်ကို ကာကွယ်ပြီး အခြားသူများကို အပြစ်လွှဲတတ်တယ်",
+      scoresA: { 1: 3, 2: 2, 6: 1 },
+      scoresB: { 8: 3, 7: 2, 3: 1 },
+    },
+    {
+      id: 10,
+      category: "Emotional Responses",
+      question: "စိတ်ခံစားမှုကို ဖော်ပြသည့်အခါ ကလေးက ဘယ်လိုလုပ်လေ့ရှိလဲ?",
+      statementA: "ရှင်းလင်းစွာ ပြောပြတယ်၊ အခြားသူများ နားလည်ရန် ကြိုးစားတယ်",
+      statementB: "သင်္ကေတများနှင့် ပုံဖော်တယ်၊ နားလည်ပေးမှ သာလျှင် ပြောတယ်",
+      scoresA: { 3: 3, 2: 2, 7: 1 },
+      scoresB: { 4: 3, 5: 2, 9: 1 },
+    },
+    // Learning & Problem Solving (5 questions)
+    {
+      id: 11,
+      category: "Learning & Problem Solving",
+      question: "ခက်ခဲသော စာရင်းများ ကြုံရင် ကလေးက ဘယ်လိုချဉ်းကပ်လေ့ရှိလဲ?",
+      statementA: "မှန်ကန်သော နည်းလမ်းကို ရှာဖွေပြီး စနစ်တကျ လုပ်ချင်တယ်",
+      statementB: "ပျော်စရာ နည်းလမ်းများ စမ်းချင်တယ်၊ မတူညီသော approach များ လုပ်ကြည့်တယ်",
+      scoresA: { 1: 3, 5: 2, 6: 1 },
+      scoresB: { 7: 3, 4: 2, 9: 1 },
+    },
+    {
+      id: 12,
+      category: "Learning & Problem Solving",
+      question: "အကူအညီ လိုအပ်သည့်အခါ ကလေးက ဘယ်လိုပြုမူလေ့ရှိလဲ?",
+      statementA: "ကိုယ့်ဘာသာ ဖြေရှင်းဖို့ ကြိုးစားပြီး လွယ်လွယ်နှင့် အကူအညီ မတောင်းဘူး",
+      statementB: "သူများကို အကူအညီတောင်းရတာ သဘာဝကျပြီး ပူးပေါင်းလုပ်ရတာ ကြိုက်တယ်",
+      scoresA: { 5: 3, 1: 2, 4: 1 },
+      scoresB: { 2: 3, 6: 2, 9: 1 },
+    },
+    {
+      id: 13,
+      category: "Learning & Problem Solving",
+      question: "အသစ်သင်ယူသည့်အခါ ကလေးက ဘယ်လိုချဉ်းကပ်လေ့ရှိလဲ?",
+      statementA: "အသေးစိတ်များကို စေ့စေ့စပ်စပ် နားလည်ချင်တယ်",
+      statementB: "မြန်မြန်ဆန်ဆန် သင်ယူပြီး လက်တွေ့ လုပ်ကြည့်ချင်တယ်",
+      scoresA: { 5: 3, 1: 2, 4: 1 },
+      scoresB: { 7: 3, 8: 2, 3: 1 },
+    },
+    {
+      id: 14,
+      category: "Learning & Problem Solving",
+      question: "မေးခွန်းမေးသည့်ပုံစံ ကလေးက ဘယ်လိုမျိုးလဲ?",
+      statementA: "ဘာကြောင့်လဲ၊ ဘယ်လိုလုပ်တာလဲ စသော နက်ရှိုင်းသော မေးခွန်းများ မေးတယ်",
+      statementB: "ချက်ချင်း သုံးနိုင်မည့် လက်တွေ့ကျသော အဖြေများ ရှာတယ်",
+      scoresA: { 5: 3, 4: 2, 1: 1 },
+      scoresB: { 3: 3, 8: 2, 7: 1 },
+    },
+    {
+      id: 15,
+      category: "Learning & Problem Solving",
+      question: "အလုပ်ပြီးအောင် လုပ်သည့်ပုံစံ ကလေးက ဘယ်လိုမျိုးလဲ?",
+      statementA: "စုံစုံလင်လင်နဲ့ အမှားအယွင်းကင်းအောင် လုပ်ချင်တယ်",
+      statementB: "အနှစ်သာရကို ရရှိပြီး ရပ်တန့်ချင်တယ်၊ ဝေးဝေးမလုပ်ဘူး",
+      scoresA: { 1: 3, 3: 2, 6: 1 },
+      scoresB: { 7: 3, 9: 2, 8: 1 },
+    },
+    // Daily Routines & Authority (5 questions)
+    {
+      id: 16,
+      category: "Daily Routines & Authority",
+      question: "နံနက်ပိုင်း routine ကို ကလေးက ဘယ်လိုကိုင်တွယ်လေ့ရှိလဲ?",
+      statementA: "စနစ်တကျ ပုံသေ လုပ်ရတာ ကြိုက်တယ်၊ အချိန်မီရှိဖို့ အရေးကြီးတယ်",
+      statementB: "လွတ်လပ်ပြီး ခံစားချက်အလိုက် လုပ်ရတာ ပိုကြိုက်တယ်",
+      scoresA: { 1: 3, 6: 2, 3: 1 },
+      scoresB: { 7: 3, 4: 2, 9: 1 },
+    },
+    {
+      id: 17,
+      category: "Daily Routines & Authority",
+      question: "အပတ်စဉ်ပြောင်းလဲမှုများကို ကလေးက ဘယ်လိုတုံ့ပြန်လေ့ရှိလဲ?",
+      statementA: "ကြိုတင်စီစဉ်ထားသော အစီအစဉ်များ ပြောင်းလဲရင် စိတ်အနှောက်အယှက်ဖြစ်တယ်",
+      statementB: "ရုတ်တရက် ပြောင်းလဲမှုများကို စိတ်လှုပ်ရှားစွာ လက်ခံတယ်",
+      scoresA: { 1: 3, 6: 2, 5: 1 },
+      scoresB: { 7: 3, 8: 2, 9: 1 },
+    },
+    {
+      id: 18,
+      category: "Daily Routines & Authority",
+      question: "စည်းမျဉ်းများနှင့် ပတ်သက်၍ ကလေးက ဘယ်လိုသဘောထားလေ့ရှိလဲ?",
+      statementA: "စည်းမျဉ်းများကို လိုက်နာရတာ အရေးကြီးပြီး မှန်ကန်တယ်လို့ ယုံကြည်တယ်",
+      statementB: "စည်းမျဉ်းများကို မေးခွန်းထုတ်တတ်ပြီး ကိုယ့်နည်းကိုယ့်ဟန် လုပ်ချင်တယ်",
+      scoresA: { 1: 3, 6: 2, 2: 1 },
+      scoresB: { 8: 3, 4: 2, 7: 1 },
+    },
+    {
+      id: 19,
+      category: "Daily Routines & Authority",
+      question: "အကြီးအကဲများက ပြောသည့်အခါ ကလေးက ဘယ်လိုတုံ့ပြန်လေ့ရှိလဲ?",
+      statementA: "လိုက်နာပြီး လေးစားစွာ ပြုမူတယ်",
+      statementB: "ကိုယ့်အမြင်နှင့် ကွဲပြားရင် မေးခွန်းထုတ်တတ်တယ်",
+      scoresA: { 6: 3, 9: 2, 2: 1 },
+      scoresB: { 8: 3, 5: 2, 4: 1 },
+    },
+    {
+      id: 20,
+      category: "Daily Routines & Authority",
+      question: "အားလပ်ချိန်တွင် ကလေးက ဘယ်လို activities တွေ ကြိုက်လေ့ရှိလဲ?",
+      statementA: "တိတ်ဆိတ်သော လုပ်ဆောင်ချက်များ (စာဖတ်ခြင်း၊ ပုံဆွဲခြင်း)",
+      statementB: "လှုပ်ရှားမှုများ၊ သူငယ်ချင်းများနှင့် ကစားခြင်း",
+      scoresA: { 5: 3, 4: 2, 1: 1 },
+      scoresB: { 7: 3, 2: 2, 8: 1 },
+    },
+    // Advanced Questions (Ages 10+) (5 questions)
+    {
+      id: 21,
+      category: "Advanced",
+      question: "ရည်မှန်းချက်များနှင့် ပတ်သက်၍ ကလေးက ဘယ်လိုချဉ်းကပ်လေ့ရှိလဲ?",
+      statementA: "ရေရှည် ရည်မှန်းချက်များ ချမှတ်ပြီး စနစ်တကျ လုပ်ဆောင်ချင်တယ်",
+      statementB: "လက်ရှိအခိုက်အတန့်မှာ ပျော်ရွှင်မှုကို ရှာဖွေ၍ ပြောင်းလွယ်ပြင်လွယ် နေချင်တယ်",
+      scoresA: { 1: 3, 3: 2, 6: 1 },
+      scoresB: { 7: 3, 9: 2, 4: 1 },
+    },
+    {
+      id: 22,
+      category: "Advanced",
+      question: "မိတ်ဆွေများနှင့် ဆက်ဆံရေးမှာ ကလေးက ဘယ်လို approach လုပ်လေ့ရှိလဲ?",
+      statementA: "အတူတူရှိနေပြီး အရာရာကို မျှဝေချင်တယ်",
+      statementB: "လွတ်လပ်မှုကို လေးစားပြီး တစ်ခါတရံ တစ်ယောက်တည်း နေချင်တယ်",
+      scoresA: { 2: 3, 6: 2, 9: 1 },
+      scoresB: { 5: 3, 4: 2, 8: 1 },
+    },
+    {
+      id: 23,
+      category: "Advanced",
+      question: "အနာဂတ်အတွက် စိုးရိမ်ပူပန်မှု ကလေးမှာ ဘယ်လိုရှိလေ့လဲ?",
+      statementA: "အရာရာကို ကြိုတင်စီစဉ်ပြီး ဘေးကင်းရေးကို သေချာစေချင်တယ်",
+      statementB: "အခက်အခဲများ ပေါ်လာမှ ရင်ဆိုင်မယ်၊ အခုက ပျော်ရွှင်ချင်တယ်",
+      scoresA: { 6: 3, 1: 2, 5: 1 },
+      scoresB: { 7: 3, 9: 2, 8: 1 },
+    },
+    {
+      id: 24,
+      category: "Advanced",
+      question: "ကိုယ့်ကိုယ်ကို မြင်သည့်ပုံ ကလေးက ဘယ်လိုမျိုးလဲ?",
+      statementA: "သူများနှင့် တူညီချင်တယ်၊ ထူးခြားနေရင် သိပ်သက်တောင့်သက်သာ မရှိဘူး",
+      statementB: "သူများထက်ထူးချင်တယ်၊ ထူးအောင် မလုပ်ရရင် နေလို့မရဘူး",
+      scoresA: { 9: 3, 6: 2, 2: 1 },
+      scoresB: { 4: 3, 3: 2, 8: 1 },
+    },
+    {
+      id: 25,
+      category: "Advanced",
+      question: "အခက်အခဲများနှင့် ရင်ဆိုင်သည့်အခါ ကလေးက ဘယ်လို attitude ရှိလေ့လဲ?",
+      statementA: "အခက်အခဲများက ငါ့ကို ပိုမို ခိုင်မာစေတယ်၊ စိန်ခေါ်မှုအဖြစ် မြင်တယ်",
+      statementB: "အခက်အခဲများက ငါ့ကို စိတ်ညစ်စေတယ်၊ ရှောင်လွှဲရတာ ပိုကောင်းတယ်",
+      scoresA: { 8: 3, 3: 2, 1: 1 },
+      scoresB: { 9: 3, 4: 2, 7: 1 },
+    },
   ]
 
-  useEffect(() => {
-    loadQuestionsFromGoogleSheet()
-  }, [])
-
-  // Get a random reflection prompt
-  const getReflectionPrompt = () => {
-    return reflectionPrompts[Math.floor(Math.random() * reflectionPrompts.length)]
+  // Enneagram type definitions
+  const enneagramTypes = {
+    1: { name: "Perfectionist", myanmar: "ပြီးပြည့်စုံမှုရှာဖွေသူ", color: "#2E8B57" },
+    2: { name: "Helper", myanmar: "ကူညီပံ့ပိုးသူ", color: "#FF6B6B" },
+    3: { name: "Achiever", myanmar: "အောင်မြင်မှုရှာဖွေသူ", color: "#4ECDC4" },
+    4: { name: "Individualist", myanmar: "ထူးခြားမှုရှာဖွေသူ", color: "#45B7D1" },
+    5: { name: "Investigator", myanmar: "စူးစမ်းလေ့လာသူ", color: "#96CEB4" },
+    6: { name: "Loyalist", myanmar: "သစ္စာရှိသူ", color: "#FECA57" },
+    7: { name: "Enthusiast", myanmar: "စိတ်အားထက်သန်သူ", color: "#FF9FF3" },
+    8: { name: "Challenger", myanmar: "စိန်ခေါ်သူ", color: "#54A0FF" },
+    9: { name: "Peacemaker", myanmar: "ငြိမ်းချမ်းရေးထားသူ", color: "#5F27CD" },
   }
 
-  // Load questions directly from Google Sheet
-  const loadQuestionsFromGoogleSheet = async () => {
-    setLoading(true)
-    setLoadingError(null)
+  // Calculate results function
+  const calculateResults = () => {
+    const scores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 }
 
-    try {
-      console.log("🎯 Loading questions from Google Sheet...")
-
-      // Check URL parameters first
-      const urlParams = new URLSearchParams(window.location.search)
-      const sheetIdFromUrl = urlParams.get("sheetId")
-      const sheetId = sheetIdFromUrl || SHEET_ID
-
-      const response = await fetch(`/api/load-google-sheet?sheetId=${sheetId}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Cache-Control": "no-cache",
-        },
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        console.log("✅ Success! Data received:", {
-          questionCount: data.questions?.length || 0,
-          title: data.title,
-          loadedVia: data._loadedVia,
+    Object.entries(answers).forEach(([questionId, choice]) => {
+      const question = questions.find((q) => q.id === Number.parseInt(questionId))
+      if (question) {
+        const scoreKey = choice === "A" ? "scoresA" : "scoresB"
+        const questionScores = question[scoreKey]
+        Object.entries(questionScores).forEach(([type, points]) => {
+          scores[Number.parseInt(type)] += points
         })
-
-        if (data.questions && data.questions.length > 0) {
-          setQuestions(data.questions)
-          setDataSource(`${data.title || "Enneagram Test"} (${data.questions.length} မေးခွန်း)`)
-
-          // Store in localStorage for future use
-          localStorage.setItem("enneagram-questions", JSON.stringify(data))
-        } else {
-          throw new Error("No questions found in the sheet")
-        }
-      } else {
-        const errorData = await response.json().catch(() => ({ error: "Unknown error" }))
-        throw new Error(errorData.error || "Failed to load from Google Sheets")
       }
-    } catch (error) {
-      console.error("❌ Failed to load from Google Sheets:", error)
-      setLoadingError({
-        message: error.message,
-        suggestions: [
-          "Google Sheet ကို publicly share လုပ်ထားရမယ် ('Anyone with the link can view')",
-          "Sheet ID ကို မှန်မှန်ကန်ကန် စစ်ကြည့်ပါ",
-          "Column headers တွေက: ID, Statement A, Statement B, Score A, Score B ဖြစ်ရမယ်",
-          "Internet connection ကို စစ်ကြည့်ပါ",
-        ],
-      })
-    }
+    })
 
-    setLoading(false)
+    // Age adjustment
+    const ageWeight = childProfile.age <= 8 ? 0.8 : childProfile.age <= 12 ? 1.0 : 1.2
+    Object.keys(scores).forEach((type) => {
+      scores[type] = Math.round(scores[type] * ageWeight)
+    })
+
+    // Sort by score
+    const sortedTypes = Object.entries(scores)
+      .sort(([, a], [, b]) => b - a)
+      .map(([type, score]) => ({ type: Number.parseInt(type), score }))
+
+    return {
+      primary: sortedTypes[0],
+      secondary: sortedTypes[1],
+      allScores: scores,
+      confidence:
+        sortedTypes[0].score > 0
+          ? Math.round(((sortedTypes[0].score - sortedTypes[1].score) / sortedTypes[0].score) * 100)
+          : 0,
+    }
   }
 
   const handleAnswerSelect = (choice) => {
-    const currentQuestion = questions[currentQuestionIndex]
-    const selectedScore = choice === "A" ? currentQuestion.scoreA : currentQuestion.scoreB
-
-    setAnswers({
-      ...answers,
-      [currentQuestion.id]: {
-        choice,
-        score: selectedScore,
-      },
-    })
+    setAnswers((prev) => ({
+      ...prev,
+      [questions[currentQuestionIndex].id]: choice,
+    }))
   }
 
-  const goToNextQuestion = () => {
+  const nextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1)
+      setCurrentQuestionIndex((prev) => prev + 1)
     } else {
-      calculateResults()
+      setShowResults(true)
     }
   }
 
-  const goToPreviousQuestion = () => {
+  const prevQuestion = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1)
+      setCurrentQuestionIndex((prev) => prev - 1)
     }
   }
 
-  const calculateResults = () => {
-    const scoreCount = {}
-
-    Object.values(answers).forEach((answer) => {
-      scoreCount[answer.score] = (scoreCount[answer.score] || 0) + 1
-    })
-
-    setScores(scoreCount)
-    setShowResults(true)
-  }
-
-  const getTopThreeTypes = () => {
-    const sortedScores = Object.entries(scores)
-      .map(([letter, count]) => ({
-        letter,
-        count,
-        ...typeMapping[letter],
-      }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 3)
-
-    return sortedScores
-  }
-
-  const getAIInsight = async (topTypes) => {
-    setLoadingAI(true)
-    setAiInsight("")
-
-    try {
-      const response = await fetch("/api/ai-insight", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          topTypes: topTypes,
-          language: "myanmar",
-        }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        setAiInsight(data.insight)
-      } else {
-        setAiInsight(
-          `❌ ${data.error}\n\n💡 AI insights ကို enable လုပ်ဖို့:\n1. Google Gemini API key ရယူပါ: https://makersuite.google.com/app/apikey\n2. GEMINI_API_KEY ကို environment variables မှာ ထည့်ပါ\n3. Application ကို redeploy လုပ်ပါ`,
-        )
-      }
-    } catch (error) {
-      console.error("AI Insight Error:", error)
-      setAiInsight("🔌 AI service နဲ့ ချိတ်ဆက်မရပါ။ Internet connection ကို စစ်ကြည့်ပြီး ပြန်စမ်းကြည့်ပါ။")
-    }
-
-    setLoadingAI(false)
-  }
-
-  const resetTest = () => {
-    setAnswers({})
-    setCurrentQuestionIndex(0)
-    setShowResults(false)
-    setScores({})
-    setAiInsight("")
-    setTestStarted(false)
-  }
-
-  const startTest = () => {
-    setTestStarted(true)
-  }
-
-  const getProgress = () => {
-    return Math.round((Object.keys(answers).length / questions.length) * 100)
-  }
-
-  // Loading screen
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardContent className="text-center p-8">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto mb-6"></div>
-            <CardTitle className="text-xl mb-2 flex items-center justify-center gap-2">
-              <Cloud size={24} />
-              Enneagram Test Loading
-            </CardTitle>
-            <p className="text-muted-foreground mb-1">ထူးခြားသော စိတ်ခံစားမှု နယ်မြေ စစ်ဆေးမှု</p>
-            <p className="text-sm text-muted-foreground">Google Sheet မှ မေးခွန်းများ ရယူနေသည်... 🌐</p>
-            <div className="mt-4">
-              <Progress value={70} className="w-full" />
-            </div>
-          </CardContent>
-        </Card>
+  // Setup Screen Component
+  const SetupScreen = () => (
+    <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">Little Patterns</h1>
+        <p className="text-gray-600 text-lg">ကလေးများရဲ့ Enneagram Personality Patterns လေ့လာခြင်း</p>
       </div>
-    )
-  }
 
-  // Error screen
-  if (loadingError) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
-        <Card className="max-w-2xl w-full">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-red-600 flex items-center justify-center gap-2">
-              <AlertTriangle size={28} />
-              မေးခွန်းများ ရယူ၍ မရပါ
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-              <p className="text-red-700 font-medium mb-2">Error:</p>
-              <p className="text-red-600">{loadingError.message}</p>
-            </div>
-
-            <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-              <h4 className="font-medium text-yellow-800 mb-2">💡 ဖြေရှင်းနည်းများ:</h4>
-              <ul className="text-sm text-yellow-700 space-y-1">
-                {loadingError.suggestions.map((suggestion, index) => (
-                  <li key={index}>• {suggestion}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="text-center space-y-4">
-              <Button onClick={loadQuestionsFromGoogleSheet} className="flex items-center gap-2">
-                <RefreshCw size={16} />
-                ပြန်စမ်းကြည့်မယ်
-              </Button>
-
-              <div className="text-sm text-muted-foreground">
-                <p>Google Sheet ကို ကြည့်ရှုရန်:</p>
-                <a
-                  href={`https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline inline-flex items-center gap-1"
-                >
-                  သင့် Google Sheet ကို ဖွင့်ပါ <ExternalLink size={12} />
-                </a>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    )
-  }
-
-  // Welcome screen with disclaimer (before test starts)
-  if (!testStarted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {/* Main Title */}
-          <Card className="text-center">
-            <CardHeader>
-              <CardTitle className="text-4xl mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                🌟 Enneagram Personality Test 🌟
-              </CardTitle>
-              <p className="text-xl text-muted-foreground">ထူးခြားသော စိတ်ခံစားမှု နယ်မြေ စစ်ဆေးမှု</p>
-              <Badge variant="secondary" className="mt-2">
-                {dataSource}
-              </Badge>
-            </CardHeader>
-          </Card>
-
-          {/* Disclaimer */}
-          <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-800">
-                <Info size={24} />
-                အရေးကြီးသော သတင်းအချက်အလက်များ
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Book Attribution */}
-              <div className="bg-white p-4 rounded-lg border border-blue-200">
-                <div className="flex items-start gap-3">
-                  <BookOpen className="text-blue-600 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-semibold text-blue-800 mb-2">📚 မေးခွန်းများ၏ ရင်းမြစ်</h4>
-                    <p className="text-blue-700 mb-2">
-                      ဒီ application မှာ ပါဝင်တဲ့ မေးခွန်း ၁၄၄ ခုကို <strong>ဆရာတော်ဦးဇောတိက</strong> နှင့်{" "}
-                      <strong>ဆရာမ ထက်ထက်ထွန်း (Waterfall)</strong> တို့ရေးသားတဲ့ <strong>"ငါ ဘာသူလဲ"</strong> ဆိုတဲ့ စာအုပ်ကနေ
-                      ရယူထားပါတယ်။
-                    </p>
-                    <p className="text-blue-600 text-sm">
-                      💡 Enneagram အကြောင်း အသေးစိတ်သိချင်ရင် ဒီစာအုပ်ကို ဝယ်ဖတ်ကြည့်ဖို့ အထူးတိုက်တွန်းပါတယ်။
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Purpose */}
-              <div className="bg-white p-4 rounded-lg border border-green-200">
-                <div className="flex items-start gap-3">
-                  <Heart className="text-green-600 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-semibold text-green-800 mb-2">🎯 ရည်ရွယ်ချက်</h4>
-                    <p className="text-green-700">
-                      ဒီ application က <strong>စီးပွားဖြစ် ရည်ရွယ်ချက်မရှိပါ</strong>။ Enneagram Test လုပ်ချင်တဲ့သူတွေအတွက် အကူအညီ အထောက်အပံ့
-                      ရစေလိုတဲ့ ရည်ရွယ်ချက်နဲ့သာ ဖန်တီးထားတာဖြစ်ပါတယ်။
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Privacy */}
-              <div className="bg-white p-4 rounded-lg border border-purple-200">
-                <div className="flex items-start gap-3">
-                  <Shield className="text-purple-600 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-semibold text-purple-800 mb-2">🔒 ကိုယ်ရေးကိုယ်တာ လုံခြုံမှု</h4>
-                    <p className="text-purple-700">
-                      သင့်ရဲ့ <strong>မည်သည့် ဒေတာမှ မှတ်ထား သိမ်းထားခြင်း မရှိပါ</strong>။ Test ရလဒ်တွေ၊ အဖြေတွေ၊ ကိုယ်ရေးကိုယ်တာ အချက်အလက်တွေ ဘာမှ
-                      server မှာ သိမ်းမထားပါဘူး။ အားလုံး သင့် browser ထဲမှာပဲ ယာယီ သိမ်းထားပါတယ်။
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Contact */}
-              <div className="bg-white p-4 rounded-lg border border-orange-200">
-                <div className="flex items-start gap-3">
-                  <Mail className="text-orange-600 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-semibold text-orange-800 mb-2">📧 အကြံပြုချက်များ</h4>
-                    <p className="text-orange-700 mb-2">
-                      Application ကို ပိုကောင်းအောင် လုပ်ဖို့ အကြံပြုချက်တွေ ရှိရင် ကျေးဇူးပြု၍ အီးမေးပေးပို့ပါ:
-                    </p>
-                    <a
-                      href="mailto:hello@radiances.net"
-                      className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 font-medium"
-                    >
-                      <Mail size={16} />
-                      hello@radiances.net
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Test Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">🧭 Test အကြောင်း</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">{questions.length}</div>
-                  <div className="text-sm text-purple-700">မေးခွန်းများ</div>
-                </div>
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">15-20</div>
-                  <div className="text-sm text-blue-700">မိနစ်ခန့် ကြာမည်</div>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">9</div>
-                  <div className="text-sm text-green-700">Personality Types</div>
-                </div>
-              </div>
-
-              <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                <h4 className="font-medium text-yellow-800 mb-2">💡 Test လုပ်ရာတွင် သတိပြုရန်:</h4>
-                <ul className="text-sm text-yellow-700 space-y-1">
-                  <li>• နှလုံးသားနဲ့ ရိုးရိုးသားသား ဖြေကြည့်ပါ</li>
-                  <li>• "ရှိသင့် ဖြစ်သင့်တဲ့" အဖြေမဟုတ်ပဲ "ကိုယ်နဲ့အကိုက်ညီဆုံး" ကို ရွေးပါ</li>
-                  <li>• အချိန်ယူပြီး စဉ်းစားကြည့်ပါ</li>
-                  <li>• ရှေ့က ဖြေခဲ့တဲ့ အဖြေတွေကို ပြန်ပြင်လို့ ရပါတယ်</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Start Button */}
-          <div className="text-center">
-            <Button
-              onClick={startTest}
-              size="lg"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg"
-            >
-              🚀 Test စတင်မယ်
-            </Button>
-          </div>
+      <div className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">သင်၏ အခန်းကဏ္ဍ</label>
+          <select
+            value={childProfile.observerRole}
+            onChange={(e) => setChildProfile((prev) => ({ ...prev, observerRole: e.target.value }))}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">ရွေးချယ်ပါ</option>
+            <option value="parent">မိဘ</option>
+            <option value="teacher">ဆရာ/ဆရာမ</option>
+            <option value="caregiver">အုပ်ထိန်းသူ</option>
+          </select>
         </div>
-      </div>
-    )
-  }
 
-  // Results screen
-  if (showResults) {
-    const allTypes = Object.entries(typeMapping)
-      .map(([letter, info]) => ({
-        letter,
-        count: scores[letter] || 0,
-        ...info,
-      }))
-      .sort((a, b) => b.count - a.count)
-
-    const topThree = allTypes.slice(0, 3)
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <Card>
-            <CardHeader className="text-center">
-              <CardTitle className="text-3xl mb-2">🎉 Enneagram Test Results</CardTitle>
-              <p className="text-muted-foreground">
-                စုစုပေါင်း မေးခွန်း: {Object.keys(answers).length} / {questions.length}
-              </p>
-              <Badge variant="secondary">{dataSource}</Badge>
-            </CardHeader>
-          </Card>
-
-          {/* All 9 Types Results */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">📊 သင့်ရဲ့ Enneagram Profile အပြည့်အစုံ</CardTitle>
-              <p className="text-muted-foreground">Type 9 ခုလုံးရဲ့ ရမှတ်များ (ကြီးစဥ်ငယ်လိုက်)</p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {allTypes.map((result, index) => (
-                  <div
-                    key={result.letter}
-                    className={`
-                    p-4 rounded-lg border-2 transition-all duration-200 ${
-                      index === 0
-                        ? "border-yellow-400 bg-gradient-to-r from-yellow-50 to-yellow-100 shadow-lg"
-                        : index === 1
-                          ? "border-gray-400 bg-gradient-to-r from-gray-50 to-gray-100 shadow-md"
-                          : index === 2
-                            ? "border-orange-400 bg-gradient-to-r from-orange-50 to-orange-100 shadow-md"
-                            : "border-gray-200 bg-white hover:bg-gray-50"
-                    }
-                  `}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="text-2xl">
-                          {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}.`}
-                        </div>
-                        <div>
-                          <h3 className={`text-lg font-semibold ${index < 3 ? "text-gray-800" : "text-gray-600"}`}>
-                            {result.type} - {result.name}
-                          </h3>
-                          <p className={`text-sm ${index < 3 ? "text-gray-600" : "text-gray-500"}`}>{result.myanmar}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className={`text-xl font-bold ${index < 3 ? "text-gray-800" : "text-gray-600"}`}>
-                          {result.count} မှတ်
-                        </div>
-                        <div className={`text-sm ${index < 3 ? "text-gray-600" : "text-gray-500"}`}>
-                          {Math.round((result.count / Object.keys(answers).length) * 100)}%
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Progress bar for each type */}
-                    <div className="mt-3">
-                      <Progress
-                        value={(result.count / Math.max(...allTypes.map((t) => t.count))) * 100}
-                        className={`h-2 ${
-                          index === 0
-                            ? "bg-yellow-200"
-                            : index === 1
-                              ? "bg-gray-200"
-                              : index === 2
-                                ? "bg-orange-200"
-                                : "bg-gray-100"
-                        }`}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Top 3 Summary */}
-          <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
-            <CardHeader>
-              <CardTitle className="text-xl">🏆 သင့်ရဲ့ အဓိက Personality Types</CardTitle>
-              <p className="text-muted-foreground">အမှတ်အများဆုံး ၃ ခု - ဒါတွေက သင့်ရဲ့ core personality ကို ဖော်ပြပါတယ်</p>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {topThree.map((result, index) => (
-                  <div
-                    key={result.letter}
-                    className={`
-                    p-4 rounded-lg text-center border-2 ${
-                      index === 0
-                        ? "border-yellow-400 bg-yellow-50"
-                        : index === 1
-                          ? "border-gray-400 bg-gray-50"
-                          : "border-orange-400 bg-orange-50"
-                    }
-                  `}
-                  >
-                    <div className="text-3xl mb-2">{index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}</div>
-                    <h4 className="font-semibold text-gray-800 mb-1">{result.type}</h4>
-                    <p className="text-sm text-gray-600 mb-2">{result.name}</p>
-                    <p className="text-xs text-gray-500 mb-2">{result.myanmar}</p>
-                    <div className="text-lg font-bold text-gray-800">{result.count} မှတ်</div>
-                    <div className="text-sm text-gray-600">
-                      {Math.round((result.count / Object.keys(answers).length) * 100)}%
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Interpretation Guide */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">📖 ရလဒ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-start gap-2">
-                  <span className="text-yellow-500">🥇</span>
-                  <div>
-                    <strong>Primary Type (အဓိက အမျိုးအစား):</strong> သင့်ရဲ့ core personality type ဖြစ်ပါတယ်။ ဒါက သင့်ရဲ့ အဓိက
-                    motivations, fears, နှင့် behavioral patterns တွေကို ညွှန်ပြပါတယ်။
-                  </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-500">🥈</span>
-                  <div>
-                    <strong>Secondary Type (ဒုတိယ အမျိုးအစား):</strong> သင့်ရဲ့ "wing" သို့မဟုတ် secondary influence ဖြစ်နိုင်ပါတယ်။
-                    Primary type နဲ့ ရောနှောပြီး သင့်ရဲ့ personality ကို ပိုမို ရှုပ်ထွေးစေပါတယ်။
-                  </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-orange-500">🥉</span>
-                  <div>
-                    <strong>Third Type (တတိယ အမျိုးအစား):</strong> stress သို့မဟုတ် growth direction မှာ ပေါ်လာနိုင်တဲ့ characteristics
-                    တွေကို ညွှန်ပြနိုင်ပါတယ်။
-                  </div>
-                </div>
-                <div className="bg-blue-50 p-3 rounded-lg mt-4">
-                  <p className="text-blue-800">
-                    <strong>💡 သတိပြုရန်:</strong> Enneagram က dynamic system တစ်ခုဖြစ်ပါတယ်။ သင့်ရဲ့ primary type က အဓိကဖြစ်ပေမယ့်၊
-                    အခြား types တွေရဲ့ characteristics တွေလည်း အချိန်အခါ အလိုက် ပေါ်လာနိုင်ပါတယ်။
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* AI Insights Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="text-purple-600" size={24} />
-                AI စိတ်ခံစားမှု ခွဲခြမ်းစိတ်ဖြာမှု
-                <Badge variant="outline" className="ml-auto">
-                  Powered by Gemini
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {!aiInsight && !loadingAI && (
-                <div className="text-center space-y-4">
-                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-lg">
-                    <h4 className="font-semibold mb-2">🤖 ကိုယ်ပိုင် AI ခွဲခြမ်းစိတ်ဖြာမှု ရယူမယ်</h4>
-                    <p className="text-muted-foreground mb-4">သင့်ရဲ့ top 3 types အပေါ်အခြေခံပြီး နက်နဲတဲ့ အသိပညာများ ရယူပါ:</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-left mb-4">
-                      <div>• အဓိက လှုံ့ဆော်မှုများနှင့် ကြောက်ရွံ့မှုများ</div>
-                      <div>• ဆက်ဆံရေး ပုံစံများ</div>
-                      <div>• အလုပ်အကိုင် အကြံပြုချက်များ</div>
-                      <div>• ကြီးထွားမှု အခွင့်အလမ်းများ</div>
-                      <div>• စိတ်ဖိစီးမှု ကိုင်တွယ်နည်းများ</div>
-                      <div>• ဆက်သွယ်ပုံစံ</div>
-                    </div>
-                  </div>
-                  <Button onClick={() => getAIInsight(topThree)} size="lg" className="flex items-center gap-2">
-                    <MessageCircle size={20} />
-                    AI ခွဲခြမ်းစိတ်ဖြာမှု ရယူမယ်
-                  </Button>
-                </div>
-              )}
-
-              {loadingAI && (
-                <div className="text-center space-y-4">
-                  <div className="flex justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground mb-2">🧠 သင့်ရဲ့ စိတ်ခံစားမှုကို ခွဲခြမ်းစိတ်ဖြာနေသည်...</p>
-                    <p className="text-sm text-muted-foreground">၁၀-၃၀ စက္ကန့် ကြာနိုင်ပါသည်</p>
-                  </div>
-                </div>
-              )}
-
-              {aiInsight && (
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Badge variant="secondary" className="flex items-center gap-1">
-                      <Sparkles size={12} />
-                      AI မှ ထုတ်ပေးသော ခွဲခြမ်းစိတ်ဖြာမှု
-                    </Badge>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => getAIInsight(topThree)}
-                      className="flex items-center gap-1"
-                    >
-                      <RotateCcw size={14} />
-                      ပြန်ထုတ်မယ်
-                    </Button>
-                  </div>
-                  <div className="prose max-w-none">
-                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-lg border border-purple-200">
-                      <div className="whitespace-pre-wrap text-sm leading-relaxed">{aiInsight}</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          <div className="text-center space-y-4">
-            <Button onClick={resetTest} size="lg" className="flex items-center gap-2">
-              <RotateCcw size={20} />
-              ပြန်စမ်းကြည့်မယ်
-            </Button>
-
-            <Card>
-              <CardContent className="p-4">
-                <p className="text-sm text-muted-foreground text-center">
-                  ဒီ test က သင့်ရဲ့ Enneagram personality profile အပြည့်အစုံကို ပြပေးပါတယ်။ Primary type က သင့်ရဲ့ အဓိက အမျိုးအစားဖြစ်ပြီး၊
-                  secondary နှင့် third types တွေက သင့်ရဲ့ wings နှင့် growth/stress directions တွေကို ညွှန်ပြပါတယ်။
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">ကလေး၏ အသက်</label>
+          <select
+            value={childProfile.age}
+            onChange={(e) => setChildProfile((prev) => ({ ...prev, age: e.target.value }))}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">ရွေးချယ်ပါ</option>
+            {[...Array(12)].map((_, i) => (
+              <option key={i + 5} value={i + 5}>
+                {i + 5} နှစ်
+              </option>
+            ))}
+          </select>
         </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Observation ကာလ</label>
+          <select
+            value={childProfile.observationPeriod}
+            onChange={(e) => setChildProfile((prev) => ({ ...prev, observationPeriod: e.target.value }))}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">ရွေးချယ်ပါ</option>
+            <option value="3months">မကြာသေးသော ၃ လအတွင်း</option>
+            <option value="6months">မကြာသေးသော ၆ လအတွင်း</option>
+            <option value="1year">ပြီးခဲ့သော ၁ နှစ်အတွင်း</option>
+          </select>
+        </div>
+
+        <button
+          onClick={() => setCurrentStep("assessment")}
+          disabled={!childProfile.observerRole || !childProfile.age || !childProfile.observationPeriod}
+          className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          Assessment စတင်ရန် →
+        </button>
       </div>
-    )
-  }
 
-  const currentQuestion = questions[currentQuestionIndex]
-  const currentAnswer = answers[currentQuestion?.id]
-  const reflectionPrompt = getReflectionPrompt()
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
-        {/* Header */}
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <CardTitle className="text-2xl">Enneagram Personality Test</CardTitle>
-              <div className="text-right">
-                <div className="text-sm text-muted-foreground">
-                  မေးခွန်း {currentQuestionIndex + 1} / {questions.length}
-                </div>
-                <Badge variant="outline" className="text-xs">
-                  {dataSource}
-                </Badge>
-              </div>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="space-y-2">
-              <Progress value={getProgress()} className="w-full" />
-              <div className="text-xs text-muted-foreground">
-                {getProgress()}% ပြီးပါပြီ ({Object.keys(answers).length} ဖြေပြီး)
-              </div>
-            </div>
-          </CardHeader>
-        </Card>
-
-        {/* Reflection Prompt */}
-        <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <Brain className="text-indigo-600" size={24} />
-              <h3 className="font-semibold text-indigo-800">စဉ်းစားကြည့်ပါ</h3>
-            </div>
-            <p className="text-indigo-700 text-lg leading-relaxed">{reflectionPrompt}</p>
-          </CardContent>
-        </Card>
-
-        {/* Question Card */}
-        <Card className="shadow-lg">
-          <CardContent className="p-8">
-            <div className="mb-8">
-              <div className="text-center mb-8">
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <Heart className="text-pink-500" size={20} />
-                  <h2 className="text-xl font-semibold text-gray-800">သင့်ကို အကောင်းဆုံး ဖော်ပြတဲ့ စာကြောင်းကို ရွေးပါ</h2>
-                  <Heart className="text-pink-500" size={20} />
-                </div>
-                <p className="text-sm text-muted-foreground">နှလုံးသားနဲ့ ဖြေကြည့်ပါ - မှန်သမျှကို ရွေးပါ</p>
-              </div>
-
-              <div className="space-y-6">
-                {/* Statement A */}
-                <button
-                  onClick={() => handleAnswerSelect("A")}
-                  className={`w-full p-8 rounded-xl border-2 text-left transition-all duration-300 transform hover:scale-[1.02] ${
-                    currentAnswer?.choice === "A"
-                      ? "border-purple-500 bg-gradient-to-r from-purple-50 to-purple-100 shadow-lg"
-                      : "border-gray-200 hover:border-purple-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-purple-50 hover:shadow-md"
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`
-                      w-8 h-8 rounded-full border-3 flex items-center justify-center mt-1 transition-all duration-200 ${
-                        currentAnswer?.choice === "A"
-                          ? "border-purple-500 bg-purple-500 shadow-lg"
-                          : "border-gray-300 hover:border-purple-400"
-                      }
-                    `}
-                    >
-                      {currentAnswer?.choice === "A" && <div className="w-3 h-3 bg-white rounded-full"></div>}
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-gray-800 text-lg leading-relaxed font-medium">
-                        {currentQuestion.statementA}
-                      </div>
-                    </div>
-                  </div>
-                </button>
-
-                {/* Divider */}
-                <div className="flex items-center justify-center py-4">
-                  <div className="flex-1 border-t border-gray-200"></div>
-                  <div className="px-4 text-sm text-muted-foreground font-medium">သို့မဟုတ်</div>
-                  <div className="flex-1 border-t border-gray-200"></div>
-                </div>
-
-                {/* Statement B */}
-                <button
-                  onClick={() => handleAnswerSelect("B")}
-                  className={`w-full p-8 rounded-xl border-2 text-left transition-all duration-300 transform hover:scale-[1.02] ${
-                    currentAnswer?.choice === "B"
-                      ? "border-blue-500 bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg"
-                      : "border-gray-200 hover:border-blue-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 hover:shadow-md"
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`
-                      w-8 h-8 rounded-full border-3 flex items-center justify-center mt-1 transition-all duration-200 ${
-                        currentAnswer?.choice === "B"
-                          ? "border-blue-500 bg-blue-500 shadow-lg"
-                          : "border-gray-300 hover:border-blue-400"
-                      }
-                    `}
-                    >
-                      {currentAnswer?.choice === "B" && <div className="w-3 h-3 bg-white rounded-full"></div>}
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-gray-800 text-lg leading-relaxed font-medium">
-                        {currentQuestion.statementB}
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Navigation */}
-            <div className="flex justify-between pt-6 border-t border-gray-100">
-              <Button
-                onClick={goToPreviousQuestion}
-                disabled={currentQuestionIndex === 0}
-                variant="outline"
-                size="lg"
-                className="flex items-center gap-2"
-              >
-                <ChevronLeft size={20} />
-                ရှေ့သို့
-              </Button>
-
-              <Button
-                onClick={goToNextQuestion}
-                disabled={!currentAnswer}
-                size="lg"
-                className={`flex items-center gap-2 ${
-                  currentAnswer
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                    : ""
-                }`}
-              >
-                {currentQuestionIndex === questions.length - 1 ? "ပြီးပါပြီ" : "နောက်သို့"}
-                <ChevronRight size={20} />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Instructions */}
-        <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
-          <CardContent className="p-6">
-            <h3 className="font-semibold mb-3 text-amber-800">💡 လမ်းညွှန်ချက်များ</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-amber-700">
-              <div>• ဖော်ပြချက်နှစ်ခုလုံးကို အေးအေးဆေးဆေး ဖတ်ကြည့်ပါ</div>
-              <div>• မိတ်ဆွေရဲ့ နှလုံးသားက ဘယ်ဟာကို ရွေးချင်နေသလဲဆိုတာကို နားထောင်ပါ</div>
-              <div>• "ရှိသင့် ဖြစ်သင့်တဲ့" အဖြေမဟုတ်ပဲ "ကိုယ်နဲ့အကိုက်ညီဆုံး" ကိုရွေးကြည့်ပါ</div>
-              <div>• ရှေ့က ဖြေခဲ့တဲ့ အဖြေတွေကို ပြန်ပြင်လို့ ရပါတယ်</div>
-              <div>• အချိန်ယူပြီး သေချာ စဉ်းစားကြည့်ပါ</div>
-              <div>• စိတ်မှာ ပထမဆုံး ဖြစ်ပေါ်လာတဲ့ ခံစားချက်ကို ယုံကြည်ပါ</div>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="mt-8 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+        <p className="text-sm text-yellow-800">
+          <strong>မှတ်ချက်:</strong> ဤ assessment သည် ကလေး၏ လက်ရှိ behavioral patterns များကိုသာ လေ့လာခြင်း ဖြစ်ပြီး personality ကတော့
+          အချိန်ကြာလာသည်နှင့်အမျှ ပြောင်းလဲဖွံ့ဖြိုးနေဦးမှာ ဖြစ်ပါတယ်။
+        </p>
       </div>
     </div>
   )
+
+  // Assessment Screen Component
+  const AssessmentScreen = () => {
+    const currentQuestion = questions[currentQuestionIndex]
+    const progress = ((currentQuestionIndex + 1) / questions.length) * 100
+
+    return (
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+        {/* Progress Bar */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium text-gray-600">
+              မေးခွန်း {currentQuestionIndex + 1} / {questions.length}
+            </span>
+            <span className="text-sm font-medium text-gray-600">{Math.round(progress)}% ပြီးပါပြီ</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Question */}
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">{currentQuestion.question}</h2>
+          <p className="text-gray-600">သင့်ကလေးနှင့် ပိုမို ကိုက်ညီသော statement ကို ရွေးချယ်ပါ</p>
+        </div>
+
+        {/* Statements */}
+        <div className="space-y-4 mb-8">
+          <button
+            onClick={() => handleAnswerSelect("A")}
+            className={`w-full p-6 text-left rounded-lg border-2 transition-all duration-200 ${
+              answers[currentQuestion.id] === "A"
+                ? "border-blue-500 bg-blue-50"
+                : "border-gray-200 hover:border-blue-300 hover:bg-blue-50"
+            }`}
+          >
+            <div className="flex items-start">
+              <span className="bg-blue-100 text-blue-800 font-semibold px-3 py-1 rounded-full text-sm mr-4 mt-1">
+                A
+              </span>
+              <p className="text-gray-800">{currentQuestion.statementA}</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => handleAnswerSelect("B")}
+            className={`w-full p-6 text-left rounded-lg border-2 transition-all duration-200 ${
+              answers[currentQuestion.id] === "B"
+                ? "border-green-500 bg-green-50"
+                : "border-gray-200 hover:border-green-300 hover:bg-green-50"
+            }`}
+          >
+            <div className="flex items-start">
+              <span className="bg-green-100 text-green-800 font-semibold px-3 py-1 rounded-full text-sm mr-4 mt-1">
+                B
+              </span>
+              <p className="text-gray-800">{currentQuestion.statementB}</p>
+            </div>
+          </button>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-between">
+          <button
+            onClick={prevQuestion}
+            disabled={currentQuestionIndex === 0}
+            className="px-6 py-3 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            ← နောက်သို့
+          </button>
+
+          <button
+            onClick={nextQuestion}
+            disabled={!answers[currentQuestion.id]}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            {currentQuestionIndex === questions.length - 1 ? "ရလဒ်ကြည့်ရန်" : "ရှေ့သို့"} →
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Results Screen Component
+  const ResultsScreen = () => {
+    const results = calculateResults()
+    const primaryType = enneagramTypes[results.primary.type]
+    const secondaryType = enneagramTypes[results.secondary.type]
+
+    return (
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Main Result Card */}
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Assessment ရလဒ်</h2>
+            <p className="text-gray-600">သင့်ကလေးရဲ့ လက်ရှိ behavioral patterns</p>
+          </div>
+
+          {/* Primary Type */}
+          <div className="border-l-4 pl-6 mb-6" style={{ borderColor: primaryType.color }}>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">
+              အဓိက သဘာဝ: Type {results.primary.type} - {primaryType.myanmar}
+            </h3>
+            <div className="flex items-center text-sm text-gray-500 mb-4">
+              <span>Confidence: {results.confidence}%</span>
+              <span className="mx-2">•</span>
+              <span>Score: {results.primary.score} points</span>
+            </div>
+          </div>
+
+          {/* Secondary Type */}
+          <div className="border-l-4 border-gray-300 pl-6 mb-6">
+            <h4 className="text-lg font-semibold text-gray-700 mb-2">
+              ဒုတိယ လွှမ်းမိုးမှု: Type {results.secondary.type} - {secondaryType.myanmar}
+            </h4>
+            <div className="text-sm text-gray-500">Score: {results.secondary.score} points</div>
+          </div>
+
+          {/* Score Distribution */}
+          <div className="bg-gray-50 rounded-lg p-6">
+            <h4 className="font-semibold text-gray-800 mb-4">Score Distribution</h4>
+            <div className="grid grid-cols-3 gap-4">
+              {Object.entries(results.allScores)
+                .sort(([, a], [, b]) => b - a)
+                .slice(0, 6)
+                .map(([type, score]) => (
+                  <div key={type} className="text-center">
+                    <div
+                      className="w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center text-white font-semibold"
+                      style={{ backgroundColor: enneagramTypes[type].color }}
+                    >
+                      {type}
+                    </div>
+                    <div className="text-sm font-medium text-gray-700">{score}</div>
+                    <div className="text-xs text-gray-500">{enneagramTypes[type].myanmar}</div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Development Suggestions */}
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h3 className="text-2xl font-bold text-gray-800 mb-6">Development Suggestions</h3>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Strengths */}
+            <div className="bg-green-50 rounded-lg p-6 border border-green-200">
+              <h4 className="font-semibold text-green-800 mb-4">အားသာချက်များ</h4>
+              <ul className="space-y-2 text-green-700">
+                <li>• Type {results.primary.type} ရဲ့ သဘာဝအရ ပြုစုစောင့်ရှောက်နိုင်စွမ်း ရှိတယ်</li>
+                <li>• လူမှုဆက်ဆံရေးမှာ ကောင်းမွန်တဲ့ အခြေခံ ရှိတယ်</li>
+                <li>• ကိုယ့်သဘာဝအတိုင်း ဖွံ့ဖြိုးနေတဲ့ အခြေအနေ</li>
+              </ul>
+            </div>
+
+            {/* Growth Areas */}
+            <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
+              <h4 className="font-semibold text-blue-800 mb-4">ဖွံ့ဖြိုးတိုးတက်ရမည့် နယ်ပယ်များ</h4>
+              <ul className="space-y-2 text-blue-700">
+                <li>• Balance ရှိတဲ့ perspective ဖွံ့ဖြိုးရန်</li>
+                <li>• အခြား types တွေရဲ့ အားသာချက်တွေ လေ့လာရန်</li>
+                <li>• စိတ်ခံစားမှု management skills တိုးတက်ရန်</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Parenting Tips */}
+          <div className="mt-6 bg-yellow-50 rounded-lg p-6 border border-yellow-200">
+            <h4 className="font-semibold text-yellow-800 mb-4">မိဘများအတွက် အကြံပြုချက်များ</h4>
+            <div className="space-y-3 text-yellow-700">
+              <p>• ကလေး၏ သဘာဝကို လက်ခံပြီး ပံ့ပိုးပေးပါ</p>
+              <p>• Type {results.primary.type} အတွက် သင့်တော်သော environment ဖန်တီးပေးပါ</p>
+              <p>• Balanced development အတွက် အခြား skills များလည်း အားပေးပါ</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Important Disclaimers */}
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">အရေးကြီးသော မှတ်ချက်များ</h3>
+          <div className="space-y-3 text-gray-600">
+            <p>
+              🔸 <strong>ဖွံ့ဖြိုးဆဲ Personality:</strong> ကလေးများ၏ personality သည် အချိန်ကြာလာသည်နှင့်အမျှ ပြောင်းလဲဖွံ့ဖြိုးနေဆဲဖြစ်သည်
+            </p>
+            <p>
+              🔸 <strong>Development Tool:</strong> ဤ assessment သည် ကလေး၏ development ကို ပံ့ပိုးရန် tool တစ်ခုသာ ဖြစ်ပြီး
+              diagnosis တစ်ခု မဟုတ်ပါ
+            </p>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={() => {
+              setCurrentStep("setup")
+              setCurrentQuestionIndex(0)
+              setAnswers({})
+              setShowResults(false)
+              setChildProfile({ age: "", observerRole: "", observationPeriod: "" })
+            }}
+            className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+          >
+            အသစ်စတင်ရန်
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+      {currentStep === "setup" && <SetupScreen />}
+      {currentStep === "assessment" && !showResults && <AssessmentScreen />}
+      {showResults && <ResultsScreen />}
+    </div>
+  )
 }
+
+export default ChildEnneagramAssessment
