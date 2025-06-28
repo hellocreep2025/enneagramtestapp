@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import {
   ChevronLeft,
   ChevronRight,
@@ -17,6 +17,9 @@ import {
   Target,
   CheckCircle,
   ArrowRight,
+  FileImage,
+  FileText,
+  Share2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -36,6 +39,10 @@ export default function EnneagramTestApp() {
   const [onboardingStep, setOnboardingStep] = useState(0)
   const [testStarted, setTestStarted] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isExporting, setIsExporting] = useState(false)
+
+  // Ref for the results container to capture for export
+  const resultsRef = useRef(null)
 
   // Your specific Google Sheet ID
   const SHEET_ID = "12tgm-6KM1w5kUK_stJbLJCnwskiHZQIQTeYvPbmWtgQ"
@@ -423,6 +430,108 @@ export default function EnneagramTestApp() {
     setLoadingAI(false)
   }
 
+  // Export functions
+  const exportAsPNG = async () => {
+    setIsExporting(true)
+    try {
+      // Dynamically import html2canvas
+      const html2canvas = (await import("html2canvas")).default
+
+      if (resultsRef.current) {
+        const canvas = await html2canvas(resultsRef.current, {
+          backgroundColor: "#f8fafc",
+          scale: 2, // Higher quality
+          useCORS: true,
+          allowTaint: true,
+        })
+
+        // Create download link
+        const link = document.createElement("a")
+        link.download = `enneagram-test-results-${new Date().toISOString().split("T")[0]}.png`
+        link.href = canvas.toDataURL()
+        link.click()
+      }
+    } catch (error) {
+      console.error("PNG Export Error:", error)
+      alert("PNG export မအောင်မြင်ပါ။ ပြန်စမ်းကြည့်ပါ။")
+    }
+    setIsExporting(false)
+  }
+
+  const exportAsPDF = async () => {
+    setIsExporting(true)
+    try {
+      // Dynamically import libraries
+      const html2canvas = (await import("html2canvas")).default
+      const jsPDF = (await import("jspdf")).jsPDF
+
+      if (resultsRef.current) {
+        const canvas = await html2canvas(resultsRef.current, {
+          backgroundColor: "#f8fafc",
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+        })
+
+        const imgData = canvas.toDataURL("image/png")
+        const pdf = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+        })
+
+        const imgWidth = 210 // A4 width in mm
+        const pageHeight = 295 // A4 height in mm
+        const imgHeight = (canvas.height * imgWidth) / canvas.width
+        let heightLeft = imgHeight
+
+        let position = 0
+
+        // Add first page
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight)
+        heightLeft -= pageHeight
+
+        // Add additional pages if needed
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight
+          pdf.addPage()
+          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight)
+          heightLeft -= pageHeight
+        }
+
+        pdf.save(`enneagram-test-results-${new Date().toISOString().split("T")[0]}.pdf`)
+      }
+    } catch (error) {
+      console.error("PDF Export Error:", error)
+      alert("PDF export မအောင်မြင်ပါ။ ပြန်စမ်းကြည့်ပါ။")
+    }
+    setIsExporting(false)
+  }
+
+  const shareResults = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Enneagram Test Results",
+          text: `ကျွန်တော့်ရဲ့ Enneagram Test ရလဒ်: ${getTopThreeTypes()
+            .map((t) => `${t.type} (${t.myanmar})`)
+            .join(", ")}`,
+          url: window.location.href,
+        })
+      } catch (error) {
+        console.log("Share cancelled")
+      }
+    } else {
+      // Fallback: copy to clipboard
+      const text = `ကျွန်တော့်ရဲ့ Enneagram Test ရလဒ်:\n${getTopThreeTypes()
+        .map((t, i) => `${i + 1}. ${t.type} - ${t.myanmar} (${t.count} အမှတ်)`)
+        .join("\n")}\n\nTest လုပ်ကြည့်ရန်: ${window.location.origin}`
+
+      navigator.clipboard.writeText(text)
+      alert("ရလဒ်ကို clipboard မှာ copy လုပ်ပြီးပါပြီ!")
+    }
+  }
+
   const resetTest = () => {
     setAnswers({})
     setCurrentQuestionIndex(0)
@@ -564,29 +673,66 @@ export default function EnneagramTestApp() {
     )
   }
 
-  // Results screen with all types ranked
+  // Results screen with all types ranked and export functionality
   if (showResults) {
     const allTypesSorted = getAllTypesSorted()
     const topThree = allTypesSorted.slice(0, 3)
+    const testDate = new Date().toLocaleDateString("my-MM", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
         <div className="max-w-2xl mx-auto space-y-6">
+          {/* Export Controls */}
           <Card>
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl mb-2">🎉 Test Results</CardTitle>
-              <p className="text-muted-foreground">
-                {Object.keys(answers).length} / {questions.length} မေးခွန်း
-              </p>
-            </CardHeader>
+            <CardContent className="p-4">
+              <div className="flex flex-wrap gap-2 justify-center">
+                <Button
+                  onClick={exportAsPNG}
+                  disabled={isExporting}
+                  variant="outline"
+                  className="flex items-center gap-2 bg-transparent"
+                >
+                  <FileImage size={16} />
+                  {isExporting ? "Exporting..." : "PNG သိမ်းမယ်"}
+                </Button>
+                <Button
+                  onClick={exportAsPDF}
+                  disabled={isExporting}
+                  variant="outline"
+                  className="flex items-center gap-2 bg-transparent"
+                >
+                  <FileText size={16} />
+                  {isExporting ? "Exporting..." : "PDF သိမ်းမယ်"}
+                </Button>
+                <Button onClick={shareResults} variant="outline" className="flex items-center gap-2 bg-transparent">
+                  <Share2 size={16} />
+                  Share လုပ်မယ်
+                </Button>
+              </div>
+            </CardContent>
           </Card>
 
-          {/* All Types Ranked */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">📊 အမှတ်စာရင်း (ကြီးစဥ်ငယ်လိုက်)</CardTitle>
-            </CardHeader>
-            <CardContent>
+          {/* Results Container for Export */}
+          <div ref={resultsRef} className="space-y-6 bg-white p-6 rounded-lg">
+            {/* Header */}
+            <div className="text-center space-y-4">
+              <div className="text-4xl">🌟</div>
+              <h1 className="text-3xl font-bold text-gray-800">Enneagram Test Results</h1>
+              <p className="text-gray-600">စိတ်ခံစားမှု စစ်ဆေးခြင်း ရလဒ်</p>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <p className="text-sm text-gray-600">
+                  Test ပြီးစီးသည့်ရက်: {testDate} | မေးခွန်း: {Object.keys(answers).length} / {questions.length}
+                </p>
+              </div>
+            </div>
+
+            {/* All Types Ranked */}
+            <div>
+              <h2 className="text-xl font-bold mb-4 text-center">📊 အမှတ်စာရင်း (ကြီးစဥ်ငယ်လိုက်)</h2>
               <div className="space-y-3">
                 {allTypesSorted.map((result, index) => {
                   const isTopThree = index < 3
@@ -665,49 +811,65 @@ export default function EnneagramTestApp() {
                   )
                 })}
               </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* AI Insights */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="text-purple-600" size={20} />
-                AI ခွဲခြမ်းစိတ်ဖြာမှု
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {!aiInsight && !loadingAI && (
-                <div className="text-center">
-                  <Button onClick={() => getAIInsight(topThree)} className="w-full">
-                    <MessageCircle size={16} className="mr-2" />
-                    AI ခွဲခြမ်းစိတ်ဖြာမှု ရယူမယ်
-                  </Button>
+            {/* AI Insights */}
+            {aiInsight && (
+              <div>
+                <h2 className="text-xl font-bold mb-4 text-center flex items-center justify-center gap-2">
+                  <Sparkles className="text-purple-600" size={20} />
+                  AI ခွဲခြမ်းစိတ်ဖြာမှု
+                </h2>
+                <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg border border-purple-200">
+                  <div className="whitespace-pre-wrap text-sm leading-relaxed">{aiInsight}</div>
                 </div>
-              )}
+              </div>
+            )}
 
-              {loadingAI && (
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
-                  <p className="text-muted-foreground">ခွဲခြမ်းစိတ်ဖြာနေသည်...</p>
-                </div>
-              )}
+            {/* Footer */}
+            <div className="text-center pt-6 border-t border-gray-200">
+              <p className="text-xs text-gray-500">
+                မေးခွန်းများ အရင်းအမြစ်: "ငါ ဘာသူလဲ" စာအုပ် - ဆရာတော်ဦးဇောတိက နှင့် ဆရာမ ထက်ထက်ထွန်း (Waterfall)
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Enneagram Test App - hello@radiances.net</p>
+            </div>
+          </div>
 
-              {aiInsight && (
-                <div className="space-y-4">
-                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg border border-purple-200">
-                    <div className="whitespace-pre-wrap text-sm leading-relaxed">{aiInsight}</div>
+          {/* AI Insights Controls (outside export area) */}
+          {!aiInsight && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="text-purple-600" size={20} />
+                  AI ခွဲခြမ်းစိတ်ဖြာမှု
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {!loadingAI ? (
+                  <div className="text-center">
+                    <Button onClick={() => getAIInsight(topThree)} className="w-full">
+                      <MessageCircle size={16} className="mr-2" />
+                      AI ခွဲခြမ်းစိတ်ဖြာမှု ရယူမယ်
+                    </Button>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => getAIInsight(topThree)} className="w-full">
-                    <RotateCcw size={14} className="mr-2" />
-                    ပြန်ထုတ်မယ်
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                    <p className="text-muted-foreground">ခွဲခြမ်းစိတ်ဖြာနေသည်...</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
-          <div className="text-center">
+          {/* Action Buttons */}
+          <div className="text-center space-y-3">
+            {aiInsight && (
+              <Button variant="outline" size="sm" onClick={() => getAIInsight(topThree)} className="w-full">
+                <RotateCcw size={14} className="mr-2" />
+                AI ခွဲခြမ်းစိတ်ဖြာမှု ပြန်ထုတ်မယ်
+              </Button>
+            )}
             <Button onClick={resetTest} variant="outline">
               <RotateCcw size={16} className="mr-2" />
               ပြန်စမ်းကြည့်မယ်
