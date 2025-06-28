@@ -35,6 +35,7 @@ export default function EnneagramTestApp() {
   const [loadingError, setLoadingError] = useState(null)
   const [onboardingStep, setOnboardingStep] = useState(0)
   const [testStarted, setTestStarted] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   // Your specific Google Sheet ID
   const SHEET_ID = "12tgm-6KM1w5kUK_stJbLJCnwskiHZQIQTeYvPbmWtgQ"
@@ -334,6 +335,19 @@ export default function EnneagramTestApp() {
         score: selectedScore,
       },
     })
+
+    // Show transition state
+    setIsTransitioning(true)
+
+    // Auto-advance to next question after a short delay
+    setTimeout(() => {
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1)
+      } else {
+        calculateResults()
+      }
+      setIsTransitioning(false)
+    }, 600) // 600ms delay to show selection feedback
   }
 
   const goToNextQuestion = () => {
@@ -361,17 +375,19 @@ export default function EnneagramTestApp() {
     setShowResults(true)
   }
 
-  const getTopThreeTypes = () => {
-    const sortedScores = Object.entries(scores)
-      .map(([letter, count]) => ({
-        letter,
-        count,
-        ...typeMapping[letter],
-      }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 3)
+  // Get all types sorted by score (highest to lowest)
+  const getAllTypesSorted = () => {
+    const allTypes = Object.entries(typeMapping).map(([letter, info]) => ({
+      letter,
+      count: scores[letter] || 0,
+      ...info,
+    }))
 
-    return sortedScores
+    return allTypes.sort((a, b) => b.count - a.count)
+  }
+
+  const getTopThreeTypes = () => {
+    return getAllTypesSorted().slice(0, 3)
   }
 
   const getAIInsight = async (topTypes) => {
@@ -396,7 +412,7 @@ export default function EnneagramTestApp() {
         setAiInsight(data.insight)
       } else {
         setAiInsight(
-          `❌ ${data.error}\n\n💡 AI insights ကို enable လুပ်ဖို့:\n1. Google Gemini API key ရယူပါ: https://makersuite.google.com/app/apikey\n2. GEMINI_API_KEY ကို environment variables မှာ ထည့်ပါ\n3. Application ကို redeploy လုပ်ပါ`,
+          `❌ ${data.error}\n\n💡 AI insights ကို enable လုပ်ဖို့:\n1. Google Gemini API key ရယူပါ: https://makersuite.google.com/app/apikey\n2. GEMINI_API_KEY ကို environment variables မှာ ထည့်ပါ\n3. Application ကို redeploy လုပ်ပါ`,
         )
       }
     } catch (error) {
@@ -548,17 +564,10 @@ export default function EnneagramTestApp() {
     )
   }
 
-  // Results screen
+  // Results screen with all types ranked
   if (showResults) {
-    const allTypes = Object.entries(typeMapping)
-      .map(([letter, info]) => ({
-        letter,
-        count: scores[letter] || 0,
-        ...info,
-      }))
-      .sort((a, b) => b.count - a.count)
-
-    const topThree = allTypes.slice(0, 3)
+    const allTypesSorted = getAllTypesSorted()
+    const topThree = allTypesSorted.slice(0, 3)
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
@@ -572,43 +581,89 @@ export default function EnneagramTestApp() {
             </CardHeader>
           </Card>
 
-          {/* Top 3 Results */}
+          {/* All Types Ranked */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">🏆 သင့်ရဲ့ အဓိက Types</CardTitle>
+              <CardTitle className="text-lg">📊 အမှတ်စာရင်း (ကြီးစဥ်ငယ်လိုက်)</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {topThree.map((result, index) => (
-                  <div
-                    key={result.letter}
-                    className={`
-                    p-4 rounded-lg border-2 ${
-                      index === 0
-                        ? "border-yellow-400 bg-yellow-50"
-                        : index === 1
-                          ? "border-gray-400 bg-gray-50"
-                          : "border-orange-400 bg-orange-50"
-                    }
-                  `}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="text-xl">{index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}</div>
-                        <div>
-                          <h3 className="font-semibold">{result.type}</h3>
-                          <p className="text-sm text-muted-foreground">{result.myanmar}</p>
+                {allTypesSorted.map((result, index) => {
+                  const isTopThree = index < 3
+                  const percentage = Math.round((result.count / Object.keys(answers).length) * 100)
+
+                  return (
+                    <div
+                      key={result.letter}
+                      className={`
+                        p-4 rounded-lg border-2 transition-all ${
+                          index === 0
+                            ? "border-yellow-400 bg-yellow-50 shadow-md"
+                            : index === 1
+                              ? "border-gray-400 bg-gray-50 shadow-sm"
+                              : index === 2
+                                ? "border-orange-400 bg-orange-50 shadow-sm"
+                                : "border-gray-200 bg-gray-50"
+                        }
+                      `}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
+                            {/* Rank indicator */}
+                            <div
+                              className={`
+                              w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                                index === 0
+                                  ? "bg-yellow-500 text-white"
+                                  : index === 1
+                                    ? "bg-gray-500 text-white"
+                                    : index === 2
+                                      ? "bg-orange-500 text-white"
+                                      : "bg-gray-300 text-gray-600"
+                              }
+                            `}
+                            >
+                              {index + 1}
+                            </div>
+                            {/* Medal for top 3 */}
+                            {isTopThree && (
+                              <div className="text-lg">{index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}</div>
+                            )}
+                          </div>
+                          <div>
+                            <h3 className={`font-semibold ${isTopThree ? "text-lg" : ""}`}>{result.type}</h3>
+                            <p className={`text-muted-foreground ${isTopThree ? "text-sm" : "text-xs"}`}>
+                              {result.myanmar}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className={`font-bold ${isTopThree ? "text-lg" : ""}`}>{result.count}</div>
+                          <div className="text-xs text-muted-foreground">{percentage}%</div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="font-bold">{result.count}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {Math.round((result.count / Object.keys(answers).length) * 100)}%
+
+                      {/* Progress bar for visual representation */}
+                      <div className="mt-3">
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className={`h-2 rounded-full transition-all duration-500 ${
+                              index === 0
+                                ? "bg-yellow-500"
+                                : index === 1
+                                  ? "bg-gray-500"
+                                  : index === 2
+                                    ? "bg-orange-500"
+                                    : "bg-gray-400"
+                            }`}
+                            style={{ width: `${percentage}%` }}
+                          ></div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </CardContent>
           </Card>
@@ -663,7 +718,7 @@ export default function EnneagramTestApp() {
     )
   }
 
-  // Test questions (ultra-minimalist version)
+  // Test questions (ultra-minimalist version with auto-advance)
   const currentQuestion = questions[currentQuestionIndex]
   const currentAnswer = answers[currentQuestion?.id]
 
@@ -678,18 +733,21 @@ export default function EnneagramTestApp() {
           <Progress value={getProgress()} className="w-full h-2" />
         </div>
 
-        {/* Question Card - Ultra Clean */}
-        <Card className="shadow-lg">
+        {/* Question Card - Ultra Clean with Auto-Advance */}
+        <Card
+          className={`shadow-lg transition-all duration-300 ${isTransitioning ? "opacity-75 scale-95" : "opacity-100 scale-100"}`}
+        >
           <CardContent className="p-6">
             <div className="space-y-6">
               {/* Statement A */}
               <button
                 onClick={() => handleAnswerSelect("A")}
+                disabled={isTransitioning}
                 className={`w-full p-5 rounded-xl text-left transition-all duration-200 ${
                   currentAnswer?.choice === "A"
                     ? "bg-purple-100 border-2 border-purple-400 shadow-md"
                     : "bg-gray-50 border-2 border-gray-200 hover:border-purple-300 hover:bg-purple-50"
-                }`}
+                } ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}`}
               >
                 <div className="text-gray-800 leading-relaxed font-medium">{currentQuestion.statementA}</div>
               </button>
@@ -702,31 +760,44 @@ export default function EnneagramTestApp() {
               {/* Statement B */}
               <button
                 onClick={() => handleAnswerSelect("B")}
+                disabled={isTransitioning}
                 className={`w-full p-5 rounded-xl text-left transition-all duration-200 ${
                   currentAnswer?.choice === "B"
                     ? "bg-blue-100 border-2 border-blue-400 shadow-md"
                     : "bg-gray-50 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50"
-                }`}
+                } ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}`}
               >
                 <div className="text-gray-800 leading-relaxed font-medium">{currentQuestion.statementB}</div>
               </button>
             </div>
 
-            {/* Minimal Navigation */}
+            {/* Minimal Navigation - Keep as backup */}
             <div className="flex justify-between pt-6 mt-6 border-t border-gray-100">
-              <Button onClick={goToPreviousQuestion} disabled={currentQuestionIndex === 0} variant="ghost" size="sm">
+              <Button
+                onClick={goToPreviousQuestion}
+                disabled={currentQuestionIndex === 0 || isTransitioning}
+                variant="ghost"
+                size="sm"
+              >
                 <ChevronLeft size={16} />
               </Button>
 
               <Button
                 onClick={goToNextQuestion}
-                disabled={!currentAnswer}
+                disabled={!currentAnswer || isTransitioning}
                 size="sm"
                 className={currentAnswer ? "bg-purple-600 hover:bg-purple-700" : ""}
               >
                 {currentQuestionIndex === questions.length - 1 ? "ပြီးပါပြီ" : <ChevronRight size={16} />}
               </Button>
             </div>
+
+            {/* Show transition feedback */}
+            {isTransitioning && (
+              <div className="text-center pt-2">
+                <div className="text-xs text-muted-foreground">နောက်မေးခွန်းသို့...</div>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

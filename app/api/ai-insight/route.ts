@@ -24,45 +24,47 @@ export async function POST(request: NextRequest) {
     // Get the Gemini model
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
 
-    // Create a detailed prompt for personality insights
+    // Create a detailed prompt for personality insights in Myanmar only
     const prompt = `
-You are an expert Enneagram personality psychologist. Based on the following Enneagram test results, provide detailed, personalized insights in both English and Myanmar language.
+သင်သည် Enneagram ကိုယ်ရည်ကိုယ်သွေး စိတ်ပညာရှင် ကျွမ်းကျင်သူ တစ်ဦးဖြစ်သည်။ အောက်ပါ Enneagram test ရလဒ်များကို အခြေခံ၍ အသေးစိတ်၊ ကိုယ်ပိုင်ဆန်သော ထိုးထွင်းသိမြင်မှုများကို မြန်မာဘာသာဖြင့်သာ ပေးပါ။
 
-Test Results:
-- Primary Type: ${topTypes[0].type} - ${topTypes[0].name} (${topTypes[0].myanmar}) - Score: ${topTypes[0].count}
-- Secondary Type: ${topTypes[1]?.type || "N/A"} - ${topTypes[1]?.name || "N/A"} (${topTypes[1]?.myanmar || "N/A"}) - Score: ${topTypes[1]?.count || 0}
-- Third Type: ${topTypes[2]?.type || "N/A"} - ${topTypes[2]?.name || "N/A"} (${topTypes[2]?.myanmar || "N/A"}) - Score: ${topTypes[2]?.count || 0}
+Test ရလဒ်များ:
+- အဓိက Type: ${topTypes[0].type} - ${topTypes[0].name} (${topTypes[0].myanmar}) - အမှတ်: ${topTypes[0].count}
+- ဒုတိယ Type: ${topTypes[1]?.type || "N/A"} - ${topTypes[1]?.name || "N/A"} (${topTypes[1]?.myanmar || "N/A"}) - အမှတ်: ${topTypes[1]?.count || 0}
+- တတိယ Type: ${topTypes[2]?.type || "N/A"} - ${topTypes[2]?.name || "N/A"} (${topTypes[2]?.myanmar || "N/A"}) - အမှတ်: ${topTypes[2]?.count || 0}
 
-Please provide insights covering:
+အောက်ပါ အကြောင်းအရာများကို ခြုံငုံ၍ ထိုးထွင်းသိမြင်မှုများ ပေးပါ:
 
-1. **Core Personality Analysis** (English & Myanmar)
-   - Main characteristics and traits
-   - Core motivations and fears
-   - Behavioral patterns
+**၁. အဓိက ကိုယ်ရည်ကိုယ်သွေး ခွဲခြမ်းစိတ်ဖြာမှု**
+- အဓိက လက္ခဏာများနှင့် ဂုဏ်သတ္တိများ
+- အဓိက လှုံ့ဆော်မှုများနှင့် ကြောက်ရွံ့မှုများ
+- အပြုအမူ ပုံစံများ
 
-2. **Strengths & Growth Areas** (English & Myanmar)
-   - Natural strengths and talents
-   - Areas for personal development
-   - Common challenges to overcome
+**၂. အားသာချက်များနှင့် ဖွံ့ဖြိုးတိုးတက်ရမည့် နယ်ပယ်များ**
+- သဘာဝ အားသာချက်များနှင့် စွမ်းရည်များ
+- ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် နယ်ပယ်များ
+- ကျော်လွှားရမည့် ဘုံ စိန်ခေါ်မှုများ
 
-3. **Relationships & Communication** (English & Myanmar)
-   - How they interact with others
-   - Communication style
-   - Relationship patterns
+**၃. ဆက်ဆံရေးများနှင့် ဆက်သွယ်မှု**
+- အခြားသူများနှင့် ဆက်ဆံပုံ
+- ဆက်သွယ်မှု ပုံစံ
+- ဆက်ဆံရေး ပုံစံများ
 
-4. **Career & Life Path** (English & Myanmar)
-   - Suitable career directions
-   - Work environment preferences
-   - Leadership style
+**၄. အသက်မွေးဝမ်းကြောင်းနှင့် ဘဝလမ်းကြောင်း**
+- သင့်လျော်သော အသက်မွေးဝမ်းကြောင်း လမ်းကြောင်းများ
+- အလုပ်ပတ်ဝန်းကျင် နှစ်သက်မှုများ
+- ခေါင်းဆောင်မှု ပုံစံ
 
-5. **Integration & Disintegration** (English & Myanmar)
-   - How they behave when healthy/stressed
-   - Growth direction and stress direction
-   - Tips for personal development
+**၅. ပေါင်းစည်းမှုနှင့် ပြိုကွဲမှု**
+- ကျန်းမာသောအခါ/ဖိစီးမှုရှိသောအခါ အပြုအမူ
+- ကြီးထွားမှု လမ်းကြောင်းနှင့် ဖိစီးမှု လမ်းကြောင်း
+- ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် အကြံပြုချက်များ
 
-Format the response in a clear, engaging way with both English and Myanmar translations. Use emojis and formatting to make it visually appealing. Keep the tone encouraging and constructive.
+ရှင်းလင်း၊ စိတ်ဝင်စားဖွယ်ရာ ပုံစံဖြင့် ဖြေကြားပါ။ အားပေးမှုနှင့် တည်ဆောက်မှုရှိသော လေသံကို အသုံးပြုပါ။
 
-Make it personal and actionable, not generic. Focus on practical insights the person can use in their daily life.
+ယေဘုယျ မဟုတ်ဘဲ ကိုယ်ပိုင်ဆန်သောနှင့် လက်တွေ့ကျသော ထိုးထွင်းသိမြင်မှုများကို ဖြေကြားပါ။ လူတစ်ဦးသည် ၎င်းတို့၏ နေ့စဉ်ဘဝတွင် အသုံးပြုနိုင်သော လက်တွေ့ကျသော ထိုးထွင်းသိမြင်မှုများကို အာရုံစိုက်ပါ။
+
+**အရေးကြီးသည်မှာ: မြန်မာဘာသာဖြင့်သာ ဖြေကြားပါ။ အင်္ဂလိပ်စာ မပါဝင်စေရပါ။**
 `
 
     // Generate content using Gemini
@@ -76,6 +78,7 @@ Make it personal and actionable, not generic. Focus on practical insights the pe
       model: "gemini-1.5-flash",
       primaryType: topTypes[0],
       analysisDepth: "comprehensive",
+      language: "myanmar",
     })
   } catch (error) {
     console.error("Gemini AI Error:", error)
