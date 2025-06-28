@@ -315,7 +315,7 @@ export default function EnneagramTestApp() {
               <CardTitle className="text-4xl mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                 🌟 Enneagram Personality Test 🌟
               </CardTitle>
-              <p className="text-xl text-muted-foreground">ထူးခြားသော စိတ်ခံစားမှု နယ်မြေ စစ်ဆေးမှု</p>
+              <p className="text-xl text-muted-foreground">Enneagram နည်းဖြင့် စရိုက်လက္ခဏာ ကိုယ်ရည်ကိုယ်သွေး စမ်းသပ် စစ်ဆေး ဖော်ထုတ်ခြင်း</p>
               <Badge variant="secondary" className="mt-2">
                 {dataSource}
               </Badge>
@@ -343,7 +343,7 @@ export default function EnneagramTestApp() {
                       ရယူထားပါတယ်။
                     </p>
                     <p className="text-blue-600 text-sm">
-                      💡 Enneagram အကြောင်း အသေးစိတ်သိချင်ရင် ဒီစာအုပ်ကို ဝယ်ဖတ်ကြည့်ဖို့ အထူးတိုက်တွန်းပါတယ်။
+                      💡 Enneagram အကြောင်း အသေးစိတ်သိချင်ရင် ဒီစာအုပ်ကို ဖတ်ကြည့်ဖို့ အထူးတိုက်တွန်းပါတယ်။
                     </p>
                   </div>
                 </div>
