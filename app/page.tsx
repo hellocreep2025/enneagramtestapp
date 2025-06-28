@@ -841,7 +841,7 @@ export default function EnneagramTestApp() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Sparkles className="text-purple-600" size={20} />
-                  AI ခွဲခြမ်းစိတ်ဖြာမှု
+                  AI ကိုမေးကြည့်မယ်
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -849,7 +849,7 @@ export default function EnneagramTestApp() {
                   <div className="text-center">
                     <Button onClick={() => getAIInsight(topThree)} className="w-full">
                       <MessageCircle size={16} className="mr-2" />
-                      AI ခွဲခြမ်းစိတ်ဖြာမှု ရယူမယ်
+                      AI ကိုမေးကြည့်မယ်
                     </Button>
                   </div>
                 ) : (
@@ -887,79 +887,154 @@ export default function EnneagramTestApp() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
       <div className="max-w-lg mx-auto space-y-4">
-        {/* Minimal Header */}
-        <div className="text-center space-y-2">
-          <div className="text-sm text-muted-foreground">
-            {currentQuestionIndex + 1} / {questions.length}
+        {/* Ultra Minimal Header - Focus Mode */}
+        <div className="text-center space-y-3">
+          <div className="flex items-center justify-center gap-4">
+            <div className="text-sm text-muted-foreground font-medium">
+              {currentQuestionIndex + 1} / {questions.length}
+            </div>
+            <div className="text-xs text-muted-foreground">{getProgress()}% ပြီးပါပြီ</div>
           </div>
-          <Progress value={getProgress()} className="w-full h-2" />
+          <Progress value={getProgress()} className="w-full h-3 bg-gray-200" />
         </div>
 
-        {/* Question Card - Ultra Clean with Auto-Advance */}
+        {/* Question Card - Focus Mode Design */}
         <Card
-          className={`shadow-lg transition-all duration-300 ${isTransitioning ? "opacity-75 scale-95" : "opacity-100 scale-100"}`}
+          className={`shadow-xl transition-all duration-300 border-0 ${
+            isTransitioning ? "opacity-75 scale-95" : "opacity-100 scale-100"
+          }`}
         >
-          <CardContent className="p-6">
-            <div className="space-y-6">
-              {/* Statement A */}
+          <CardContent className="p-0">
+            {/* Question Number Indicator */}
+            <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 text-center">
+              <div className="text-sm font-medium opacity-90">မေးခွန်း</div>
+              <div className="text-2xl font-bold">{currentQuestionIndex + 1}</div>
+            </div>
+
+            <div className="p-8 space-y-8">
+              {/* Statement A - Focus Mode */}
               <button
                 onClick={() => handleAnswerSelect("A")}
                 disabled={isTransitioning}
-                className={`w-full p-5 rounded-xl text-left transition-all duration-200 ${
-                  currentAnswer?.choice === "A"
-                    ? "bg-purple-100 border-2 border-purple-400 shadow-md"
-                    : "bg-gray-50 border-2 border-gray-200 hover:border-purple-300 hover:bg-purple-50"
-                } ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}`}
+                className={`
+          w-full p-6 rounded-2xl text-left transition-all duration-300 group
+          ${
+            currentAnswer?.choice === "A"
+              ? "bg-gradient-to-r from-purple-100 to-purple-50 border-2 border-purple-400 shadow-lg transform scale-[1.02]"
+              : "bg-white border-2 border-gray-200 hover:border-purple-300 hover:shadow-md hover:transform hover:scale-[1.01]"
+          }
+          ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}
+        `}
               >
-                <div className="text-gray-800 leading-relaxed font-medium">{currentQuestion.statementA}</div>
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`
+            w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
+            ${
+              currentAnswer?.choice === "A"
+                ? "bg-purple-500 text-white"
+                : "bg-gray-200 text-gray-600 group-hover:bg-purple-200 group-hover:text-purple-700"
+            }
+          `}
+                  >
+                    A
+                  </div>
+                  <div className="flex-1">
+                    <div
+                      className={`
+              text-gray-800 leading-relaxed font-medium text-lg
+              ${currentAnswer?.choice === "A" ? "text-purple-900" : ""}
+            `}
+                    >
+                      {currentQuestion.statementA}
+                    </div>
+                  </div>
+                </div>
               </button>
 
-              {/* Simple Divider */}
-              <div className="text-center">
-                <div className="text-xs text-muted-foreground font-medium">သို့မဟုတ်</div>
-              </div>
-
-              {/* Statement B */}
+              {/* Statement B - Focus Mode */}
               <button
                 onClick={() => handleAnswerSelect("B")}
                 disabled={isTransitioning}
-                className={`w-full p-5 rounded-xl text-left transition-all duration-200 ${
-                  currentAnswer?.choice === "B"
-                    ? "bg-blue-100 border-2 border-blue-400 shadow-md"
-                    : "bg-gray-50 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50"
-                } ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}`}
+                className={`
+          w-full p-6 rounded-2xl text-left transition-all duration-300 group
+          ${
+            currentAnswer?.choice === "B"
+              ? "bg-gradient-to-r from-blue-100 to-blue-50 border-2 border-blue-400 shadow-lg transform scale-[1.02]"
+              : "bg-white border-2 border-gray-200 hover:border-blue-300 hover:shadow-md hover:transform hover:scale-[1.01]"
+          }
+          ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}
+        `}
               >
-                <div className="text-gray-800 leading-relaxed font-medium">{currentQuestion.statementB}</div>
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`
+            w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
+            ${
+              currentAnswer?.choice === "B"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-600 group-hover:bg-blue-200 group-hover:text-blue-700"
+            }
+          `}
+                  >
+                    B
+                  </div>
+                  <div className="flex-1">
+                    <div
+                      className={`
+              text-gray-800 leading-relaxed font-medium text-lg
+              ${currentAnswer?.choice === "B" ? "text-blue-900" : ""}
+            `}
+                    >
+                      {currentQuestion.statementB}
+                    </div>
+                  </div>
+                </div>
               </button>
             </div>
 
-            {/* Minimal Navigation - Keep as backup */}
-            <div className="flex justify-between pt-6 mt-6 border-t border-gray-100">
+            {/* Minimal Navigation - Focus Mode */}
+            <div className="bg-gray-50 px-8 py-4 flex justify-between items-center border-t border-gray-100">
               <Button
                 onClick={goToPreviousQuestion}
                 disabled={currentQuestionIndex === 0 || isTransitioning}
                 variant="ghost"
                 size="sm"
+                className="text-gray-500 hover:text-gray-700"
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft size={16} className="mr-1" />
+                ရှေ့သို့
               </Button>
+
+              <div className="text-center">
+                {isTransitioning && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+                    နောက်မေးခွန်းသို့...
+                  </div>
+                )}
+              </div>
 
               <Button
                 onClick={goToNextQuestion}
                 disabled={!currentAnswer || isTransitioning}
                 size="sm"
-                className={currentAnswer ? "bg-purple-600 hover:bg-purple-700" : ""}
+                variant="ghost"
+                className={`
+          ${currentAnswer ? "text-purple-600 hover:text-purple-700 hover:bg-purple-50" : "text-gray-400"}
+        `}
               >
-                {currentQuestionIndex === questions.length - 1 ? "ပြီးပါပြီ" : <ChevronRight size={16} />}
+                {currentQuestionIndex === questions.length - 1 ? (
+                  <>
+                    ပြီးပါပြီ <CheckCircle size={16} className="ml-1" />
+                  </>
+                ) : (
+                  <>
+                    နောက်သို့ <ChevronRight size={16} className="ml-1" />
+                  </>
+                )}
               </Button>
             </div>
-
-            {/* Show transition feedback */}
-            {isTransitioning && (
-              <div className="text-center pt-2">
-                <div className="text-xs text-muted-foreground">နောက်မေးခွန်းသို့...</div>
-              </div>
-            )}
           </CardContent>
         </Card>
       </div>
