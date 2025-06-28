@@ -363,7 +363,8 @@ export default function EnneagramTestApp() {
   }
 
   const nextOnboardingStep = () => {
-    if (onboardingStep < 6) {
+    if (onboardingStep < 7) {
+      // Changed from 6 to 7
       setOnboardingStep(onboardingStep + 1)
     } else {
       setTestStarted(true)
@@ -568,8 +569,70 @@ export default function EnneagramTestApp() {
       )
     }
 
-    // Instructions Page
+    // Reference Book & Questions Source (Step 3)
     if (onboardingStep === 3) {
+      return (
+        <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
+          <div className={`${cardStyle} p-8 rounded-2xl max-w-3xl w-full`}>
+            <div className="text-center mb-8">
+              <div className="text-5xl mb-4">📚</div>
+              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>မေးခွန်းများ၏ ရင်းမြစ်</h2>
+              <p className={`${textStyle} opacity-90`}>ဤစမ်းသပ်မှုတွင် အသုံးပြုထားသော မေးခွန်းများ၏ မူလရင်းမြစ်</p>
+            </div>
+
+            <div className="flex flex-col items-center space-y-6 mb-8">
+              <img
+                src="/images/book-cover.jpg"
+                alt="ငါ ဘယ်သူလဲ စာအုပ်မျက်နှာဖုံး"
+                className="w-48 h-auto rounded-lg shadow-2xl"
+              />
+
+              <div className={`${cardStyle} p-6 rounded-xl text-center max-w-lg`}>
+                <h3 className={`text-2xl font-bold ${textStyle} mb-3`}>"ငါ ဘယ်သူလဲ"</h3>
+                <div className={`${textStyle} opacity-90 space-y-2`}>
+                  <p>
+                    <strong>စာရေးသူများ:</strong>
+                  </p>
+                  <p>ဆရာတော် ဦးဇောတိက</p>
+                  <p>ဆရာမ ထက်ထက်ထွန်း (Waterfall)</p>
+                  <p className="pt-3 border-t border-white/20">
+                    <strong>မေးခွန်းအရေအတွက်:</strong> {questions.length} ခု
+                  </p>
+                  <p>
+                    <strong>ဘာသာစကား:</strong> မြန်မာ
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={`${cardStyle} p-6 rounded-xl mb-8 text-center`}>
+              <p className={`${textStyle} opacity-90 leading-relaxed`}>
+                ဤစမ်းသပ်မှုသည် မြန်မာလူမျိုးများအတွက် ကိုယ်ရည်ကိုယ်သွေး နားလည်းမှုနှင့် ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရေးသားထားသော "ငါ ဘယ်သူလဲ" စာအုပ်မှ
+                မေးခွန်းများကို အခြေခံ၍ ပြုလုပ်ထားပါသည်။
+              </p>
+            </div>
+
+            <div className="flex space-x-4">
+              <button
+                onClick={prevOnboardingStep}
+                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
+              >
+                ← နောက်သို့
+              </button>
+              <button
+                onClick={nextOnboardingStep}
+                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
+              >
+                ရှေ့သို့ →
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    // Instructions Page (now Step 4)
+    if (onboardingStep === 4) {
       return (
         <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
           <div className={`${cardStyle} p-8 rounded-2xl max-w-2xl w-full`}>
@@ -647,8 +710,8 @@ export default function EnneagramTestApp() {
       )
     }
 
-    // Test Info Page
-    if (onboardingStep === 4) {
+    // Test Info Page (now Step 5)
+    if (onboardingStep === 5) {
       return (
         <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
           <div className={`${cardStyle} p-8 rounded-2xl max-w-2xl w-full`}>
@@ -720,8 +783,8 @@ export default function EnneagramTestApp() {
       )
     }
 
-    // Privacy & Features
-    if (onboardingStep === 5) {
+    // Privacy & Features (now Step 6)
+    if (onboardingStep === 6) {
       return (
         <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
           <div className={`${cardStyle} p-8 rounded-2xl max-w-3xl w-full`}>
@@ -745,7 +808,7 @@ export default function EnneagramTestApp() {
                 <h3 className={`text-lg font-semibold ${textStyle} mb-4`}>🚀 အထူး Features များ</h3>
                 <ul className={`${textStyle} opacity-90 space-y-2 text-sm`}>
                   <li>• AI ထိုးထွင်းသိမြင်မှု (မြန်မာဘာသာ)</li>
-                  <li>• PNG/PDF Export လုပ်���ောင်ချက်</li>
+                  <li>• PNG/PDF Export လုပ်ဆောင်ချက်</li>
                   <li>• Real-time Progress Tracking</li>
                   <li>• Mobile-friendly Design</li>
                 </ul>
@@ -801,8 +864,8 @@ export default function EnneagramTestApp() {
       )
     }
 
-    // Ready to Start Page
-    if (onboardingStep === 6) {
+    // Ready to Start Page (now Step 7)
+    if (onboardingStep === 7) {
       return (
         <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
           <div className={`${cardStyle} p-8 rounded-2xl text-center max-w-2xl w-full`}>
@@ -896,19 +959,132 @@ export default function EnneagramTestApp() {
               ))}
             </div>
 
-            {/* All Scores */}
+            {/* Replace the existing "All Scores" section with this: */}
+            {/* Complete Ranking - All 9 Types */}
             <div className="bg-gray-50 p-6 rounded-xl mb-8">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">📊 အမှတ်စုစုပေါင်း</h3>
-              <div className="grid grid-cols-3 md:grid-cols-9 gap-3">
-                {Object.entries(typeMapping).map(([key, type]) => (
-                  <div key={key} className="text-center">
-                    <div className="bg-white p-3 rounded-lg shadow">
-                      <div className="text-lg font-bold text-gray-800">Type {type.type}</div>
-                      <div className="text-2xl font-bold text-blue-600">{scores[key] || 0}</div>
-                      <div className="text-xs text-gray-500">{type.myanmar}</div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">📊 အမှတ်များ အပြည့်အစုံ (ကြီးစဥ်ငယ်လိုက်)</h3>
+
+              {/* Top 3 Highlighted */}
+              <div className="mb-6">
+                <h4 className="text-lg font-medium text-gray-700 mb-3">🏆 ထိပ်တန်း ၃ ခု</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {topTypes.map((type, index) => (
+                    <div
+                      key={type.key}
+                      className={`p-4 rounded-lg border-2 ${
+                        index === 0
+                          ? "bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-400"
+                          : index === 1
+                            ? "bg-gradient-to-r from-gray-100 to-gray-200 border-gray-400"
+                            : "bg-gradient-to-r from-orange-100 to-red-100 border-orange-400"
+                      }`}
+                    >
+                      <div className="text-center">
+                        <div className="text-2xl mb-2">{index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}</div>
+                        <div className="text-lg font-bold text-gray-800">Type {type.type}</div>
+                        <div className="text-sm text-purple-600 font-semibold">{type.myanmar}</div>
+                        <div className="text-xl font-bold text-blue-600 mt-2">{type.count} အမှတ်</div>
+                        <div className="text-xs text-gray-500">
+                          {Math.round((type.count / questions.length) * 100)}%
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* Complete Ranking List */}
+              <div>
+                <h4 className="text-lg font-medium text-gray-700 mb-3">📋 အမှတ်များ အပြည့်အစုံ</h4>
+                <div className="space-y-2">
+                  {Object.entries(typeMapping)
+                    .map(([key, type]) => ({
+                      ...type,
+                      key,
+                      count: scores[key] || 0,
+                    }))
+                    .sort((a, b) => b.count - a.count)
+                    .map((type, index) => (
+                      <div
+                        key={type.key}
+                        className={`flex items-center justify-between p-4 rounded-lg border ${
+                          index < 3
+                            ? "bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200"
+                            : "bg-white border-gray-200"
+                        }`}
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div
+                            className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${
+                              index === 0
+                                ? "bg-yellow-500"
+                                : index === 1
+                                  ? "bg-gray-500"
+                                  : index === 2
+                                    ? "bg-orange-500"
+                                    : "bg-gray-400"
+                            }`}
+                          >
+                            {index + 1}
+                          </div>
+                          <div>
+                            <div className="font-semibold text-gray-800">
+                              Type {type.type} - {type.myanmar}
+                            </div>
+                            <div className="text-sm text-gray-600">{type.name}</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xl font-bold text-blue-600">{type.count}</div>
+                          <div className="text-xs text-gray-500">
+                            {Math.round((type.count / questions.length) * 100)}%
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* Progress Bars for All Types */}
+              <div className="mt-6">
+                <h4 className="text-lg font-medium text-gray-700 mb-3">📈 အမှတ်များ ဂရပ်ဖ်</h4>
+                <div className="space-y-3">
+                  {Object.entries(typeMapping)
+                    .map(([key, type]) => ({
+                      ...type,
+                      key,
+                      count: scores[key] || 0,
+                    }))
+                    .sort((a, b) => b.count - a.count)
+                    .map((type, index) => {
+                      const percentage = (type.count / questions.length) * 100
+                      return (
+                        <div key={type.key} className="space-y-1">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm font-medium text-gray-700">
+                              Type {type.type} - {type.myanmar}
+                            </span>
+                            <span className="text-sm text-gray-600">{type.count} အမှတ်</span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-3">
+                            <div
+                              className={`h-3 rounded-full transition-all duration-1000 ${
+                                index === 0
+                                  ? "bg-gradient-to-r from-yellow-400 to-orange-500"
+                                  : index === 1
+                                    ? "bg-gradient-to-r from-gray-400 to-gray-500"
+                                    : index === 2
+                                      ? "bg-gradient-to-r from-orange-400 to-red-500"
+                                      : "bg-gradient-to-r from-blue-400 to-blue-500"
+                              }`}
+                              style={{ width: `${percentage}%` }}
+                            ></div>
+                          </div>
+                          <div className="text-xs text-gray-500 text-right">{Math.round(percentage)}%</div>
+                        </div>
+                      )
+                    })}
+                </div>
               </div>
             </div>
 
