@@ -20,6 +20,9 @@ import {
   FileImage,
   FileText,
   Share2,
+  Volume2,
+  VolumeX,
+  Focus,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -41,13 +44,42 @@ export default function EnneagramTestApp() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
 
-  // Ref for the results container to capture for export
+  // Focus Mode & Audio States
+  const [isFocusMode, setIsFocusMode] = useState(false)
+  const [isAudioEnabled, setIsAudioEnabled] = useState(false)
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false)
+  const [audioVolume, setAudioVolume] = useState(0.3)
+  const [breathingMode, setBreathingMode] = useState(false)
+
+  // Refs
   const resultsRef = useRef(null)
+  const audioRef = useRef(null)
 
   // Your specific Google Sheet ID
   const SHEET_ID = "12tgm-6KM1w5kUK_stJbLJCnwskiHZQIQTeYvPbmWtgQ"
 
-  // Onboarding steps
+  // Free ambient music URLs (using placeholder - you can replace with actual free music)
+  const ambientTracks = [
+    {
+      name: "Peaceful Piano",
+      url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav", // Placeholder
+      description: "ငြိမ်သက်သော ပီယာနို",
+    },
+    {
+      name: "Nature Sounds",
+      url: "https://www.soundjay.com/nature/sounds/rain-03.wav", // Placeholder
+      description: "သဘာဝအသံများ",
+    },
+    {
+      name: "Meditation Bells",
+      url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav", // Placeholder
+      description: "တရားထိုင်ခေါင်းလောင်း",
+    },
+  ]
+
+  const [currentTrack, setCurrentTrack] = useState(0)
+
+  // Onboarding steps (keeping the same as before)
   const onboardingSteps = [
     {
       id: "welcome",
@@ -251,6 +283,20 @@ export default function EnneagramTestApp() {
               </div>
             </div>
           </div>
+
+          {/* Focus Mode Introduction */}
+          <div className="bg-indigo-50 p-6 rounded-xl border border-indigo-200">
+            <h4 className="font-semibold text-indigo-800 mb-3 flex items-center gap-2">
+              <Focus size={20} />
+              Focus Mode Features
+            </h4>
+            <div className="space-y-2 text-indigo-700 text-sm">
+              <p>• 🎵 ငြိမ်သက်သော နောက်ခံတေးဂီတ</p>
+              <p>• 🧘 အာရုံစိုက်မှု တိုးတက်စေမည့် UI</p>
+              <p>• 🌸 အသက်ရှူခြင်း လမ်းညွှန်မှု</p>
+              <p>• ✨ စိတ်လွှဲစေနိုင်သော အရာများ ဖယ်ရှားမှု</p>
+            </div>
+          </div>
         </div>
       ),
     },
@@ -272,6 +318,37 @@ export default function EnneagramTestApp() {
   useEffect(() => {
     loadQuestionsFromGoogleSheet()
   }, [])
+
+  // Audio management
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = audioVolume
+      audioRef.current.loop = true
+    }
+  }, [audioVolume])
+
+  const toggleAudio = () => {
+    if (audioRef.current) {
+      if (isAudioPlaying) {
+        audioRef.current.pause()
+        setIsAudioPlaying(false)
+      } else {
+        audioRef.current.play().catch(console.error)
+        setIsAudioPlaying(true)
+      }
+    }
+    setIsAudioEnabled(!isAudioEnabled)
+  }
+
+  const changeTrack = (trackIndex) => {
+    setCurrentTrack(trackIndex)
+    if (audioRef.current && isAudioPlaying) {
+      audioRef.current.pause()
+      setTimeout(() => {
+        audioRef.current.play().catch(console.error)
+      }, 100)
+    }
+  }
 
   // Load questions directly from Google Sheet
   const loadQuestionsFromGoogleSheet = async () => {
@@ -354,7 +431,7 @@ export default function EnneagramTestApp() {
         calculateResults()
       }
       setIsTransitioning(false)
-    }, 600) // 600ms delay to show selection feedback
+    }, 800) // Slightly longer delay for better UX
   }
 
   const goToNextQuestion = () => {
@@ -380,6 +457,12 @@ export default function EnneagramTestApp() {
 
     setScores(scoreCount)
     setShowResults(true)
+
+    // Stop audio when test is complete
+    if (audioRef.current && isAudioPlaying) {
+      audioRef.current.pause()
+      setIsAudioPlaying(false)
+    }
   }
 
   // Get all types sorted by score (highest to lowest)
@@ -430,7 +513,7 @@ export default function EnneagramTestApp() {
     setLoadingAI(false)
   }
 
-  // Export functions
+  // Export functions (keeping the same as before)
   const exportAsPNG = async () => {
     setIsExporting(true)
     try {
@@ -540,6 +623,12 @@ export default function EnneagramTestApp() {
     setAiInsight("")
     setTestStarted(false)
     setOnboardingStep(0)
+    setIsFocusMode(false)
+    setIsAudioEnabled(false)
+    setIsAudioPlaying(false)
+    if (audioRef.current) {
+      audioRef.current.pause()
+    }
   }
 
   const nextOnboardingStep = () => {
@@ -560,7 +649,7 @@ export default function EnneagramTestApp() {
     return Math.round((Object.keys(answers).length / questions.length) * 100)
   }
 
-  // Loading screen
+  // Loading screen (keeping the same)
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
@@ -575,7 +664,7 @@ export default function EnneagramTestApp() {
     )
   }
 
-  // Error screen
+  // Error screen (keeping the same)
   if (loadingError) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
@@ -600,7 +689,7 @@ export default function EnneagramTestApp() {
     )
   }
 
-  // Onboarding flow (step-by-step)
+  // Onboarding flow (keeping mostly the same but adding focus mode intro)
   if (!testStarted) {
     const currentStep = onboardingSteps[onboardingStep]
     const isLastStep = onboardingStep === onboardingSteps.length - 1
@@ -608,7 +697,6 @@ export default function EnneagramTestApp() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full space-y-6">
-          {/* Progress indicator */}
           <div className="text-center">
             <div className="flex justify-center space-x-2 mb-4">
               {onboardingSteps.map((_, index) => (
@@ -625,26 +713,19 @@ export default function EnneagramTestApp() {
             </p>
           </div>
 
-          {/* Main card */}
           <Card className="shadow-lg">
             <CardContent className="p-8">
               <div className="text-center space-y-6">
-                {/* Icon */}
                 <div className="flex justify-center">{currentStep.icon}</div>
-
-                {/* Title */}
                 <div>
                   <h1 className="text-2xl font-bold text-gray-800 mb-2">{currentStep.title}</h1>
                   <p className="text-gray-600">{currentStep.subtitle}</p>
                 </div>
-
-                {/* Content */}
                 <div className="text-left">{currentStep.content}</div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Navigation */}
           <div className="flex justify-between items-center">
             <Button onClick={prevOnboardingStep} disabled={onboardingStep === 0} variant="outline" size="sm">
               <ChevronLeft size={16} className="mr-1" />
@@ -673,7 +754,7 @@ export default function EnneagramTestApp() {
     )
   }
 
-  // Results screen with all types ranked and export functionality
+  // Results screen (keeping the same as before)
   if (showResults) {
     const allTypesSorted = getAllTypesSorted()
     const topThree = allTypesSorted.slice(0, 3)
@@ -756,7 +837,6 @@ export default function EnneagramTestApp() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="flex items-center gap-2">
-                            {/* Rank indicator */}
                             <div
                               className={`
                               w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
@@ -849,7 +929,7 @@ export default function EnneagramTestApp() {
                   <div className="text-center">
                     <Button onClick={() => getAIInsight(topThree)} className="w-full">
                       <MessageCircle size={16} className="mr-2" />
-                      AI ကိုမေးကြည့်မယ်
+                      AI ကိုမေးကြည့်မယ်
                     </Button>
                   </div>
                 ) : (
@@ -880,71 +960,174 @@ export default function EnneagramTestApp() {
     )
   }
 
-  // Test questions (ultra-minimalist version with auto-advance)
+  // Test questions - Enhanced Focus Mode
   const currentQuestion = questions[currentQuestionIndex]
   const currentAnswer = answers[currentQuestion?.id]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4">
+    <div
+      className={`min-h-screen transition-all duration-1000 ${
+        isFocusMode
+          ? "bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900"
+          : "bg-gradient-to-br from-purple-50 to-blue-50"
+      } p-4`}
+    >
+      {/* Background Audio */}
+      <audio ref={audioRef} src={ambientTracks[currentTrack].url} loop preload="auto" className="hidden" />
+
       <div className="max-w-lg mx-auto space-y-4">
-        {/* Ultra Minimal Header - Focus Mode */}
+        {/* Enhanced Header with Focus Mode Controls */}
         <div className="text-center space-y-3">
+          {/* Focus Mode Toggle */}
+          <div className="flex justify-center items-center gap-4 mb-4">
+            <Button
+              onClick={() => setIsFocusMode(!isFocusMode)}
+              variant={isFocusMode ? "default" : "outline"}
+              size="sm"
+              className={`transition-all duration-300 ${
+                isFocusMode
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg"
+                  : "bg-white/80 backdrop-blur-sm"
+              }`}
+            >
+              <Focus size={16} className="mr-2" />
+              {isFocusMode ? "Focus Mode ON" : "Focus Mode"}
+            </Button>
+
+            {/* Audio Controls */}
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={toggleAudio}
+                variant="outline"
+                size="sm"
+                className={`transition-all duration-300 ${
+                  isFocusMode ? "bg-white/10 backdrop-blur-sm text-white border-white/30" : "bg-white/80"
+                }`}
+              >
+                {isAudioPlaying ? <Volume2 size={16} /> : <VolumeX size={16} />}
+              </Button>
+
+              {isAudioEnabled && (
+                <select
+                  value={currentTrack}
+                  onChange={(e) => changeTrack(Number.parseInt(e.target.value))}
+                  className={`text-xs px-2 py-1 rounded transition-all ${
+                    isFocusMode ? "bg-white/10 backdrop-blur-sm text-white border-white/30" : "bg-white/80"
+                  }`}
+                >
+                  {ambientTracks.map((track, index) => (
+                    <option key={index} value={index} className="text-gray-800">
+                      {track.description}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+          </div>
+
+          {/* Progress Section */}
           <div className="flex items-center justify-center gap-4">
-            <div className="text-sm text-muted-foreground font-medium">
+            <div
+              className={`text-sm font-medium transition-colors ${
+                isFocusMode ? "text-white/90" : "text-muted-foreground"
+              }`}
+            >
               {currentQuestionIndex + 1} / {questions.length}
             </div>
-            <div className="text-xs text-muted-foreground">{getProgress()}% ပြီးပါပြီ</div>
+            <div className={`text-xs transition-colors ${isFocusMode ? "text-white/70" : "text-muted-foreground"}`}>
+              {getProgress()}% ပြီးပါပြီ
+            </div>
           </div>
-          <Progress value={getProgress()} className="w-full h-3 bg-gray-200" />
+
+          <Progress
+            value={getProgress()}
+            className={`w-full h-3 transition-all duration-300 ${isFocusMode ? "bg-white/20" : "bg-gray-200"}`}
+          />
+
+          {/* Breathing Guide (Focus Mode Only) */}
+          {isFocusMode && breathingMode && (
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-white/40 animate-pulse"></div>
+                </div>
+                <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+                  <p className="text-xs text-white/70">အသက်ရှူပါ</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Question Card - Focus Mode Design */}
+        {/* Enhanced Question Card - Focus Mode */}
         <Card
-          className={`shadow-xl transition-all duration-300 border-0 ${
+          className={`shadow-xl transition-all duration-500 border-0 ${
             isTransitioning ? "opacity-75 scale-95" : "opacity-100 scale-100"
-          }`}
+          } ${isFocusMode ? "bg-white/10 backdrop-blur-lg border border-white/20" : "bg-white shadow-2xl"}`}
         >
           <CardContent className="p-0">
             {/* Question Number Indicator */}
-            <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 text-center">
+            <div
+              className={`p-4 text-center transition-all duration-300 ${
+                isFocusMode
+                  ? "bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm text-white"
+                  : "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+              }`}
+            >
               <div className="text-sm font-medium opacity-90">မေးခွန်း</div>
               <div className="text-2xl font-bold">{currentQuestionIndex + 1}</div>
             </div>
 
             <div className="p-8 space-y-8">
-              {/* Statement A - Focus Mode */}
+              {/* Statement A - Enhanced Focus Mode */}
               <button
                 onClick={() => handleAnswerSelect("A")}
                 disabled={isTransitioning}
                 className={`
-          w-full p-6 rounded-2xl text-left transition-all duration-300 group
-          ${
-            currentAnswer?.choice === "A"
-              ? "bg-gradient-to-r from-purple-100 to-purple-50 border-2 border-purple-400 shadow-lg transform scale-[1.02]"
-              : "bg-white border-2 border-gray-200 hover:border-purple-300 hover:shadow-md hover:transform hover:scale-[1.01]"
-          }
-          ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}
-        `}
+                  w-full p-6 rounded-2xl text-left transition-all duration-300 group
+                  ${
+                    currentAnswer?.choice === "A"
+                      ? isFocusMode
+                        ? "bg-gradient-to-r from-purple-500/30 to-purple-400/20 border-2 border-purple-400/50 shadow-lg transform scale-[1.02] backdrop-blur-sm"
+                        : "bg-gradient-to-r from-purple-100 to-purple-50 border-2 border-purple-400 shadow-lg transform scale-[1.02]"
+                      : isFocusMode
+                        ? "bg-white/10 backdrop-blur-sm border-2 border-white/20 hover:border-purple-400/50 hover:bg-white/20 hover:shadow-lg hover:transform hover:scale-[1.01]"
+                        : "bg-white border-2 border-gray-200 hover:border-purple-300 hover:shadow-md hover:transform hover:scale-[1.01]"
+                  }
+                  ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}
+                `}
               >
                 <div className="flex items-start gap-4">
                   <div
                     className={`
-            w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
-            ${
-              currentAnswer?.choice === "A"
-                ? "bg-purple-500 text-white"
-                : "bg-gray-200 text-gray-600 group-hover:bg-purple-200 group-hover:text-purple-700"
-            }
-          `}
+                      w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
+                      ${
+                        currentAnswer?.choice === "A"
+                          ? isFocusMode
+                            ? "bg-purple-500 text-white shadow-lg"
+                            : "bg-purple-500 text-white"
+                          : isFocusMode
+                            ? "bg-white/20 text-white group-hover:bg-purple-500/70 group-hover:text-white"
+                            : "bg-gray-200 text-gray-600 group-hover:bg-purple-200 group-hover:text-purple-700"
+                      }
+                    `}
                   >
                     A
                   </div>
                   <div className="flex-1">
                     <div
                       className={`
-              text-gray-800 leading-relaxed font-medium text-lg
-              ${currentAnswer?.choice === "A" ? "text-purple-900" : ""}
-            `}
+                        leading-relaxed font-medium text-lg transition-colors
+                        ${
+                          currentAnswer?.choice === "A"
+                            ? isFocusMode
+                              ? "text-white"
+                              : "text-purple-900"
+                            : isFocusMode
+                              ? "text-white/90"
+                              : "text-gray-800"
+                        }
+                      `}
                     >
                       {currentQuestion.statementA}
                     </div>
@@ -952,39 +1135,55 @@ export default function EnneagramTestApp() {
                 </div>
               </button>
 
-              {/* Statement B - Focus Mode */}
+              {/* Statement B - Enhanced Focus Mode */}
               <button
                 onClick={() => handleAnswerSelect("B")}
                 disabled={isTransitioning}
                 className={`
-          w-full p-6 rounded-2xl text-left transition-all duration-300 group
-          ${
-            currentAnswer?.choice === "B"
-              ? "bg-gradient-to-r from-blue-100 to-blue-50 border-2 border-blue-400 shadow-lg transform scale-[1.02]"
-              : "bg-white border-2 border-gray-200 hover:border-blue-300 hover:shadow-md hover:transform hover:scale-[1.01]"
-          }
-          ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}
-        `}
+                  w-full p-6 rounded-2xl text-left transition-all duration-300 group
+                  ${
+                    currentAnswer?.choice === "B"
+                      ? isFocusMode
+                        ? "bg-gradient-to-r from-blue-500/30 to-blue-400/20 border-2 border-blue-400/50 shadow-lg transform scale-[1.02] backdrop-blur-sm"
+                        : "bg-gradient-to-r from-blue-100 to-blue-50 border-2 border-blue-400 shadow-lg transform scale-[1.02]"
+                      : isFocusMode
+                        ? "bg-white/10 backdrop-blur-sm border-2 border-white/20 hover:border-blue-400/50 hover:bg-white/20 hover:shadow-lg hover:transform hover:scale-[1.01]"
+                        : "bg-white border-2 border-gray-200 hover:border-blue-300 hover:shadow-md hover:transform hover:scale-[1.01]"
+                  }
+                  ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}
+                `}
               >
                 <div className="flex items-start gap-4">
                   <div
                     className={`
-            w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
-            ${
-              currentAnswer?.choice === "B"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-600 group-hover:bg-blue-200 group-hover:text-blue-700"
-            }
-          `}
+                      w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
+                      ${
+                        currentAnswer?.choice === "B"
+                          ? isFocusMode
+                            ? "bg-blue-500 text-white shadow-lg"
+                            : "bg-blue-500 text-white"
+                          : isFocusMode
+                            ? "bg-white/20 text-white group-hover:bg-blue-500/70 group-hover:text-white"
+                            : "bg-gray-200 text-gray-600 group-hover:bg-blue-200 group-hover:text-blue-700"
+                      }
+                    `}
                   >
                     B
                   </div>
                   <div className="flex-1">
                     <div
                       className={`
-              text-gray-800 leading-relaxed font-medium text-lg
-              ${currentAnswer?.choice === "B" ? "text-blue-900" : ""}
-            `}
+                        leading-relaxed font-medium text-lg transition-colors
+                        ${
+                          currentAnswer?.choice === "B"
+                            ? isFocusMode
+                              ? "text-white"
+                              : "text-blue-900"
+                            : isFocusMode
+                              ? "text-white/90"
+                              : "text-gray-800"
+                        }
+                      `}
                     >
                       {currentQuestion.statementB}
                     </div>
@@ -993,14 +1192,20 @@ export default function EnneagramTestApp() {
               </button>
             </div>
 
-            {/* Minimal Navigation - Focus Mode */}
-            <div className="bg-gray-50 px-8 py-4 flex justify-between items-center border-t border-gray-100">
+            {/* Enhanced Navigation - Focus Mode */}
+            <div
+              className={`px-8 py-4 flex justify-between items-center border-t transition-all ${
+                isFocusMode ? "bg-white/5 backdrop-blur-sm border-white/10" : "bg-gray-50 border-gray-100"
+              }`}
+            >
               <Button
                 onClick={goToPreviousQuestion}
                 disabled={currentQuestionIndex === 0 || isTransitioning}
                 variant="ghost"
                 size="sm"
-                className="text-gray-500 hover:text-gray-700"
+                className={`transition-colors ${
+                  isFocusMode ? "text-white/70 hover:text-white hover:bg-white/10" : "text-gray-500 hover:text-gray-700"
+                }`}
               >
                 <ChevronLeft size={16} className="mr-1" />
                 ရှေ့သို့
@@ -1008,9 +1213,13 @@ export default function EnneagramTestApp() {
 
               <div className="text-center">
                 {isTransitioning && (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
-                    နောက်မေးခွန်းသို့...
+                  <div className="flex items-center gap-2 text-sm">
+                    <div
+                      className={`w-4 h-4 border-2 border-t-transparent rounded-full animate-spin ${
+                        isFocusMode ? "border-white/50" : "border-purple-600"
+                      }`}
+                    ></div>
+                    <span className={isFocusMode ? "text-white/70" : "text-muted-foreground"}>နောက်မေးခွန်းသို့...</span>
                   </div>
                 )}
               </div>
@@ -1020,9 +1229,15 @@ export default function EnneagramTestApp() {
                 disabled={!currentAnswer || isTransitioning}
                 size="sm"
                 variant="ghost"
-                className={`
-          ${currentAnswer ? "text-purple-600 hover:text-purple-700 hover:bg-purple-50" : "text-gray-400"}
-        `}
+                className={`transition-colors ${
+                  currentAnswer
+                    ? isFocusMode
+                      ? "text-white hover:text-white hover:bg-white/10"
+                      : "text-purple-600 hover:text-purple-700 hover:bg-purple-50"
+                    : isFocusMode
+                      ? "text-white/30"
+                      : "text-gray-400"
+                }`}
               >
                 {currentQuestionIndex === questions.length - 1 ? (
                   <>
@@ -1037,6 +1252,23 @@ export default function EnneagramTestApp() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Focus Mode Tips */}
+        {isFocusMode && (
+          <Card className="bg-white/10 backdrop-blur-sm border border-white/20">
+            <CardContent className="p-4 text-center">
+              <p className="text-white/80 text-sm">🧘 အာရုံစိုက်ပြီး နှလုံးသားနဲ့ ဖြေကြည့်ပါ • 🎵 နောက်ခံတေးဂီတ နားထောင်ပါ</p>
+              <Button
+                onClick={() => setBreathingMode(!breathingMode)}
+                variant="ghost"
+                size="sm"
+                className="mt-2 text-white/70 hover:text-white hover:bg-white/10"
+              >
+                {breathingMode ? "အသက်ရှူလမ်းညွှန် ပိတ်မယ်" : "အသက်ရှူလမ်းညွှန် ဖွင့်မယ်"}
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   )
