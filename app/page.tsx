@@ -26,46 +26,46 @@ export default function EnneagramTestApp() {
 
   // Enneagram type mappings
   const typeMapping = {
-    A: { type: 9, name: "The Peacemaker", myanmar: "ငြိမ်းချမ်းရေးဆောင်ကြဉ်းသူ" },
+    A: { type: 9, name: "The Peacemaker", myanmar: "ငြိမ်းချမ်းမှုကို ဖန်တီးသူ" },
     B: { type: 6, name: "The Loyalist", myanmar: "သစ္စာရှိသူ" },
-    C: { type: 3, name: "The Achiever", myanmar: "အောင်မြင်သူ" },
-    D: { type: 1, name: "The Perfectionist", myanmar: "ပြီးပြည့်စုံမှုရှာသူ" },
-    E: { type: 4, name: "The Individualist", myanmar: "ကိုယ်ပိုင်လမ်းသွားသူ" },
-    F: { type: 2, name: "The Helper", myanmar: "ကူညီသူ" },
-    G: { type: 8, name: "The Challenger", myanmar: "စိန်ခေါ်သူ" },
-    H: { type: 5, name: "The Investigator", myanmar: "စုံစမ်းသူ" },
-    I: { type: 7, name: "The Enthusiast", myanmar: "စိတ်အားထက်သန်သူ" },
+    C: { type: 3, name: "The Achiever", myanmar: "ဖြစ်မြောက်အောင်လုပ်နိုင်သူ" },
+    D: { type: 1, name: "The Perfectionist", myanmar: "ကောင်းတဲ့ဘက်ကို ပြောင်းလဲဖို့ စိတ်အားထက်သန်သူ" },
+    E: { type: 4, name: "The Individualist", myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာနေချင်သူ" },
+    F: { type: 2, name: "The Helper", myanmar: "ကူညီဖေးမတတ်သူ" },
+    G: { type: 8, name: "The Challenger", myanmar: "အခက်အခဲကို ရင်ဆိုင်ကျော်လွှားသူ" },
+    H: { type: 5, name: "The Investigator", myanmar: "စူးစမ်းလေ့လာသူ" },
+    I: { type: 7, name: "The Enthusiast", myanmar: "စိတ်ဝင်စားမှုများသူ တက်ကြွသူ" },
   }
 
   // Detailed type descriptions
   const typeDescriptions = {
     1: {
       name: "The Perfectionist",
-      myanmar: "ပြီးပြည့်စုံမှုရှာသူ",
+      myanmar: "ကောင်းတဲ့ဘက်ကို ပြောင်းလဲဖို့ စိတ်အားထက်သန်သူ",
       description: "စံထားချက်မြင့်မားပြီး အမှန်တရားကို ရှာဖွေသူ",
       traits: ["စံထားချက်မြင့်", "တာဝန်သိ", "စည်းကမ်းရှိ", "အမှန်တရားရှာ"],
     },
     2: {
       name: "The Helper",
-      myanmar: "ကူညီသူ",
+      myanmar: "ကူညီဖေးမတတ်သူ",
       description: "အခြားသူများကို ကူညီရန် စိတ်အားထက်သန်သူ",
       traits: ["စာနာမှုရှိ", "ကူညီချင်", "ဆက်ဆံရေးကောင်း", "အခြားသူဦးစား"],
     },
     3: {
       name: "The Achiever",
-      myanmar: "အောင်မြင်သူ",
+      myanmar: "ဖြစ်မြောက်အောင် လုပ်နိုင်သူ",
       description: "ရည်မှန်းချက်များကို အောင်မြင်အောင် လုပ်ဆောင်သူ",
       traits: ["ရည်မှန်းချက်ရှိ", "အောင်မြင်ချင်", "လုပ်ဆောင်ရည်မြင့်", "ခေါင်းဆောင်မှု"],
     },
     4: {
       name: "The Individualist",
-      myanmar: "ကိုယ်ပိုင်လမ်းသွားသူ",
+      myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာနေချင်သူ",
       description: "ကိုယ်ပိုင်ဝိသေသလက္ခဏာကို ရှာဖွေသူ",
       traits: ["ဖန်တီးမှုရှိ", "ခံစားမှုနက်", "ကိုယ်ပိုင်စတိုင်", "အနုပညာစိတ်"],
     },
     5: {
       name: "The Investigator",
-      myanmar: "စုံစမ်းသူ",
+      myanmar: "စုံစမ်းလေ့လာသူ",
       description: "ဗဟုသုတနှင့် နားလည်မှုကို စုဆောင်းသူ",
       traits: ["စုံစမ်းလေ့လာ", "လွတ်လပ်ချင်", "ပုဂ္ဂလိကရေး", "ဉာဏ်ပညာရှာ"],
     },
@@ -77,19 +77,19 @@ export default function EnneagramTestApp() {
     },
     7: {
       name: "The Enthusiast",
-      myanmar: "စိတ်အားထက်သန်သူ",
+      myanmar: "စိတ်ဝင်စားမှုများသူ တက်ကြွသူ",
       description: "အတွေ့အကြုံအသစ်များကို ရှာဖွေသူ",
       traits: ["စိတ်အားထက်သန်", "ပျော်ရွှင်", "စွန့်စားမှု", "အပြုသဘော"],
     },
     8: {
       name: "The Challenger",
-      myanmar: "စိန်ခေါ်သူ",
+      myanmar: "အခက်အခဲကို ရင်ဆိုင်ကျော်လွှားသူ",
       description: "ခွန်အားနှင့် ထိန်းချုပ်မှုကို အသုံးပြုသူ",
       traits: ["ခေါင်းဆောင်မှု", "ခွန်အားရှိ", "တရားမျှတမှု", "ကာကွယ်မှု"],
     },
     9: {
       name: "The Peacemaker",
-      myanmar: "ငြိမ်းချမ်းရေးဆောင်ကြဉ်းသူ",
+      myanmar: "ငြိမ်းချမ်းမှုကို ဖန်တီးသူ",
       description: "သဟဇာတနှင့် ငြိမ်းချမ်းမှုကို ရှာဖွေသူ",
       traits: ["ငြိမ်းချမ်း", "လက်ခံနိုင်", "စာနာမှု", "ညှိနှိုင်းမှု"],
     },
