@@ -650,7 +650,7 @@ export default function EnneagramTestApp() {
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>ရိုးရှင်းစွာ ဖြေကြားပါ</h4>
                     <p className={`${textStyle} opacity-80`}>
-                      မေးခွန်းတစ်ခုစီတွင် ရွေးချယ်စရာ နှစ်ခုပါရှိသည်။ သင့်နှင့် အကြိုက်ညီဆုံးသော အဖြေကို ရွေးချယ်ပါ။
+                      မေးခွန်းတစ်ခုစီမှာ ရွေးချယ်စရာ နှစ်ခုပါရှိတယ်။ သင်နဲ့ အကိုက်ညီဆုံးသော အဖြေကို ရွေးချယ်ပါ။
                     </p>
                   </div>
                 </div>
@@ -660,7 +660,7 @@ export default function EnneagramTestApp() {
                     2
                   </div>
                   <div>
-                    <h4 className={`font-semibold ${textStyle} mb-2`}>ပထမဆုံး စိတ်ကူးကို ယုံကြည်ပါ</h4>
+                    <h4 className={`font-semibold ${textStyle} mb-2`}>ပထမဆုံး ပေါ်လာတဲ့ စိတ်ကူးကို ယုံကြည်ပါ</h4>
                     <p className={`${textStyle} opacity-80`}>အများကြီး မတွေးတောဘဲ ပထမဆုံး စိတ်ကူးပေါက်သော အဖြေကို ရွေးပါ။</p>
                   </div>
                 </div>
@@ -887,7 +887,7 @@ export default function EnneagramTestApp() {
                   🎯 <strong>ပထမဆုံး စိတ်ကူးကို ယုံကြည်ပါ:</strong> အများကြီး မတွေးတောပါနှင့်
                 </p>
                 <p className={`${textStyle} opacity-90 text-sm`}>
-                  💭 <strong>ရိုးရှင်းစွာ ဖြေကြားပါ:</strong> "ကောင်းသော" အဖြေရှာရန် မကြိုးစားပါနှင့်
+                  💭 <strong>ရိုးရှင်းစွာ ဖြေကြားပါ:</strong> "မှန်သော ကောင်းသော" အဖြေရှာရန် မကြိုးစားပါနှင့်
                 </p>
               </div>
             </div>
