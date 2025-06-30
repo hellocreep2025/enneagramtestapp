@@ -30,69 +30,11 @@ export default function EnneagramTestApp() {
     B: { type: 6, name: "The Loyalist", myanmar: "သစ္စာရှိသူ" },
     C: { type: 3, name: "The Achiever", myanmar: "ဖြစ်မြောက်အောင်လုပ်နိုင်သူ" },
     D: { type: 1, name: "The Perfectionist", myanmar: "ကောင်းတဲ့ဘက်ကို ပြောင်းလဲဖို့ စိတ်အားထက်သန်သူ" },
-    E: { type: 4, name: "The Individualist", myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာနေချင်သူ" },
+    E: { type: 4, name: "The Individualist", myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာနေချင်သူ" },
     F: { type: 2, name: "The Helper", myanmar: "ကူညီဖေးမတတ်သူ" },
     G: { type: 8, name: "The Challenger", myanmar: "အခက်အခဲကို ရင်ဆိုင်ကျော်လွှားသူ" },
     H: { type: 5, name: "The Investigator", myanmar: "စူးစမ်းလေ့လာသူ" },
     I: { type: 7, name: "The Enthusiast", myanmar: "စိတ်ဝင်စားမှုများသူ တက်ကြွသူ" },
-  }
-
-  // Detailed type descriptions
-  const typeDescriptions = {
-    1: {
-      name: "The Perfectionist",
-      myanmar: "ကောင်းတဲ့ဘက်ကို ပြောင်းလဲဖို့ စိတ်အားထက်သန်သူ",
-      description: "စံထားချက်မြင့်မားပြီး အမှန်တရားကို ရှာဖွေသူ",
-      traits: ["စံထားချက်မြင့်", "တာဝန်သိ", "စည်းကမ်းရှိ", "အမှန်တရားရှာ"],
-    },
-    2: {
-      name: "The Helper",
-      myanmar: "ကူညီဖေးမတတ်သူ",
-      description: "အခြားသူများကို ကူညီရန် စိတ်အားထက်သန်သူ",
-      traits: ["စာနာမှုရှိ", "ကူညီချင်", "ဆက်ဆံရေးကောင်း", "အခြားသူဦးစား"],
-    },
-    3: {
-      name: "The Achiever",
-      myanmar: "ဖြစ်မြောက်အောင် လုပ်နိုင်သူ",
-      description: "ရည်မှန်းချက်များကို အောင်မြင်အောင် လုပ်ဆောင်သူ",
-      traits: ["ရည်မှန်းချက်ရှိ", "အောင်မြင်ချင်", "လုပ်ဆောင်ရည်မြင့်", "ခေါင်းဆောင်မှု"],
-    },
-    4: {
-      name: "The Individualist",
-      myanmar: "ကိုယ့်စိတ်ကူးနဲ့ကိုယ် တမူထူးစွာနေချင်သူ",
-      description: "ကိုယ်ပိုင်ဝိသေသလက္ခဏာကို ရှာဖွေသူ",
-      traits: ["ဖန်တီးမှုရှိ", "ခံစားမှုနက်", "ကိုယ်ပိုင်စတိုင်", "အနုပညာစိတ်"],
-    },
-    5: {
-      name: "The Investigator",
-      myanmar: "စုံစမ်းလေ့လာသူ",
-      description: "ဗဟုသုတနှင့် နားလည်မှုကို စုဆောင်းသူ",
-      traits: ["စုံစမ်းလေ့လာ", "လွတ်လပ်ချင်", "ပုဂ္ဂလိကရေး", "ဉာဏ်ပညာရှာ"],
-    },
-    6: {
-      name: "The Loyalist",
-      myanmar: "သစ္စာရှိသူ",
-      description: "လုံခြုံမှုနှင့် ယုံကြည်စိတ်ချရမှုကို ရှာဖွေသူ",
-      traits: ["သစ္စာရှိ", "တာဝန်သိ", "ဂရုစိုက်", "အဖွဲ့လိုက်လုပ်"],
-    },
-    7: {
-      name: "The Enthusiast",
-      myanmar: "စိတ်ဝင်စားမှုများသူ တက်ကြွသူ",
-      description: "အတွေ့အကြုံအသစ်များကို ရှာဖွေသူ",
-      traits: ["စိတ်အားထက်သန်", "ပျော်ရွှင်", "စွန့်စားမှု", "အပြုသဘော"],
-    },
-    8: {
-      name: "The Challenger",
-      myanmar: "အခက်အခဲကို ရင်ဆိုင်ကျော်လွှားသူ",
-      description: "ခွန်အားနှင့် ထိန်းချုပ်မှုကို အသုံးပြုသူ",
-      traits: ["ခေါင်းဆောင်မှု", "ခွန်အားရှိ", "တရားမျှတမှု", "ကာကွယ်မှု"],
-    },
-    9: {
-      name: "The Peacemaker",
-      myanmar: "ငြိမ်းချမ်းမှုကို ဖန်တီးသူ",
-      description: "သဟဇာတနှင့် ငြိမ်းချမ်းမှုကို ရှာဖွေသူ",
-      traits: ["ငြိမ်းချမ်း", "လက်ခံနိုင်", "စာနာမှု", "ညှိနှိုင်းမှု"],
-    },
   }
 
   // Load questions on component mount
@@ -126,6 +68,16 @@ export default function EnneagramTestApp() {
             questionsData = result
             source = result._source || `Strategy ${i + 1}`
             console.log(`✅ Success with ${source}: ${result.questions.length} questions`)
+
+            // Additional validation for the loaded questions
+            const expectedCount = 144
+            const actualCount = result.questions.length
+
+            if (actualCount !== expectedCount) {
+              console.warn(`⚠️ Question count mismatch! Expected: ${expectedCount}, Got: ${actualCount}`)
+              console.warn(`📊 Missing: ${expectedCount - actualCount} questions`)
+            }
+
             break
           }
         } catch (error) {
@@ -138,6 +90,11 @@ export default function EnneagramTestApp() {
         setQuestions(questionsData.questions)
         setDataSource(source)
         console.log(`🎉 Final result: ${questionsData.questions.length} questions loaded from ${source}`)
+
+        // Show warning if not 144 questions
+        if (questionsData.questions.length !== 144) {
+          console.warn(`⚠️ WARNING: Expected 144 questions but got ${questionsData.questions.length}`)
+        }
       } else {
         throw new Error("All loading strategies failed")
       }
@@ -150,11 +107,59 @@ export default function EnneagramTestApp() {
   }
 
   const loadFromGoogleSheet = async (sheetId) => {
+    console.log(`🔄 Loading from Google Sheet: ${sheetId}`)
     const response = await fetch(`/api/load-google-sheet?sheetId=${sheetId}`)
     if (!response.ok) {
       throw new Error(`Google Sheets API failed: ${response.status}`)
     }
     const data = await response.json()
+
+    // Add detailed logging about the loaded data
+    console.log(`📊 Raw data from Google Sheets:`, {
+      title: data.title,
+      totalQuestions: data.totalQuestions,
+      actualQuestions: data.questions?.length || 0,
+      loadedVia: data._loadedVia,
+    })
+
+    // Check for any missing or invalid questions
+    if (data.questions) {
+      const validQuestions = data.questions.filter((q) => q.id && q.statementA && q.statementB && q.scoreA && q.scoreB)
+      const invalidQuestions = data.questions.filter(
+        (q) => !q.id || !q.statementA || !q.statementB || !q.scoreA || !q.scoreB,
+      )
+
+      console.log(`✅ Valid questions: ${validQuestions.length}`)
+      console.log(`❌ Invalid questions: ${invalidQuestions.length}`)
+
+      if (invalidQuestions.length > 0) {
+        console.log(`🔍 Invalid questions details:`, invalidQuestions.slice(0, 5))
+      }
+
+      // Check for duplicate IDs
+      const ids = data.questions.map((q) => q.id)
+      const uniqueIds = [...new Set(ids)]
+      if (ids.length !== uniqueIds.length) {
+        console.warn(`⚠️ Found duplicate question IDs. Total: ${ids.length}, Unique: ${uniqueIds.length}`)
+      }
+
+      // Check for missing IDs in sequence
+      const sortedIds = ids.sort((a, b) => a - b)
+      const missingIds = []
+      for (let i = 1; i <= 144; i++) {
+        if (!sortedIds.includes(i)) {
+          missingIds.push(i)
+        }
+      }
+
+      if (missingIds.length > 0) {
+        console.warn(
+          `⚠️ Missing question IDs: ${missingIds.slice(0, 10).join(", ")}${missingIds.length > 10 ? "..." : ""}`,
+        )
+        console.warn(`📊 Total missing: ${missingIds.length} questions`)
+      }
+    }
+
     return { ...data, _source: "Google Sheets" }
   }
 
@@ -363,8 +368,8 @@ export default function EnneagramTestApp() {
   }
 
   const nextOnboardingStep = () => {
-    if (onboardingStep < 7) {
-      // Changed from 6 to 7
+    if (onboardingStep < 3) {
+      // Changed from 7 to 3 (only 4 steps now: 0,1,2,3)
       setOnboardingStep(onboardingStep + 1)
     } else {
       setTestStarted(true)
@@ -410,9 +415,9 @@ export default function EnneagramTestApp() {
     )
   }
 
-  // Landing Pages / Onboarding Flow
+  // Landing Pages / Onboarding Flow - Now only 4 steps (0,1,2,3)
   if (!testStarted) {
-    // Welcome Page
+    // Welcome Page (Step 0)
     if (onboardingStep === 0) {
       return (
         <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
@@ -446,7 +451,7 @@ export default function EnneagramTestApp() {
       )
     }
 
-    // Disclaimer Page
+    // Disclaimer Page (Step 1)
     if (onboardingStep === 1) {
       return (
         <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
@@ -493,7 +498,7 @@ export default function EnneagramTestApp() {
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>အကြံပြုချက်</h4>
                     <p className={`${textStyle} opacity-90 text-sm`}>
-                      ရိုးရှင်းစွာ ဖြေကြားပါ။ "ကောင်းသော" အဖြေရှာရန် မကြိုးစားပါနှင့်။ သင့်ရဲ့ ပထမဆုံး စိတ်ကူးကို ယုံကြည်ပါ။
+                      ရိုးရှင်းစွာ ဖြေကြားပါ။ "ကောင်းသော" အဖြေရှာရန် မကြိုးစားပါနဲ့။ သင့်ရဲ့ ပထမဆုံး စိတ်ကူးကို ယုံကြည်ပါ။
                     </p>
                   </div>
                 </div>
@@ -519,58 +524,8 @@ export default function EnneagramTestApp() {
       )
     }
 
-    // 9 Types Overview
+    // Reference Book & Questions Source (Step 2)
     if (onboardingStep === 2) {
-      return (
-        <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
-          <div className={`${cardStyle} p-8 rounded-2xl max-w-6xl w-full`}>
-            <div className="text-center mb-8">
-              <div className="text-5xl mb-4">🎭</div>
-              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>Enneagram ၉ မျိုး အမျိုးအစားများ</h2>
-              <p className={`${textStyle} opacity-90`}>သင့်ရဲ့ ကိုယ်ရည်ကိုယ်သွေး အမျိုးအစားကို ရှာဖွေရန် အောက်ပါ ၉ မျိုးထဲမှ တစ်ခုဖြစ်မည်</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              {Object.entries(typeDescriptions).map(([typeNum, info]) => (
-                <div key={typeNum} className={`${cardStyle} p-4 rounded-xl`}>
-                  <div className="text-center mb-3">
-                    <div className={`text-2xl font-bold ${textStyle} mb-1`}>Type {typeNum}</div>
-                    <div className={`text-lg ${textStyle} font-semibold mb-1`}>{info.myanmar}</div>
-                    <div className={`text-sm ${textStyle} opacity-80 mb-2`}>{info.name}</div>
-                  </div>
-                  <p className={`text-sm ${textStyle} opacity-90 mb-3 text-center`}>{info.description}</p>
-                  <div className="flex flex-wrap gap-1 justify-center">
-                    {info.traits.map((trait, index) => (
-                      <span key={index} className="bg-white/20 text-white text-xs px-2 py-1 rounded">
-                        {trait}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex space-x-4">
-              <button
-                onClick={prevOnboardingStep}
-                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
-              >
-                ← နောက်သို့
-              </button>
-              <button
-                onClick={nextOnboardingStep}
-                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
-              >
-                ရှေ့သို့ →
-              </button>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    // Reference Book & Questions Source (Step 3)
-    if (onboardingStep === 3) {
       return (
         <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
           <div className={`${cardStyle} p-8 rounded-2xl max-w-3xl w-full`}>
@@ -607,8 +562,8 @@ export default function EnneagramTestApp() {
 
             <div className={`${cardStyle} p-6 rounded-xl mb-8 text-center`}>
               <p className={`${textStyle} opacity-90 leading-relaxed`}>
-                ဤစမ်းသပ်မှုသည် မြန်မာလူမျိုးများအတွက် ကိုယ်ရည်ကိုယ်သွေး နားလည်းမှုနှင့် ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရေးသားထားသော "ငါ ဘယ်သူလဲ" စာအုပ်မှ
-                မေးခွန်းများကို အခြေခံ၍ ပြုလုပ်ထားပါသည်။
+                ဒီစမ်းစစ်ချက်လေးက ကိုယ်ရည်ကိုယ်သွေး နားလည်မှုနှင့် ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရေးသားထားသော "ငါ ဘယ်သူလဲ" စာအုပ်မှ
+                မေးခွန်းများကို အခြေခံ၍ ပြုလုပ်ထားပါတယ်။
               </p>
             </div>
 
@@ -631,8 +586,8 @@ export default function EnneagramTestApp() {
       )
     }
 
-    // Instructions Page (now Step 4)
-    if (onboardingStep === 4) {
+    // Instructions Page (Step 3 - Final step)
+    if (onboardingStep === 3) {
       return (
         <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
           <div className={`${cardStyle} p-8 rounded-2xl max-w-2xl w-full`}>
@@ -661,7 +616,7 @@ export default function EnneagramTestApp() {
                   </div>
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>ပထမဆုံး ပေါ်လာတဲ့ စိတ်ကူးကို ယုံကြည်ပါ</h4>
-                    <p className={`${textStyle} opacity-80`}>အများကြီး မတွေးတောဘဲ ပထမဆုံး စိတ်ကူးပေါက်သော အဖြေကို ရွေးပါ။</p>
+                    <p className={`${textStyle} opacity-80`}>အများကြီး မတွေးဘဲ ပထမဆုံး စိတ်ထဲထင်ရှားတဲ့ အဖြေကို ရွေးပါ။</p>
                   </div>
                 </div>
 
@@ -672,7 +627,7 @@ export default function EnneagramTestApp() {
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>မှန်သော အဖြေမရှိပါ</h4>
                     <p className={`${textStyle} opacity-80`}>
-                      ဤစမ်းသပ်မှုတွင် မှန်သော သို့မဟုတ် မှားသော အဖြေမရှိပါ။ သင့်ရဲ့ စစ်မှန်သော ခံစားချက်ကိုသာ ဖြေကြားပါ။
+                      မှန်တာ ၊ မှားတာ မရှိပါ။ သင့်ရဲ့ စစ်မှန်သော ခံစားချက်အတိုင်းသာ ဖြေကြည့်နော်။
                     </p>
                   </div>
                 </div>
@@ -684,211 +639,10 @@ export default function EnneagramTestApp() {
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>အချိန်ယူပါ</h4>
                     <p className={`${textStyle} opacity-80`}>
-                      အလျင်အမြန် မဖြေကြားပါနှင့်။ မေးခွန်းတစ်ခုစီကို ဂရုတစိုက် ဖတ်ပြီး ဖြေကြားပါ။
+                      အလျင်စလို မဖြေကြားပါနဲ့။ မေးခွန်းတစ်ခုစီကို ဂရုတစိုက် ဖတ်ပြီး ဖြေတာပိုကောင်းတယ်။
                     </p>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="flex space-x-4">
-              <button
-                onClick={prevOnboardingStep}
-                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
-              >
-                ← နောက်သို့
-              </button>
-              <button
-                onClick={nextOnboardingStep}
-                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
-              >
-                ရှေ့သို့ →
-              </button>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    // Test Info Page (now Step 5)
-    if (onboardingStep === 5) {
-      return (
-        <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
-          <div className={`${cardStyle} p-8 rounded-2xl max-w-2xl w-full`}>
-            <div className="text-center mb-8">
-              <div className="text-5xl mb-4">📊</div>
-              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>စမ်းသပ်မှု အချက်အလက်များ</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className={`${cardStyle} p-6 rounded-xl text-center`}>
-                <div className={`text-3xl font-bold ${textStyle} mb-2`}>{questions.length}</div>
-                <div className={`text-sm ${textStyle} opacity-80`}>မေးခွန်းများ</div>
-              </div>
-              <div className={`${cardStyle} p-6 rounded-xl text-center`}>
-                <div className={`text-3xl font-bold ${textStyle} mb-2`}>~{Math.ceil(questions.length / 2)}</div>
-                <div className={`text-sm ${textStyle} opacity-80`}>မိနစ်ခန့်</div>
-              </div>
-              <div className={`${cardStyle} p-6 rounded-xl text-center`}>
-                <div className={`text-3xl font-bold ${textStyle} mb-2`}>9</div>
-                <div className={`text-sm ${textStyle} opacity-80`}>ကိုယ်ရည်ကိုယ်သွေး အမျိုးအစား</div>
-              </div>
-            </div>
-
-            <div className={`${cardStyle} p-6 rounded-xl mb-8`}>
-              <h3 className={`text-lg font-semibold ${textStyle} mb-4`}>🎯 သင် ရရှိမည့်အရာများ</h3>
-              <ul className={`${textStyle} opacity-90 space-y-2`}>
-                <li>• သင့်ရဲ့ အဓိက ကိုယ်ရည်ကိုယ်သွေး အမျိုးအစား (Top 3)</li>
-                <li>• အားသာချက်များနှင့် ဖွံ့ဖြိုးတိုးတက်ရမည့် နယ်ပယ်များ</li>
-                <li>• AI မှ ပေးသော အသေးစိတ် ထိုးထွင်းသိမြင်မှုများ (မြန်မာဘာသာဖြင့်)</li>
-                <li>• ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် အကြံပြုချက်များ</li>
-                <li>• ရလဒ်များကို PNG/PDF အဖြစ် သိမ်းဆည်းနိုင်မှု</li>
-              </ul>
-            </div>
-
-            <div className={`${cardStyle} p-6 rounded-xl mb-8`}>
-              <h3 className={`text-lg font-semibold ${textStyle} mb-4`}>📈 Data Source</h3>
-              <div className={`${textStyle} opacity-90 space-y-2`}>
-                <p>
-                  <strong>ရင်းမြစ်:</strong> {dataSource}
-                </p>
-                <p>
-                  <strong>မေးခွန်းအရေအတွက်:</strong> {questions.length} ခု
-                </p>
-                <p>
-                  <strong>ဘာသာစကား:</strong> မြန်မာ
-                </p>
-                <p>
-                  <strong>AI ပံ့ပိုးမှု:</strong> Google Gemini
-                </p>
-              </div>
-            </div>
-
-            <div className="flex space-x-4">
-              <button
-                onClick={prevOnboardingStep}
-                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
-              >
-                ← နောက်သို့
-              </button>
-              <button
-                onClick={nextOnboardingStep}
-                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
-              >
-                ရှေ့သို့ →
-              </button>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    // Privacy & Features (now Step 6)
-    if (onboardingStep === 6) {
-      return (
-        <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
-          <div className={`${cardStyle} p-8 rounded-2xl max-w-3xl w-full`}>
-            <div className="text-center mb-8">
-              <div className="text-5xl mb-4">🔐</div>
-              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>လုံခြုံမှုနှင့် Features များ</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className={`${cardStyle} p-6 rounded-xl`}>
-                <h3 className={`text-lg font-semibold ${textStyle} mb-4`}>🔒 ကိုယ်ရေးကိုယ်တာ လုံခြုံမှု</h3>
-                <ul className={`${textStyle} opacity-90 space-y-2 text-sm`}>
-                  <li>• သင့်အဖြေများ သိမ်းဆည်းခြင်း မရှိပါ</li>
-                  <li>• Server တွင် data မကျန်ရှိပါ</li>
-                  <li>• Local browser တွင်သာ လုပ်ဆောင်သည်</li>
-                  <li>• ကိုယ်ရေးကိုယ်တာ အချက်အလက် မတောင်းခံပါ</li>
-                </ul>
-              </div>
-
-              <div className={`${cardStyle} p-6 rounded-xl`}>
-                <h3 className={`text-lg font-semibold ${textStyle} mb-4`}>🚀 အထူး Features များ</h3>
-                <ul className={`${textStyle} opacity-90 space-y-2 text-sm`}>
-                  <li>• AI ထိုးထွင်းသိမြင်မှု (မြန်မာဘာသာ)</li>
-                  <li>• PNG/PDF Export လုပ်ဆောင်ချက်</li>
-                  <li>• Real-time Progress Tracking</li>
-                  <li>• Mobile-friendly Design</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className={`${cardStyle} p-6 rounded-xl mb-8`}>
-              <h3 className={`text-lg font-semibold ${textStyle} mb-4`}>⚡ စမ်းသပ်မှု လုပ်ငန်းစဉ်</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mx-auto mb-2">
-                    1
-                  </div>
-                  <div className={`text-sm ${textStyle} opacity-90`}>မေးခွန်းများ ဖြေကြားခြင်း</div>
-                </div>
-                <div className="text-center">
-                  <div className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mx-auto mb-2">
-                    2
-                  </div>
-                  <div className={`text-sm ${textStyle} opacity-90`}>အမှတ်များ တွက်ချက်ခြင်း</div>
-                </div>
-                <div className="text-center">
-                  <div className="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mx-auto mb-2">
-                    3
-                  </div>
-                  <div className={`text-sm ${textStyle} opacity-90`}>ရလဒ်များ ပြသခြင်း</div>
-                </div>
-                <div className="text-center">
-                  <div className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mx-auto mb-2">
-                    4
-                  </div>
-                  <div className={`text-sm ${textStyle} opacity-90`}>AI ထိုးထွင်းသိမြင်မှု</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex space-x-4">
-              <button
-                onClick={prevOnboardingStep}
-                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
-              >
-                ← နောက်သို့
-              </button>
-              <button
-                onClick={nextOnboardingStep}
-                className={`flex-1 py-3 px-6 rounded-lg ${buttonStyle} transition-all duration-200`}
-              >
-                ရှေ့သို့ →
-              </button>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    // Ready to Start Page (now Step 7)
-    if (onboardingStep === 7) {
-      return (
-        <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
-          <div className={`${cardStyle} p-8 rounded-2xl text-center max-w-2xl w-full`}>
-            <div className="mb-8">
-              <div className="text-6xl mb-4">🎯</div>
-              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>စမ်းသပ်မှု စတင်ရန် အသင့်ဖြစ်ပါပြီ!</h2>
-              <p className={`text-lg ${textStyle} opacity-90 mb-6`}>
-                သင့်ရဲ့ စစ်မှန်သော ကိုယ်ရည်ကိုယ်သွေးကို ရှာဖွေရန် အသင့်ဖြစ်ပါပြီ။ အချိန်ယူပြီး ရိုးရှင်းစွာ ဖြေကြားပါ။
-              </p>
-            </div>
-
-            <div className={`${cardStyle} p-6 rounded-xl mb-8`}>
-              <h3 className={`text-lg font-semibold ${textStyle} mb-4`}>💡 နောက်ဆုံး အကြံပြုချက်များ</h3>
-              <div className="space-y-3">
-                <p className={`${textStyle} opacity-90 text-sm`}>
-                  ✨ <strong>စိတ်ငြိမ်ငြိမ်ထားပါ:</strong> အလျင်အမြန် မဖြေကြားပါနှင့်
-                </p>
-                <p className={`${textStyle} opacity-90 text-sm`}>
-                  🎯 <strong>ပထမဆုံး စိတ်ကူးကို ယုံကြည်ပါ:</strong> အများကြီး မတွေးတောပါနှင့်
-                </p>
-                <p className={`${textStyle} opacity-90 text-sm`}>
-                  💭 <strong>ရိုးရှင်းစွာ ဖြေကြားပါ:</strong> "မှန်သော ကောင်းသော" အဖြေရှာရန် မကြိုးစားပါနှင့်
-                </p>
               </div>
             </div>
 
@@ -959,7 +713,6 @@ export default function EnneagramTestApp() {
               ))}
             </div>
 
-            {/* Replace the existing "All Scores" section with this: */}
             {/* Complete Ranking - All 9 Types */}
             <div className="bg-gray-50 p-6 rounded-xl mb-8">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">📊 အမှတ်များ အပြည့်အစုံ (ကြီးစဥ်ငယ်လိုက်)</h3>
@@ -1106,7 +859,7 @@ export default function EnneagramTestApp() {
                         AI ခွဲခြမ်းစိတ်ဖြာနေသည်...
                       </>
                     ) : (
-                      "AI ထိုးထွင်းသိမြင်မှု ရယူမည်"
+                      "AI ထိုးထွင်းသိမြင်မှု ရယူမယ်"
                     )}
                   </button>
                 </div>
@@ -1120,20 +873,20 @@ export default function EnneagramTestApp() {
                 disabled={isExporting}
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50"
               >
-                {isExporting ? "Exporting..." : "📸 PNG ဖိုင်အဖြစ် သိမ်းမည်"}
+                {isExporting ? "Exporting..." : "📸 PNG ဖိုင်အဖြစ် သိမ်းမယ်"}
               </button>
               <button
                 onClick={exportToPDF}
                 disabled={isExporting}
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50"
               >
-                {isExporting ? "Exporting..." : "📄 PDF ဖိုင်အဖြစ် သိမ်းမည်"}
+                {isExporting ? "Exporting..." : "📄 PDF ဖိုင်အဖြစ် သိမ်းမယ်"}
               </button>
               <button
                 onClick={restartTest}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-200"
               >
-                🔄 ပြန်လည်စမ်းသပ်မည်
+                🔄 ပြန်လည်စမ်းသပ်မယ်
               </button>
             </div>
           </div>
@@ -1167,7 +920,7 @@ export default function EnneagramTestApp() {
         {/* Question */}
         <div className="text-center mb-8">
           <h2 className={`text-2xl font-semibold ${textStyle} mb-8 leading-relaxed`}>
-            အောက်ပါ ဖော်ပြချက် နှစ်ခုထဲမှ သင်နဲ့ အကြိုက်ညီဆုံး အဖြေကို ရွေးချယ်ပါ
+            ဖော်ပြချက် နှစ်ခုထဲကနေ သင်နဲ့ အကိုက်ညီဆုံး အဖြေကို ရွေးချယ်ပါ
           </h2>
         </div>
 

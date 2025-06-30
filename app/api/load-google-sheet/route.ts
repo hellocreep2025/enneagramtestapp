@@ -165,6 +165,8 @@ function parseCSVToQuestions(csvText) {
     throw new Error("CSV must have at least a header row and one data row")
   }
 
+  console.log(`📄 CSV parsing started. Total lines: ${lines.length}`)
+
   // Parse header row
   const headers = parseCSVRow(lines[0])
   console.log(`📋 CSV Headers found: ${JSON.stringify(headers)}`)
@@ -261,19 +263,26 @@ function parseCSVToQuestions(csvText) {
     )
   }
 
-  // Parse data rows
+  // Parse data rows with detailed tracking
   const questions = []
+  const skippedRows = []
+  const invalidRows = []
+
+  console.log(`🔄 Processing ${lines.length - 1} data rows...`)
+
   for (let i = 1; i < lines.length; i++) {
     const row = parseCSVRow(lines[i])
 
     // Skip empty rows
     if (row.length === 0 || row.every((cell) => !cell || cell.trim() === "")) {
       console.log(`⚠️ Skipping empty row ${i + 1}`)
+      skippedRows.push({ rowNumber: i + 1, reason: "Empty row" })
       continue
     }
 
     if (row.length < Math.max(...Object.values(columnMap)) + 1) {
       console.warn(`⚠️ Row ${i + 1} has insufficient columns (${row.length}), skipping`)
+      skippedRows.push({ rowNumber: i + 1, reason: `Insufficient columns (${row.length})` })
       continue
     }
 
@@ -288,7 +297,9 @@ function parseCSVToQuestions(csvText) {
     // Validate question data
     if (question.statementA && question.statementB && question.scoreA && question.scoreB) {
       questions.push(question)
-      console.log(`✅ Added question ${question.id}: ${question.statementA.substring(0, 30)}...`)
+      if (questions.length <= 5 || questions.length % 50 === 0) {
+        console.log(`✅ Added question ${question.id}: ${question.statementA.substring(0, 30)}...`)
+      }
     } else {
       console.warn(`⚠️ Row ${i + 1} has missing data, skipping:`, {
         id: question.id,
@@ -297,7 +308,61 @@ function parseCSVToQuestions(csvText) {
         scoreA: question.scoreA,
         scoreB: question.scoreB,
       })
+      invalidRows.push({
+        rowNumber: i + 1,
+        question: question,
+        reason: "Missing required data",
+      })
     }
+  }
+
+  // Detailed summary
+  console.log(`📊 CSV Parsing Summary:`)
+  console.log(`   📄 Total lines processed: ${lines.length - 1}`)
+  console.log(`   ✅ Valid questions: ${questions.length}`)
+  console.log(`   ⚠️ Skipped rows: ${skippedRows.length}`)
+  console.log(`   ❌ Invalid rows: ${invalidRows.length}`)
+
+  if (skippedRows.length > 0) {
+    console.log(`🔍 Skipped rows details:`, skippedRows.slice(0, 10))
+  }
+
+  if (invalidRows.length > 0) {
+    console.log(`🔍 Invalid rows details:`, invalidRows.slice(0, 10))
+  }
+
+  // Check for expected question count
+  const expectedCount = 144
+  if (questions.length !== expectedCount) {
+    console.warn(`⚠️ Question count mismatch!`)
+    console.warn(`   Expected: ${expectedCount}`)
+    console.warn(`   Got: ${questions.length}`)
+    console.warn(`   Missing: ${expectedCount - questions.length}`)
+  }
+
+  // Check for duplicate IDs
+  const ids = questions.map((q) => q.id)
+  const uniqueIds = [...new Set(ids)]
+  if (ids.length !== uniqueIds.length) {
+    console.warn(`⚠️ Found duplicate question IDs!`)
+    console.warn(`   Total questions: ${ids.length}`)
+    console.warn(`   Unique IDs: ${uniqueIds.length}`)
+    console.warn(`   Duplicates: ${ids.length - uniqueIds.length}`)
+  }
+
+  // Check for missing IDs in sequence (1-144)
+  const sortedIds = ids.sort((a, b) => a - b)
+  const missingIds = []
+  for (let i = 1; i <= expectedCount; i++) {
+    if (!sortedIds.includes(i)) {
+      missingIds.push(i)
+    }
+  }
+
+  if (missingIds.length > 0) {
+    console.warn(`⚠️ Missing question IDs in sequence:`)
+    console.warn(`   Missing IDs: ${missingIds.slice(0, 20).join(", ")}${missingIds.length > 20 ? "..." : ""}`)
+    console.warn(`   Total missing: ${missingIds.length}`)
   }
 
   if (questions.length === 0) {
@@ -311,8 +376,17 @@ function parseCSVToQuestions(csvText) {
     version: "1.0",
     lastUpdated: new Date().toISOString(),
     totalQuestions: questions.length,
+    expectedQuestions: expectedCount,
     description: `Loaded from Google Sheets with ${questions.length} questions`,
     questions: questions,
+    parsingStats: {
+      totalRows: lines.length - 1,
+      validQuestions: questions.length,
+      skippedRows: skippedRows.length,
+      invalidRows: invalidRows.length,
+      missingIds: missingIds.length,
+      duplicateIds: ids.length - uniqueIds.length,
+    },
   }
 }
 
