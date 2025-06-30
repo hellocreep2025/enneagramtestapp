@@ -400,8 +400,8 @@ export default function EnneagramTestApp() {
       <div className={`min-h-screen ${focusGradient} flex items-center justify-center p-4`}>
         <div className={`${cardStyle} p-8 rounded-2xl text-center max-w-md w-full`}>
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <h2 className={`text-xl font-semibold ${textStyle} mb-2`}>မေးခွန်းများ ရယူနေသည်...</h2>
-          <p className={`${textStyle} opacity-80`}>ခဏစောင့်ပါ</p>
+          <h2 className={`text-xl font-semibold ${textStyle} mb-2`}>မေးခွန်းများ ရယူနေတယ်...</h2>
+          <p className={`${textStyle} opacity-80`}>ခဏလေးစောင့်ပေးပါ</p>
         </div>
       </div>
     )
@@ -432,14 +432,14 @@ export default function EnneagramTestApp() {
             <div className="mb-8">
               <div className="text-6xl mb-4">🧠</div>
               <h1 className={`text-4xl font-bold ${textStyle} mb-4`}>Enneagram ကိုယ်ရည်ကိုယ်သွေး စမ်းသပ်မှု</h1>
-              <p className={`text-xl ${textStyle} opacity-90 mb-6`}>သင့်ရဲ့ စစ်မှန်သော ကိုယ်ရည်ကိုယ်သွေးကို ရှာဖွေလိုက်ပါ</p>
+              <p className={`text-xl ${textStyle} opacity-90 mb-6`}>မိတ်ဆွေရဲ့ စစ်မှန်သော ကိုယ်ရည်ကိုယ်သွေးကို ရှာဖွေလိုက်ပါ</p>
             </div>
 
             <div className={`${cardStyle} p-6 rounded-xl mb-8`}>
               <h3 className={`text-lg font-semibold ${textStyle} mb-4`}>🌟 Enneagram ဆိုတာ ဘာလဲ?</h3>
               <p className={`${textStyle} opacity-90 leading-relaxed`}>
-                Enneagram သည် လူသားတို့၏ ကိုယ်ရည်ကိုယ်သွေးကို ၉ မျိုးခွဲခြားထားသော စနစ်တစ်ခုဖြစ်သည်။ သင့်ရဲ့ အပြုအမူ၊ လှုံ့ဆော်မှု၊ ကြောက်ရွံ့မှုများကို နားလည်းစေပြီး
-                ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် အထောက်အကူပြုပါသည်။
+                Enneagram သည် လူသားတို့၏ ကိုယ်ရည်ကိုယ်သွေးကို ၉ မျိုးခွဲခြားထားသော စနစ်တစ်ခုဖြစ်ပါတယ်။ မိတ်ဆွေရဲ့ အပြုအမူ၊ လှုံ့ဆော်မှု၊ ကြောက်ရွံ့မှုများကို နားလည်းစေပြီး
+                ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် အထောက်အကူပြုနိုင်ပါတယ်။
               </p>
             </div>
 
@@ -465,7 +465,7 @@ export default function EnneagramTestApp() {
           <div className={`${cardStyle} p-8 rounded-2xl max-w-3xl w-full`}>
             <div className="text-center mb-8">
               <div className="text-5xl mb-4">⚠️</div>
-              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>အရေးကြီးသော သတိပေးချက်</h2>
+              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>အရေးကြီးတဲ့ သတိပေးချက်</h2>
             </div>
 
             <div className={`${cardStyle} p-6 rounded-xl mb-8 space-y-4`}>
@@ -473,9 +473,9 @@ export default function EnneagramTestApp() {
                 <div className="flex items-start space-x-3">
                   <div className="text-yellow-400 text-xl">📋</div>
                   <div>
-                    <h4 className={`font-semibold ${textStyle} mb-2`}>ဤစမ်းသပ်မှုသည်</h4>
+                    <h4 className={`font-semibold ${textStyle} mb-2`}>ဒိစစ်ဆေးမှုက</h4>
                     <p className={`${textStyle} opacity-90 text-sm`}>
-                      ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုနှင့် မိမိကိုယ်ကို နားလည်းရန်အတွက်သာ ဖြစ်သည်။ ဆေးဘက်ဆိုင်ရာ ရောဂါရှာဖွေမှု မဟုတ်ပါ။
+                      ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုနှင့် မိမိကိုယ်ကို နားလည်းရန်အတွက်သာ ဖြစ်ပါတယ်။ ဆေးဘက်ဆိုင်ရာ ရောဂါရှာဖွေမှု မဟုတ်ပါ။
                     </p>
                   </div>
                 </div>
@@ -485,7 +485,7 @@ export default function EnneagramTestApp() {
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>ရလဒ်များသည်</h4>
                     <p className={`${textStyle} opacity-90 text-sm`}>
-                      လမ်းညွှန်မှုသာဖြစ်ပြီး ပြီးပြည့်စုံသော ကိုယ်ရည်ကိုယ်သွေး ခွဲခြမ်းစိတ်ဖြာမှု မဟုတ်ပါ။ ကျွမ်းကျင်သူများနှင့် တိုင်ပင်ရန် အကြံပြုပါသည်။
+                      လမ်းညွှန်မှုတစ်ခုသာဖြစ်ပြီး ပြီးပြည့်စုံသော ကိုယ်ရည်ကိုယ်သွေး ခွဲခြမ်းစိတ်ဖြာမှု မဟုတ်ပါ။ ကျွမ်းကျင်သူများနှင့် တိုင်ပင်ရန် အကြံပြုပါတယ်။
                     </p>
                   </div>
                 </div>
@@ -495,7 +495,7 @@ export default function EnneagramTestApp() {
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>ကိုယ်ရေးကိုယ်တာ လုံခြုံမှု</h4>
                     <p className={`${textStyle} opacity-90 text-sm`}>
-                      သင့်ရဲ့ အဖြေများကို ကျွန်ုပ်တို့ သိမ်းဆည်းခြင်း မရှိပါ။ ရလဒ်များကို သင်ကိုယ်တိုင်သာ မြင်ရမည်ဖြစ်သည်။
+                      မိတ်ဆွေရဲ့ အဖြေများကို သိမ်းဆည်းထားတာမျိုး မရှိပါ။ ရလဒ်တွေကို မိတ်ဆွေ ကိုယ်တိုင်သာ မြင်ရမှာဖြစ်ပါတယ်။
                     </p>
                   </div>
                 </div>
@@ -503,9 +503,9 @@ export default function EnneagramTestApp() {
                 <div className="flex items-start space-x-3">
                   <div className="text-purple-400 text-xl">💡</div>
                   <div>
-                    <h4 className={`font-semibold ${textStyle} mb-2`}>အကြံပြုချက်</h4>
+                    <h4 className={`font-semibold ${textStyle} mb-2`}>အကြံပြုချက်လေးများ</h4>
                     <p className={`${textStyle} opacity-90 text-sm`}>
-                      ရိုးရှင်းစွာ ဖြေကြားပါ။ "ကောင်းသော" အဖြေရှာရန် မကြိုးစားပါနဲ့။ သင့်ရဲ့ ပထမဆုံး စိတ်ကူးကို ယုံကြည်ပါ။
+                      ရိုးရိုးရှင်းရှင်း စိတ်အေးအေးထားပြီး ဖြေကြည့်ကြည့်။ "ကောင်းတဲ့ မှန်တဲ့" အဖြေရှာဖို့ မကြိုးစားပါနဲ့။ ရွေးရခက်ရင် မိတ်တွေရဲ့ ပထမဆုံး စိတ်ကူးကို ယုံကြည်ပါ။
                     </p>
                   </div>
                 </div>
@@ -553,7 +553,7 @@ export default function EnneagramTestApp() {
                 <h3 className={`text-2xl font-bold ${textStyle} mb-3`}>"ငါ ဘယ်သူလဲ"</h3>
                 <div className={`${textStyle} opacity-90 space-y-2`}>
                   <p>
-                    <strong>စာရေးသူများ:</strong>
+                    <strong>စာရေးသူများ</strong>
                   </p>
                   <p>ဆရာတော် ဦးဇောတိက</p>
                   <p>ဆရာမ ထက်ထက်ထွန်း (Waterfall)</p>
@@ -569,8 +569,8 @@ export default function EnneagramTestApp() {
 
             <div className={`${cardStyle} p-6 rounded-xl mb-8 text-center`}>
               <p className={`${textStyle} opacity-90 leading-relaxed`}>
-                ဒီစမ်းစစ်ချက်လေးက ကိုယ်ရည်ကိုယ်သွေး နားလည်မှုနှင့် ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရေးသားထားသော "ငါ ဘယ်သူလဲ" စာအုပ်မှ မေးခွန်းများကို အခြေခံ၍
-                ပြုလုပ်ထားပါတယ်။
+                ဒီစစ်ဆေးမှုလေးက ကိုယ်ရည်ကိုယ်သွေး နားလည်မှုနှင့် ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရေးသားထားတဲ့ "ငါ ဘယ်သူလဲ" စာအုပ်မှ မေးခွန်းများကို အခြေခံ၍
+                ပြုလုပ်ထားပါတယ်။ အသေးစိတ်သိဖို့အတွက် စာအုပ်လေး ဖတ်ကြည့်ပါနော်။
               </p>
             </div>
 
@@ -600,7 +600,7 @@ export default function EnneagramTestApp() {
           <div className={`${cardStyle} p-8 rounded-2xl max-w-2xl w-full`}>
             <div className="text-center mb-8">
               <div className="text-5xl mb-4">📋</div>
-              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>လမ်းညွှန်ချက်များ</h2>
+              <h2 className={`text-3xl font-bold ${textStyle} mb-4`}>လမ်းညွှန်လေးတွေကတော့</h2>
             </div>
 
             <div className={`${cardStyle} p-6 rounded-xl mb-8`}>
@@ -610,9 +610,9 @@ export default function EnneagramTestApp() {
                     1
                   </div>
                   <div>
-                    <h4 className={`font-semibold ${textStyle} mb-2`}>ရိုးရှင်းစွာ ဖြေကြားပါ</h4>
+                    <h4 className={`font-semibold ${textStyle} mb-2`}>ရိုးရှင်းစွာ ဖြေကြည့်ပါ</h4>
                     <p className={`${textStyle} opacity-80`}>
-                      မေးခွန်းတစ်ခုစီမှာ ရွေးချယ်စရာ နှစ်ခုပါရှိတယ်။ သင်နဲ့ အကိုက်ညီဆုံးသော အဖြေကို ရွေးချယ်ပါ။
+                      မေးခွန်းတစ်ခုစီမှာ ရွေးချယ်စရာ နှစ်ခုပါရှိတယ်။ မိတ်ဆွေနဲ့ အကိုက်ညီဆုံးသော အဖြေကို ရွေးချယ်ပါ။
                     </p>
                   </div>
                 </div>
@@ -633,7 +633,7 @@ export default function EnneagramTestApp() {
                   </div>
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>မှန်သော အဖြေမရှိပါ</h4>
-                    <p className={`${textStyle} opacity-80`}>မှန်တာ ၊ မှားတာ မရှိပါ။ သင့်ရဲ့ စစ်မှန်သော ခံစားချက်အတိုင်းသာ ဖြေကြည့်နော်။</p>
+                    <p className={`${textStyle} opacity-80`}>မှန်တာ ၊ မှားတာ မရှိပါ။ မိတ်ဆွေရဲ့ စစ်မှန်တဲ့ ခံစားချက်အတိုင်းသာ ဖြေကြည့်နော်။ ဘာမှမဖြစ်ဘူး။</p>
                   </div>
                 </div>
 
@@ -644,7 +644,7 @@ export default function EnneagramTestApp() {
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>အချိန်ယူပါ</h4>
                     <p className={`${textStyle} opacity-80`}>
-                      အလျင်စလို မဖြေကြားပါနဲ့။ မေးခွန်းတစ်ခုစီကို ဂရုတစိုက် ဖတ်ပြီး ဖြေတာပိုကောင်းတယ်။
+                      အလျင်စလို မဖြေကြားပါနဲ့။ မေးခွန်းတစ်ခုစီကို ဂရုတစိုက် ဖတ်ပြီး ဖြေတာပိုကောင်းပါတယ်။
                     </p>
                   </div>
                 </div>
@@ -679,8 +679,8 @@ export default function EnneagramTestApp() {
         <div className="max-w-4xl mx-auto">
           <div ref={resultsRef} className="bg-white rounded-2xl shadow-2xl p-8">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-800 mb-4">🎉 သင့်ရဲ့ Enneagram ရလဒ်များ</h1>
-              <p className="text-gray-600">{questions.length} မေးခွန်းမှ ရရှိသော သင့်ရဲ့ ကိုယ်ရည်ကိုယ်သွေး ခွဲခြမ်းစိတ်ဖြာမှု</p>
+              <h1 className="text-3xl font-bold text-gray-800 mb-4">🎉 မိတ်ဆွေရဲ့ Enneagram စစ်ဆေးမှု ရလဒ်များ</h1>
+              <p className="text-gray-600">{questions.length} ဖြေထားတဲ့ မေးခွန်းတွေက ရရှိတဲ့ မိတ်ဆွေရဲ့ ကိုယ်ရည်ကိုယ်သွေး ခွဲခြမ်းစိတ်ဖြာမှု</p>
             </div>
 
             {/* Top 3 Types */}
@@ -996,7 +996,7 @@ export default function EnneagramTestApp() {
             </div>
             {answers[questions[currentQuestionIndex]?.id] === "A" && (
               <div className="mt-3 text-right">
-                <span className="text-green-300 text-sm">✓ ရွေးထားပါသည်</span>
+                <span className="text-green-300 text-sm">✓ ရွေးထားပါတယ်</span>
               </div>
             )}
           </button>
@@ -1022,7 +1022,7 @@ export default function EnneagramTestApp() {
             </div>
             {answers[questions[currentQuestionIndex]?.id] === "B" && (
               <div className="mt-3 text-right">
-                <span className="text-green-300 text-sm">✓ ရွေးထားပါသည်</span>
+                <span className="text-green-300 text-sm">✓ ရွေးထားပါတယ်</span>
               </div>
             )}
           </button>
