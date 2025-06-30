@@ -233,15 +233,22 @@ export default function EnneagramTestApp() {
     const newAnswers = { ...answers, [currentQuestion.id]: choice }
     setAnswers(newAnswers)
 
+    // Don't automatically advance - let user use navigation buttons
+    // Show a brief confirmation animation
     setIsTransitioning(true)
     setTimeout(() => {
-      if (currentQuestionIndex < questions.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1)
-      } else {
-        calculateResults(newAnswers)
-      }
       setIsTransitioning(false)
-    }, 300)
+    }, 200)
+  }
+
+  const goToPreviousQuestion = () => {
+    if (currentQuestionIndex > 0 && !isTransitioning) {
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setCurrentQuestionIndex(currentQuestionIndex - 1)
+        setIsTransitioning(false)
+      }, 300)
+    }
   }
 
   const calculateResults = (finalAnswers) => {
@@ -562,8 +569,8 @@ export default function EnneagramTestApp() {
 
             <div className={`${cardStyle} p-6 rounded-xl mb-8 text-center`}>
               <p className={`${textStyle} opacity-90 leading-relaxed`}>
-                ဒီစမ်းစစ်ချက်လေးက ကိုယ်ရည်ကိုယ်သွေး နားလည်မှုနှင့် ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရေးသားထားသော "ငါ ဘယ်သူလဲ" စာအုပ်မှ
-                မေးခွန်းများကို အခြေခံ၍ ပြုလုပ်ထားပါတယ်။
+                ဒီစမ်းစစ်ချက်လေးက ကိုယ်ရည်ကိုယ်သွေး နားလည်မှုနှင့် ကိုယ်ရေးကိုယ်တာ ဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရေးသားထားသော "ငါ ဘယ်သူလဲ" စာအုပ်မှ မေးခွန်းများကို အခြေခံ၍
+                ပြုလုပ်ထားပါတယ်။
               </p>
             </div>
 
@@ -626,9 +633,7 @@ export default function EnneagramTestApp() {
                   </div>
                   <div>
                     <h4 className={`font-semibold ${textStyle} mb-2`}>မှန်သော အဖြေမရှိပါ</h4>
-                    <p className={`${textStyle} opacity-80`}>
-                      မှန်တာ ၊ မှားတာ မရှိပါ။ သင့်ရဲ့ စစ်မှန်သော ခံစားချက်အတိုင်းသာ ဖြေကြည့်နော်။
-                    </p>
+                    <p className={`${textStyle} opacity-80`}>မှန်တာ ၊ မှားတာ မရှိပါ။ သင့်ရဲ့ စစ်မှန်သော ခံစားချက်အတိုင်းသာ ဖြေကြည့်နော်။</p>
                   </div>
                 </div>
 
@@ -905,7 +910,7 @@ export default function EnneagramTestApp() {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
             <span className={`text-sm ${textStyle} opacity-80`}>
-              မေးခွန်း {currentQuestionIndex + 1} / {questions.length}
+              ပြီးပြီ: {Object.keys(answers).length} / {questions.length}
             </span>
             <span className={`text-sm ${textStyle} opacity-80`}>{Math.round(progress)}%</span>
           </div>
@@ -918,6 +923,50 @@ export default function EnneagramTestApp() {
         </div>
 
         {/* Question */}
+        {/* Navigation Buttons */}
+        <div className="flex justify-between items-center mb-8">
+          <button
+            onClick={goToPreviousQuestion}
+            disabled={currentQuestionIndex === 0 || isTransitioning}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${buttonStyle} transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed`}
+          >
+            <span>←</span>
+            <span>နောက်သို့</span>
+          </button>
+
+          <div className={`text-center ${textStyle} opacity-80`}>
+            <div className="text-sm">
+              မေးခွန်း {currentQuestionIndex + 1} / {questions.length}
+            </div>
+            {answers[questions[currentQuestionIndex]?.id] && (
+              <div className="text-xs mt-1 text-green-300">
+                ✓ ဖြေပြီးပါပြီ ({answers[questions[currentQuestionIndex]?.id] === "A" ? "A" : "B"})
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={() => {
+              if (currentQuestionIndex < questions.length - 1) {
+                setIsTransitioning(true)
+                setTimeout(() => {
+                  setCurrentQuestionIndex(currentQuestionIndex + 1)
+                  setIsTransitioning(false)
+                }, 300)
+              } else if (Object.keys(answers).length === questions.length) {
+                calculateResults(answers)
+              }
+            }}
+            disabled={
+              isTransitioning ||
+              (currentQuestionIndex === questions.length - 1 && Object.keys(answers).length < questions.length)
+            }
+            className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${buttonStyle} transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed`}
+          >
+            <span>{currentQuestionIndex === questions.length - 1 ? "ရလဒ်ကြည့်မယ်" : "ရှေ့သို့"}</span>
+            <span>{currentQuestionIndex === questions.length - 1 ? "🎉" : "→"}</span>
+          </button>
+        </div>
         <div className="text-center mb-8">
           <h2 className={`text-2xl font-semibold ${textStyle} mb-8 leading-relaxed`}>
             ဖော်ပြချက် နှစ်ခုထဲကနေ သင်နဲ့ အကိုက်ညီဆုံး အဖြေကို ရွေးချယ်ပါ
@@ -929,31 +978,62 @@ export default function EnneagramTestApp() {
           <button
             onClick={() => handleAnswer("A")}
             disabled={isTransitioning}
-            className={`${cardStyle} p-8 rounded-xl text-left transition-all duration-300 transform hover:scale-105 hover:bg-white/20 disabled:opacity-50 group`}
+            className={`${cardStyle} p-8 rounded-xl text-left transition-all duration-300 transform hover:scale-105 hover:bg-white/20 disabled:opacity-50 group ${
+              answers[questions[currentQuestionIndex]?.id] === "A" ? "ring-2 ring-blue-400 bg-blue-500/20" : ""
+            }`}
           >
             <div className="flex items-start space-x-4">
-              <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0 group-hover:bg-blue-400 transition-colors">
+              <div
+                className={`text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0 transition-colors ${
+                  answers[questions[currentQuestionIndex]?.id] === "A"
+                    ? "bg-blue-400"
+                    : "bg-blue-500 group-hover:bg-blue-400"
+                }`}
+              >
                 A
               </div>
-              <p className={`text-lg ${textStyle} leading-relaxed`}>{currentQuestion.statementA}</p>
+              <p className={`text-lg ${textStyle} leading-relaxed`}>{questions[currentQuestionIndex]?.statementA}</p>
             </div>
+            {answers[questions[currentQuestionIndex]?.id] === "A" && (
+              <div className="mt-3 text-right">
+                <span className="text-green-300 text-sm">✓ ရွေးထားပါသည်</span>
+              </div>
+            )}
           </button>
 
           <button
             onClick={() => handleAnswer("B")}
             disabled={isTransitioning}
-            className={`${cardStyle} p-8 rounded-xl text-left transition-all duration-300 transform hover:scale-105 hover:bg-white/20 disabled:opacity-50 group`}
+            className={`${cardStyle} p-8 rounded-xl text-left transition-all duration-300 transform hover:scale-105 hover:bg-white/20 disabled:opacity-50 group ${
+              answers[questions[currentQuestionIndex]?.id] === "B" ? "ring-2 ring-purple-400 bg-purple-500/20" : ""
+            }`}
           >
             <div className="flex items-start space-x-4">
-              <div className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0 group-hover:bg-purple-400 transition-colors">
+              <div
+                className={`text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0 transition-colors ${
+                  answers[questions[currentQuestionIndex]?.id] === "B"
+                    ? "bg-purple-400"
+                    : "bg-purple-500 group-hover:bg-purple-400"
+                }`}
+              >
                 B
               </div>
-              <p className={`text-lg ${textStyle} leading-relaxed`}>{currentQuestion.statementB}</p>
+              <p className={`text-lg ${textStyle} leading-relaxed`}>{questions[currentQuestionIndex]?.statementB}</p>
             </div>
+            {answers[questions[currentQuestionIndex]?.id] === "B" && (
+              <div className="mt-3 text-right">
+                <span className="text-green-300 text-sm">✓ ရွေးထားပါသည်</span>
+              </div>
+            )}
           </button>
         </div>
 
-        {/* Navigation hint */}
+        {/* Navigation Instructions */}
+        <div className="mt-8 text-center">
+          <p className={`text-sm ${textStyle} opacity-70`}>
+            💡 အဖြေရွေးပြီးရင် "ရှေ့သို့" ခလုတ်နှိပ်ပါ။ နောက်ပြန်သွားချင်ရင် "နောက်သို့" ခလုတ်နှိပ်လို့ရပါတယ်။
+          </p>
+        </div>
       </div>
     </div>
   )
